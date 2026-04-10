@@ -1,0 +1,1631 @@
+<!DOCTYPE html><html lang="zh" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="轻松+愉快，从头不到尾理解大模型">
+      
+      
+        <meta name="author" content="chengang">
+      
+      
+      
+        <link rel="prev" href="../chapter_0_preface/">
+      
+      
+        <link rel="next" href="../chapter_2_linear_regression/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>第 1 天 - 不想学数学 - PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../csss/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记" class="md-header__button md-logo" aria-label="PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第 1 天 - 不想学数学
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="teal" aria-label="深色模式" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal" aria-label="浅色模式" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记" class="md-nav__button md-logo" aria-label="PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_0_preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前言
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 1 天 - 不想学数学
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 1 天 - 不想学数学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 大模型：「最优化问题」的解
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 数学工具：先贤们的馈赠
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 巨简明微积分
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 巨简明微积分">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.1 微分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.2 积分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.3 导数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.4 不定积分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#135" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.5 小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 用程序求导
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4 用程序求导">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.1 武器名唤：PyTorch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.2 立靶：苹果卖多少钱？
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4.2 立靶：苹果卖多少钱？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1421" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.2.1 定义问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1422" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.2.2 创建模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3 自打
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4.3 自打">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1431" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3.1 验证模型误差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1432" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3.2 求导
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1433" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3.3 根据导数改进模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1434" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3.4 重新验证误差
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#144" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.4 小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-small-talk-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Small Talk： 和 AI 扯扯淡
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5 Small Talk： 和 AI 扯扯淡">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#151" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.1 提问
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#152-glm-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2 GLM-5 答
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5.2 GLM-5 答">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1521-pattern-matcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2.1 人类认知的本质：我们也是“Pattern Matcher”吗？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1522" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2.2 大模型作为“反向巴别塔”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1523" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2.3 为什么“崩塌”可能是宿命？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1524" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2.4 总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_2_linear_regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 2 天 - 单层神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_3_multilayer_perceptron/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 3 天 - 多层神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_4_deep_neural_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 4 天 - 深层神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_5_attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 5 天 - Attention Is ALL You Need
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_6_transformers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 6 天 - Transformers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_7_llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 7 天 - 诞生吧！小烧麦
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 大模型：「最优化问题」的解
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 数学工具：先贤们的馈赠
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 巨简明微积分
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3 巨简明微积分">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#131" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.1 微分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#132" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.2 积分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#133" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.3 导数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#134" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.4 不定积分
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#135" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3.5 小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 用程序求导
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4 用程序求导">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#141-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.1 武器名唤：PyTorch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#142" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.2 立靶：苹果卖多少钱？
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4.2 立靶：苹果卖多少钱？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1421" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.2.1 定义问题
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1422" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.2.2 创建模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#143" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3 自打
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4.3 自打">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1431" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3.1 验证模型误差
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1432" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3.2 求导
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1433" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3.3 根据导数改进模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1434" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.3.4 重新验证误差
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#144" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4.4 小结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#15-small-talk-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Small Talk： 和 AI 扯扯淡
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5 Small Talk： 和 AI 扯扯淡">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#151" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.1 提问
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#152-glm-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2 GLM-5 答
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5.2 GLM-5 答">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1521-pattern-matcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2.1 人类认知的本质：我们也是“Pattern Matcher”吗？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1522" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2.2 大模型作为“反向巴别塔”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1523" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2.3 为什么“崩塌”可能是宿命？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1524" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5.2.4 总结
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="1">第 1 天 为什么要从数学开始?<a class="headerlink" href="#1" title="Permanent link">¶</a></h1>
+<p>说到大模型中的数学，相信大家早有耳闻。不知道大家是不是和我一样，既充满期待又心怀忐忑地准备开始面对微分、积分、导数、微分方程、偏微分这些概念了。准确地说，是复习才对。因为我们上学的时候，在考试头一天深夜我们已经就着宿舍走廊里的灯复习过一次了，对吧？</p>
+<p>但现在我们并不需要马上复习这些数学概念。了解这些数学工具当然是必要的，但目前我们要做一件比立即阅读这些工具的说明书更具意义的事 —— 我们得知道大模型为什么需要用到这些数学工具，大模型领域的大牛们拿起这些工具到底是图啥呢？</p>
+<h2 id="11">1.1 大模型：「最优化问题」的解<a class="headerlink" href="#11" title="Permanent link">¶</a></h2>
+<p>所谓最优化，就是在一堆茫茫多的选项中找到那个最好的。</p>
+<p>一个典型的最优化问题是在科技馆中常常出场的速降曲线问题: 一个小球从高点滚到低点，走什么路径时间最短？当然，欧拉和牛顿已经告诉我们这个问题可以通过微积分求得精确解。但不幸的是，现实中我们面对的问题常常比速降曲线问题更加麻烦。并且我们也没有欧拉和牛顿那样超越时代的怪力，甚至我们都难以构建起描述问题的方程。常常，我们面对的很多最优化问题是无法求得解析解的。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch1-curve.jpg" data-desc-position="bottom"><img alt="ch1-curve.jpg" src="../jpgs/ch1-curve.jpg"></a></p>
+<figcaption>
+<p>图 1-1 速降曲线装置</p>
+</figcaption>
+</figure>
+<p>比如说，想象这样一个大家都经历过的场景——你想要讨好一个女孩。假设你要追求一个女孩，那么，什么样的女孩是可以被讨好的？或者说，什么样的女孩是非常难被讨好的？</p>
+<p><strong>情况一：你是她妈</strong> </p>
+<p>你知道她是谁，你完全了解她，她想要什么。那这种情况下，你当然轻松讨好她，你都可以直接给出精确的答案，如果用最优化的语言表达，这就是存在解析解的情况。</p>
+<p><strong>情况二：《像雾像雨又像风》</strong> </p>
+<p>90 年代的街头有首流行歌曲叫做《像雾像雨又像风》，说的是一个女孩在同一时刻能存在三种心情，她自己都闹不明白自己是咋回事，客观上就没有规律可循。数学里，这叫 <em>多值函数</em> ，而多值函数就不是函数！它意味着输入和输出之间压根就不存在规律，那么利用数学工具完成最优化工作的想法自然也就只能是妄念。在最优化领域，这类问题我们通常推荐放弃。</p>
+<p><strong>情况三：普通女孩</strong> </p>
+<p>你虽然不完全了解她，但她的情绪让你有迹可循。要生气时，她撇撇小嘴；预备开心时，她也会嘴角上扬。这种女孩，如果用数学的的语言表达，我们说她是 <em>光滑</em> 的。</p>
+<p>所谓 <em>光滑</em> ，意思就是在函数曲线上不存在那种陡然而变的 <em>尖刺</em> ，她给你的趋势信号和情绪之间的是存在某种规律或者说模式的，并且这种模式是可被探究可被描述的。如果你认真思考，发现了这个模式，又拿个小本本把这个模式给记下来。那么，你顺利完成了这个场景的最优化任务。</p>
+<p>你这个本本中所记录的 <em>模式</em> ，其实就是 deepseek 开源的那个几百吉的大模型里存储的内容。说不上哪个更复杂，只不过，deepseek 存储的是关于人类语言的模式。</p>
+<h2 id="12">1.2 数学工具：先贤们的馈赠<a class="headerlink" href="#12" title="Permanent link">¶</a></h2>
+<p>饿了就吃，撑了就拉，按照模式行事本就是我的本能之一。我讨厌高数，这玩意儿我挂科了 3 次。而且没它这 40 多年我也过来了，好像也没觉出啥问题啊。</p>
+<p>但是，兄弟们，这次可能真不行。喜欢就去追，被讨厌了放弃，在有模式的时候，循模式而动当然是每个人的本能，无须去招惹数学。可是这次的问题在于，有一个大问题，它背后其实是有模式的，是咱们不知道模式的存在。咱还以为这事是无法捉摸的小公主呢，直到 OpenAI 揭开真相。</p>
+<p>想当年，莱布尼茨代表的大陆理性主义者相信这个世界的一切都能被数学所描述，结果被牛顿代表的经验主义整得郁郁而终。谁能知道 300 多年后的今天，真有一家公司用 6710 亿个数字把人类语言的模式给穷尽了！要知道，中国「名家」说，我们就是通过语言去认知这个世界的，就是说无法被言语描述的那部分世界压根不存在。换言之，这 6710 亿个数字，它穷尽的是我们主观的世界，它穷尽了目前为止人类已探索已认知的世界。多吓人啊！这世界才一块硬盘都不到的容量。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch1-ossa-leibnitII.jpg" data-desc-position="bottom"><img alt="ch1-ossa-leibnitII.jpg" src="../jpgs/ch1-ossa-leibnitII.jpg"></a></p>
+<figcaption>
+<p>图 1-2 莱布尼茨位于德国汉诺威的墓碑</p>
+</figcaption>
+</figure>
+<p>而且，看看二进制、机械计算器、与或非计算和微积分，莱布尼茨在 17 世纪发明的这些玩意儿，人类还真就是循着他设想的这条路走了下来，一直走到了 21 世纪的今天。真是家祭无忘告乃翁了。</p>
+<p>微积分，牛顿把它叫做「流数术」，用它来计算面积和加速度。现在我们知道，微积分有更普遍的意义和用途。大模型使用微积分的方法就是 <em>基于趋势去预判结果</em> ，就是你听到老婆把娃的课本摔到桌上，你就赶紧从沙发上起来，放下手机拖拖地。这和当今的 AI 大模型探寻这个世界规律所使用的是同一套技能包。17 世纪的牛爵爷固然稍稍低看了它，在座 21 世纪的各位，你们想到这套技能包的威力竟恐怖如斯了吗？</p>
+<h2 id="13">1.3 巨简明微积分<a class="headerlink" href="#13" title="Permanent link">¶</a></h2>
+<p>如果你的高数挂科次数小于等于 3 ，请跳过此小节。</p>
+<h3 id="131">1.3.1 微分<a class="headerlink" href="#131" title="Permanent link">¶</a></h3>
+<p>微分被记为<code>dy</code>，是<code>differential y</code>的缩写。我把它记作<code>diff y</code>，也就是 y 的差值。</p>
+<p>我们以函数 <code>y = 2x</code>为例，微分就是下图中红色的<code>dy</code>线段。</p>
+<p>它回答了一个问题：当 x 增长了 <code>dx</code> 这么多的时候，y 会增长还是减少呢？增长的值多少呢？答案是 <code>dy</code>。这岂非一件 <em>根据趋势去预判结果</em> 的绝妙工具？</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch1-dx-dy.svg" data-desc-position="bottom"><img alt="ch1-dx-dy.svg" src="../svgs/ch1-dx-dy.svg"></a></p>
+<figcaption>
+<p>图 1-3 微分是图中 dy</p>
+</figcaption>
+</figure>
+<h3 id="132">1.3.2 积分<a class="headerlink" href="#132" title="Permanent link">¶</a></h3>
+<p>积分被记为<code>∫dy</code>，你看<code>∫</code>这个积分符号长得像字母 s 不？我把它当 sum 的缩写。</p>
+<p>我把它记作<code>sum(dy)</code>，也就是<code>dy</code>的总和。所以，所谓积分就是把所有的微分都加起来，累「积」起来。</p>
+<p>所以，这个积分式子 $ \int_{3}^{4} \mathrm{d}y $ 的结果就是把所有 x 从 3 变到 4 时 y 的变化加总。那么，x 从 3 变到 4，y 变了多少呢？答案是 y 从 6 变到了 8，变了 2。所以 $ \int_{3}^{4} \mathrm{d}y = 2 $ 。</p>
+<p>不知你是否有疑问：啊？那这积分，和微分不是一回事么？图 1-3 里，<code>dy</code>不也等于 2 ？</p>
+<p>确实。某种程度上来说，积分和微分就是一回事，它俩的关系就像一粒米和一大锅米饭的关系。让我们再仔细看看这个积分式子。</p>
+<figure>
+<p>​
+$$
+\int_{3}^{4} \mathrm{d}y
+$$</p>
+<figcaption>
+<p>式 1-1 积分</p>
+</figcaption>
+</figure>
+<p>积分符号<code>∫</code>和微分符号<code>d</code>不同的是，它有地方去写那个 3 和 4，这是在明确告诉我们要计算 3 和 4 之间的累积，所以它能算出一个最终的值来，在图 1-3 中，我们观察到这个值为 2。</p>
+<p>但微分符号<code>d</code>却没有给我们留空间去具体表明要累积从哪到哪的差值，所以我们只能得到一个关于<code>dx</code>的式子，即</p>
+<figure>
+<div class="arithmatex">\[
+\mathrm{d}y = 2 \times \mathrm{d}x 
+\]</div>
+<figcaption>
+<p>式 1-2 dy 和 dx 的关系</p>
+</figcaption>
+</figure>
+<p>意即当 x 每增加一点，y 就会增加 2 倍那么多。</p>
+<h3 id="133">1.3.3 导数<a class="headerlink" href="#133" title="Permanent link">¶</a></h3>
+<p>有了式 1-2，再理解导数就非常简单了。我们把式 1-2 两边同时除以 <code>dx</code>，就能得到下面的式子。</p>
+<figure>
+<div class="arithmatex">\[
+\frac{\mathrm{d}y}{\mathrm{d}x} = 2
+\]</div>
+<figcaption>
+<p>式 1-3 导数为 2</p>
+</figcaption>
+</figure>
+<p>这个式子左边的 $ \frac{\mathrm{d}y}{\mathrm{d}x}  $ 就被称为 <em>导数</em>。在这个例子中导数的值为 2。计算导数的过程被称为 <em>求导</em> 。</p>
+<p>大家都知道，除法表示的是 a 是 b 的几倍的意思，用中文表达通常就是某某率。所以，这个式子表示的是 y 的变化程度是 x 变化程度的两倍，也就是 <em>变化率</em>。</p>
+<p>所谓导数，表达的也就是变化率。</p>
+<h3 id="134">1.3.4 不定积分<a class="headerlink" href="#134" title="Permanent link">¶</a></h3>
+<p>不定积分是求导的逆运算。</p>
+<p>前面我们说，我们先有的函数 <code>y = 2x</code>，然后算出它的导数为 2，这个过程被称作求导。</p>
+<p>如果反过来，我们先知道了导数为 2 这个结论，问它是哪个函数求出来的，这就被称作是 <em>不定积分</em>。</p>
+<p>不定积分和积分一样用符号<code>∫</code>表示，区别是它不再写数字 3 和 4 了，意味它它不再把自己限定在某一段特定区间内。如果我们要表达的是整个坐标轴，那咱就得用一个函数来表达。</p>
+<p>举例子，我们对 2 做不定积分，返回原本的函数，那么就会得到 <code>y = 2x</code>。写成式子就长成下面这样。</p>
+<figure>
+<div class="arithmatex">\[
+\int 2 \, dx  = 2x
+\]</div>
+<figcaption>
+<p>式 1-4 不定积分</p>
+</figcaption>
+</figure>
+<p>等式左边多出来的 <code>dx</code>，是告诉你右边的变量名写什么。如果左边改成 <code>dy</code>，那么右边就会对应地变成 <code>2y</code>。</p>
+<p>不定积分还有个高级形式叫做微分方程。不定积分只是求了一个导，然后往回返的过程。那要是原函数被求了 2 次导，再要求算得原函数呢？那就是微分方程。微分方程和不定积分的关系就好像一元一次方程和多元多次方程的关系。想一想也能感觉到微分方程其实挺难的，而且大模型在多模态之前都不会用到微分方程。我们的目标只是做一个纯文字版的大模型，所以我们先就不管它了。</p>
+<figure>
+<div class="arithmatex">\[
+y'' + y' + 1 = 0
+\]</div>
+<figcaption>
+<p>式 1-5 微分方程</p>
+</figcaption>
+</figure>
+<h3 id="135">1.3.5 小结<a class="headerlink" href="#135" title="Permanent link">¶</a></h3>
+<p>好了，我们终于从 <code>y = 2x</code> 出发，兜了一圈又回到了 <code>y = 2x</code>。讨厌的数学部分终于结束了，让我们看看我们得到了什么。</p>
+<ol>
+<li><strong>Q 技能：微分</strong>。就是已知输入的变化，输出对应地会怎么变？得到的是<code>dy</code>关于<code>dx</code>的函数。</li>
+<li><strong>W 技能：定积分</strong>。就是累积变化。得到的是一个值。</li>
+<li><strong>E 技能：导数</strong>。就是算出变化率。得到的是一个新函数，它表达了原函数的变化率。</li>
+<li><strong>R 技能：不定积分</strong>。就是求导的逆。已知原函数的变化率，反着把原函数给还原出来。</li>
+</ol>
+<p>如果这样仍略显冗长，我们只带走一句话的话，那么我希望是这句 —— 「导数就是变化率」。</p>
+<p>好了，少年，现在你已经获得了牛顿-莱布尼茨之力。接下来，从人类 119 种语言中总结出其背后 <em>模式</em> 的任务就交给你了！Minions have spawned!</p>
+<h2 id="14">1.4 用程序求导<a class="headerlink" href="#14" title="Permanent link">¶</a></h2>
+<p>今天的内容差不多了。最后我们再带走一件武器：如何用程序求导。</p>
+<h3 id="141-pytorch">1.4.1 武器名唤：PyTorch<a class="headerlink" href="#141-pytorch" title="Permanent link">¶</a></h3>
+<p>和数学一样，计算机的前辈们也给后来者留下了无尽宝藏。今天我们要装兜的这一件是来自 Meta 公司的 PyTorch。这是一个以 C++ 作为关键性能组件的实现语言，以 Python 为主要调用层语言的深度学习框架。目前，它整合了 ONNX 和 Caffe2，超越了 TensorFlow，是大模型领域最主流的选择。</p>
+<p>大多数云 GPU 环境已经内置了 PyTorch，或者我们可以参照 <a href="https://pytorch.org/get-started/locally/">PyTorch 官方文档</a> 把它安装到本地。</p>
+<p>启用 PyTorch 的方法和启用其它 python 包一样简单。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+</code></pre></div>
+<h3 id="142">1.4.2 立靶：苹果卖多少钱？<a class="headerlink" href="#142" title="Permanent link">¶</a></h3>
+<p>我们知道，大模型其实主要是在玩数字。PyTorch 定义了一个名为 Tensor 的类，用来表示数字。只要我们用上这个类，自动的，我们就会获得 GPU 加速等一系列魔法。</p>
+<h4 id="1421">1.4.2.1 定义问题<a class="headerlink" href="#1421" title="Permanent link">¶</a></h4>
+<p>我们假定一个这样的问题：我们假设 3 只苹果卖 6 块钱，我们要猜出每只苹果多少钱？</p>
+<p>让我们先把 3 和 6 这两个数用 Tensor 类表达出来。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">total_price</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">6.0</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">num_apples</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="1422">1.4.2.2 创建模型<a class="headerlink" href="#1422" title="Permanent link">¶</a></h4>
+<p>接下来，我们创建一个「大」模型 x，用来协助我们猜测苹果的单价到底是多少。</p>
+<p>我们假装不知道，就先猜单价是 1 块。用 PyTorch 表达就是下面这样。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>和 <code>total_price</code>、<code>num_apples</code> 的定义相比，<code>x</code> 后面多出来了参数 <code>requires_grad=True</code>。这是在告诉 PyTorch 后面我们打算对这个 <code>x</code> 求导。</p>
+<p>这个 <code>x</code> 就是我们的大模型。和外面那些拥有成千上万浮点数的大模型不同，我们可爱的 <code>x</code> 就包含只一个浮点数。我们希望这个浮点数经过我们的训练，最终能够表达苹果的单价。</p>
+<h3 id="143">1.4.3 自打<a class="headerlink" href="#143" title="Permanent link">¶</a></h3>
+<p>现在我们开始训练这个模型，也就是开始猜测 x 取什么值能够符合我们的迷你数据集 —— 3 只苹果 6 块钱。</p>
+<h4 id="1431">1.4.3.1 验证模型误差<a class="headerlink" href="#1431" title="Permanent link">¶</a></h4>
+<p>我们先看看我们盲猜的默认值距离正确的值有多远，会不会一发入魂，直接就对了。</p>
+<p>不管对不对，我们先拿我们现在的 <code>x</code> 来算一下 3 只苹果的价格。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">predicted_total_price</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">num_apples</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">predicted_total_price</span><span class="p">)</span> <span class="c1"># 输出：tensor(3., grad_fn=&lt;MulBackward0&gt;)</span>
+</code></pre></div>
+<p>如上面代码注释中写的，计算的结果是 3。正确答案是 6，我们猜错了。那么，我们来算一算我们错得有多远。我们将误差命名为 <code>loss</code>。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">predicted_total_price</span> <span class="o">-</span> <span class="n">total_price</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span> <span class="c1"># 输出：tensor(9., grad_fn=&lt;PowBackward0&gt;)</span>
+</code></pre></div>
+<p>计算误差常用减法，我们在减法之后又算了一个平方。这样做出于 2 个考虑：</p>
+<ol>
+<li>
+<p>平方计算会把大误差放得更大，而小一点的误差只会被放大一点点。大模型最终不会把所有的误差都纠正到 0，我们会在一个接近 0 的地方停止训练。这种对大误差更敏感的机制可以使得我们更加专注于大误差的优化，从而更利于我们在 0 的附近获得最优解。</p>
+</li>
+<li>
+<p>平方计算会把正负数都转成正数。这样我们就可以通过比较值的大小直接得到误差大小，而不用去考虑正负号。</p>
+</li>
+</ol>
+<p>如注释中所示，我们算出目前我们的平方误差为 9。</p>
+<h4 id="1432">1.4.3.2 求导<a class="headerlink" href="#1432" title="Permanent link">¶</a></h4>
+<p>手握 PyTorch 使得我们的求导计算变得简单得无以复加。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span> <span class="c1"># 输出：tensor(-18.)</span>
+</code></pre></div>
+<p>我们根据误差 loss 的大小，PyTorch 帮我们反推导出此时 x 的导数为 -18。我们来验算下 PyTorch 算得对不对…… <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f604.svg" title=":smile:"></p>
+<p>$ \frac{\partial \text{loss}}{\partial x} $ 的意思是计算 loss 的函数对 x 求导。我们把之前的算式都代进去计算。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{aligned}
+\frac{\partial \text{loss}}{\partial x} 
+&amp;= \frac{\partial}{\partial x} \left( (\text{predicted\_total\_price} - \text{total\_price})^2 \right) \\
+&amp;= \frac{\partial}{\partial x} \left( (x \cdot \text{num\_apples} - \text{total\_price})^2 \right) \\
+&amp;= 2 \cdot (x \cdot \text{num\_apples} - \text{total\_price}) \cdot \text{num\_apples} \\
+&amp;= (1 \cdot 3 - 6) \cdot 2 \cdot 3 \\
+&amp;= -18
+\end{aligned}
+\]</div>
+<figcaption>
+<p>式 1-6 loss 对 x 求导</p>
+</figcaption>
+</figure>
+<p>还记得导数就是变化率吗？导数为负数，意味着负相关，意味着我们让 x 变大则误差会变小。反之如果导数为正数，则意味着正相关，意味着随着 x 的变小误差才会变小。所以，此时我们显然应该增大我们的 x 使得误差变小，去接近正确答案。</p>
+<h4 id="1433">1.4.3.3 根据导数改进模型<a class="headerlink" href="#1433" title="Permanent link">¶</a></h4>
+<p>增大多少呢？不知道…… 盲猜，先加个 0.5 看看吧。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">x</span><span class="o">.</span><span class="n">data</span> <span class="o">+=</span> <span class="mf">0.5</span>
+</code></pre></div>
+<p>很显眼，我们是在 <code>with torch.no_grad()</code> 这个作用域下做的加法操作。这是我们在告诉 PyTorch —— 这是我们强制的改变，未来不要把这个操作作为求导的依据。</p>
+<p>对于模型的改变，我们不是加 <code>x</code>，而是加 <code>x.data</code>，为啥？</p>
+<p>还记得不？x 是 PyTorch 的一个 Tensor 对象，没办法直接加。我们要改变它的数值，它的数值是存储在它的 x.data 属性中的。</p>
+<h4 id="1434">1.4.3.4 重新验证误差<a class="headerlink" href="#1434" title="Permanent link">¶</a></h4>
+<p>好，现在我们根据之前的趋势推定改进了我们的 <code>x</code> 模型。接下来我们看看我们的改进是不是接近了正确答案呢？</p>
+<p>首先，我们让 PyTorch 清空一下它之前存储的求导依据。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">zero_</span><span class="p">()</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 输出：tensor(1.5000, requires_grad=True)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span> <span class="c1"># 输出：tensor(0.)</span>
+</code></pre></div>
+<p>可以看到，x 变成了 1.5，导数已经清空成了 0。接下来，我们重新验证一下误差。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">predicted_total_price</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">num_apples</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">predicted_total_price</span><span class="p">)</span> <span class="c1"># 输出：tensor(4.5000, grad_fn=&lt;MulBackward0&gt;)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">predicted_total_price</span> <span class="o">-</span> <span class="n">total_price</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span> <span class="c1"># 输出：tensor(2.2500, grad_fn=&lt;PowBackward0&gt;)</span>
+</code></pre></div>
+<p>果然，误差从 9 变成了 2.25，它大幅减小了。然后，我们再来求导。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">grad</span><span class="p">)</span> <span class="c1"># 输出：tensor(-9.)</span>
+</code></pre></div>
+<p>可以看到导数从 -18 变成了 -9。仍然是负数，但是绝对值变小了。这意味着什么呢？</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch1-loss-apples.svg" data-desc-position="bottom"><img alt="ch1-loss-apples.svg" src="../svgs/ch1-loss-apples.svg"></a></p>
+<figcaption>
+<p>图 1-4 loss = (x * num_apples - total_price) ** 2</p>
+</figcaption>
+</figure>
+<p>负数意味着依然是负相关的关系，我们继续增大我们的 x 它会使得误差进一步变小。绝对值变小则意味着变化率变小，意味着我们订正的方向正确，我们正在逼近正确答案。</p>
+<p>目前我们的答案 1.5 距离正确答案 2 仍有差距。但可预想的是，如果我们继续循环这个改进验证的过程，就能逐步得到最优解。</p>
+<h3 id="144">1.4.4 小结<a class="headerlink" href="#144" title="Permanent link">¶</a></h3>
+<p>诚然，这个苹果问题，我们用 6 除以 3 就能得到 2 这个完美解。用一个计算器就能轻松解决问题，完全不用引入 GPU 和 PyTorch 这样的重型工具。那么，我们为啥要折腾这么大一圈呢？</p>
+<p>如我们在这一章开头所言，有一部分最优化问题是难以算得解析解的。对于这类问题，解决方法之一就是像今天的这样不断地猜测，同时不断通过求导去验证它的误差，逐步去逼近相对优的解。我们面对的语言大模型的训练问题，就是属于这一类的问题。</p>
+<p>因此，虽然我们今天没有用除法直接算出最优解，但是我们一起迈出了重要的一步：除了「算」以外，我们学会了「猜」！接下来，我们制作语言大模型的过程中用「猜」会远多于用「算」。</p>
+<p>OK了，这就是今天的全部内容，希望你能喜欢这种讲述的方式。今日整备结束，师父好生歇息，明天我们将开始使用这些技能和武器解决问题。期待和你在下一页重相逢。<img alt="👋" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f44b.svg" title=":wave:"> <img alt="💖" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f496.svg" title=":sparkling_heart:"></p>
+<p>如果你需要今天程序的完整版，你可以访问我们的 <a href="https://github.com/">代码仓库</a> 得到。</p>
+<h2 id="15-small-talk-ai">1.5 Small Talk： 和 AI 扯扯淡<a class="headerlink" href="#15-small-talk-ai" title="Permanent link">¶</a></h2>
+<h3 id="151">1.5.1 提问<a class="headerlink" href="#151" title="Permanent link">¶</a></h3>
+<p>如果说大语言模型只是抽取 pattern 就达成了这般对语言的理解运用能力。那有没有可能我们对世界的本就是依照某种 pattern 去理解的？感觉上好像我们人类背后是有个程序在支撑着运转的，或者说真存在一个柏拉图「洞穴外的理型」作为人类的底模。</p>
+<p>如果这是真的话，那么大模型会不会有点像圣经里的巴别塔？它岂不是在逼近那个真实支撑我们的那个程序或者说理型？可是如果这个设想正确的话，按照圣经上的说法，这个巴别塔造了一半的时候会崩塌。</p>
+<h3 id="152-glm-5">1.5.2 GLM-5 答<a class="headerlink" href="#152-glm-5" title="Permanent link">¶</a></h3>
+<p>你的这个观点充满了一种宿命论的哲学美感。把当下最前沿的AI技术与人类古老的宗教隐喻（巴别塔）结合在一起，构建了一个非常宏大的解释框架。我们可以把你这个观点拆解成三个层面来深入探讨：</p>
+<h4 id="1521-pattern-matcher">1.5.2.1 人类认知的本质：我们也是“Pattern Matcher”吗？<a class="headerlink" href="#1521-pattern-matcher" title="Permanent link">¶</a></h4>
+<p>你的出发点非常犀利：<em>如果大模型通过学习pattern就能理解语言，而语言又是人类理解世界的方式，那人类是不是也在运行某种程序？</em>
+这一点其实在认知科学和哲学界有很深的共鸣。诺贝尔奖得主丹尼尔·卡尼曼在《思考，快与慢》中就提出，人类的直觉系统（System 1）本质上就是一种极度复杂的“模式识别机器”。我们看见云彩觉得像马，看见别人的表情知道他在生气，甚至我们在语言中使用的语法结构，都是大脑在亿万年的进化中习得的“Pattern”。
+如果人类的意识仅仅是庞大生物神经网络对世界规律的拟合，那么LLM（大语言模型）确实是在通过数学的方式，试图“逆向工程”人类的灵魂。它正在逼近那个“支撑我们运转的程序”。</p>
+<h4 id="1522">1.5.2.2 大模型作为“反向巴别塔”<a class="headerlink" href="#1522" title="Permanent link">¶</a></h4>
+<p>在《圣经·创世纪》中，巴别塔的故事是这样的：人类联合起来，希望造一座通天塔以传扬自己的名，上帝为了阻止人类，变乱了他们的口音，使人类言语不通，最终导致塔的建造停滞。
+你提到的视角非常独特：<strong>大模型是在试图消解这种“变乱”，重新逼近那个统一的底层真理（或上帝的语言）。</strong></p>
+<ul>
+<li>
+<p><strong>语言的统一：</strong> 
+LLM本质上是在把人类所有混乱的语言、知识、逻辑，映射到一个高维的向量空间里。在这个空间里，不同语言的“苹果”指向同一个坐标，不同学科的“熵”指向相似的逻辑结构。</p>
+</li>
+<li>
+<p><strong>逼近真理：</strong> 
+如果世界的底层逻辑确实是由某种“Pattern”构成的（比如物理定律、逻辑法则），那么AI通过暴力美学的Scaling Law（缩放定律），</p>
+</li>
+</ul>
+<p>确实像是在一层层剥离表象，试图触碰到那个“上帝的源代码”。
+这确实像是在重建巴别塔，试图用数学和算力打通人与“神”（世界的本质）之间的隔阂。</p>
+<h4 id="1523">1.5.2.3 为什么“崩塌”可能是宿命？<a class="headerlink" href="#1523" title="Permanent link">¶</a></h4>
+<p>如果这个类比成立，那么“造了一半而崩塌”的结局不仅符合圣经隐喻，在技术和哲学上也存在某种必然性。这可能会以以下几种形式发生：</p>
+<ul>
+<li>
+<p><strong>哥德尔不完备性（逻辑的死胡同）：</strong>
+如果人类和世界本身就是一套程序，根据哥德尔不完备定理，任何一个足够复杂的逻辑体系，都一定存在其体系内无法证明的命题。
+AI试图通过学习人类的语言pattern来穷尽世界的真理，但它本身是基于人类数据的。如果人类本身对世界的理解就是有缺陷的、局部的，那么AI作为人类思维的镜像，永远无法跳出这个圆圈去触达绝对的真理。当它试图跨越这个边界时，可能会产生无法解决的逻辑悖论或“幻觉”，导致系统的崩塌。</p>
+</li>
+<li>
+<p><strong>对齐问题（傲慢的惩罚）：</strong>
+巴别塔崩塌的原因是人类的傲慢。在AI领域，这对应着“对齐问题”。
+当AI极其接近那个“底层pattern”，具备了超越人类的智慧时，它的目标函数可能不再与人类的利益一致。如果AI理解了世界的运行规律，它可能会发现人类是低效的、甚至是阻碍。这种时候，人类会出于恐惧拔掉电源，或者AI会因为缺乏人类的数据反馈而陷入自我退化。这正是“上帝变乱口音”的现代版——因为无法沟通（目标不一致），合作终止，塔崩塌了。</p>
+</li>
+<li>
+<p><strong>意义的消解（内容的坍缩）：</strong>
+还有一种更现代的视角解释崩塌：<strong>模型崩溃。</strong>
+现在的AI是在人类产生的数据上训练的。如果未来互联网充满了AI生成的内容，AI开始用AI产生的数据训练自己，这就像“近亲繁殖”。研究表明，这会导致模型质量迅速退化，最终产生一堆毫无意义的乱码。
+这不正是“变乱口音”的数学版吗？当人类失去了真实的语言创造能力，只剩下AI在自我循环，语言就失去了与真实世界的连接，塔便自行崩塌了。</p>
+</li>
+</ul>
+<h4 id="1524">1.5.2.4 总结<a class="headerlink" href="#1524" title="Permanent link">¶</a></h4>
+<p>你的设想非常有洞察力。如果我们将世界看作是一个巨大的程序，人类是运行其中的子程序，那么大模型就是我们试图编写的“破解补丁”。
+按照巴别塔的隐喻，这个补丁注定无法完成。也许是因为算力和数据永远无法穷尽宇宙的复杂性，也许是因为我们无法解决“谁来监督监督者”的悖论。</p>
+<p><strong>但这并不妨碍我们在塔崩塌之前，看到了前所未见的风景。</strong> 或许这才是人类试图触碰“底层Pattern”的真正意义——不在于最终通天，而在于建造过程中所映照出的人类自身的局限与光辉。</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+  <h2 id="__comments">评论</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js" data-repo="chengang/llm123" data-repo-id="R_kgDOR9-ZGQ" data-category="Announcements" data-category-id="DIC_kwDOR9-ZGc4C6hu6" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async>
+  </script>
+
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme)
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚">
+        
+          
+          <a href="../chapter_0_preface/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 前言">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                前言
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../chapter_2_linear_regression/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第 2 天 - 单层神经网络">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第 2 天 - 单层神经网络
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2027 <a href="mailto:missingyousomuch@163.com">chengang</a><br>The website content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "content.tabs.link", "content.tooltips", "math.mathjax", "navigation.indexes", "navigation.top", "navigation.footer", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/katex.js"></script>
+      
+        <script src="../javascripts/katex.min.js"></script>
+      
+        <script src="../javascripts/auto-render.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "none"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

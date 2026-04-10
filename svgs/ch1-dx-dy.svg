@@ -1,0 +1,89 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- 坐标系背景 (白色) 可省略 -->
+  <rect width="800" height="600" fill="white" />
+
+  <!-- 坐标轴 -->
+  <line x1="50" y1="550" x2="550" y2="550" stroke="black" stroke-width="2" />
+  <line x1="50" y1="550" x2="50" y2="50" stroke="black" stroke-width="2" />
+
+  <!-- x轴刻度与数字 (0 至 10) -->
+  <g font-size="12" text-anchor="middle">
+    <line x1="50" y1="545" x2="50" y2="555" stroke="black" />
+    <text x="50" y="570">0</text>
+    <line x1="100" y1="545" x2="100" y2="555" stroke="black" />
+    <text x="100" y="570">1</text>
+    <line x1="150" y1="545" x2="150" y2="555" stroke="black" />
+    <text x="150" y="570">2</text>
+    <line x1="200" y1="545" x2="200" y2="555" stroke="black" />
+    <text x="200" y="570">3</text>
+    <line x1="250" y1="545" x2="250" y2="555" stroke="black" />
+    <text x="250" y="570">4</text>
+    <line x1="300" y1="545" x2="300" y2="555" stroke="black" />
+    <text x="300" y="570">5</text>
+    <line x1="350" y1="545" x2="350" y2="555" stroke="black" />
+    <text x="350" y="570">6</text>
+    <line x1="400" y1="545" x2="400" y2="555" stroke="black" />
+    <text x="400" y="570">7</text>
+    <line x1="450" y1="545" x2="450" y2="555" stroke="black" />
+    <text x="450" y="570">8</text>
+    <line x1="500" y1="545" x2="500" y2="555" stroke="black" />
+    <text x="500" y="570">9</text>
+    <line x1="550" y1="545" x2="550" y2="555" stroke="black" />
+    <text x="550" y="570">10</text>
+  </g>
+
+  <!-- y轴刻度与数字 (0 至 10) 使用dominant-baseline使数字居中于刻度线 -->
+  <g font-size="12" text-anchor="end" dominant-baseline="middle">
+    <line x1="50" y1="550" x2="55" y2="550" stroke="black" />
+    <text x="35" y="550">0</text>
+    <line x1="50" y1="500" x2="55" y2="500" stroke="black" />
+    <text x="35" y="500">1</text>
+    <line x1="50" y1="450" x2="55" y2="450" stroke="black" />
+    <text x="35" y="450">2</text>
+    <line x1="50" y1="400" x2="55" y2="400" stroke="black" />
+    <text x="35" y="400">3</text>
+    <line x1="50" y1="350" x2="55" y2="350" stroke="black" />
+    <text x="35" y="350">4</text>
+    <line x1="50" y1="300" x2="55" y2="300" stroke="black" />
+    <text x="35" y="300">5</text>
+    <line x1="50" y1="250" x2="55" y2="250" stroke="black" />
+    <text x="35" y="250">6</text>
+    <line x1="50" y1="200" x2="55" y2="200" stroke="black" />
+    <text x="35" y="200">7</text>
+    <line x1="50" y1="150" x2="55" y2="150" stroke="black" />
+    <text x="35" y="150">8</text>
+    <line x1="50" y1="100" x2="55" y2="100" stroke="black" />
+    <text x="35" y="100">9</text>
+    <line x1="50" y1="50" x2="55" y2="50" stroke="black" />
+    <text x="35" y="50">10</text>
+  </g>
+
+  <!-- 轴标签 x 和 y (斜体) -->
+  <text x="570" y="540" font-size="16" font-style="italic" text-anchor="start">x</text>
+  <text x="30" y="30" font-size="16" font-style="italic" text-anchor="start">y</text>
+
+  <!-- 函数 y = 2x 曲线 (蓝色)  x 从 0 到 5 (y 从 0 到 10) -->
+  <polyline points="
+    50,550 
+    100,450 
+    150,350 
+    200,250 
+    250,150 
+    300,50 
+  " stroke="blue" stroke-width="2" fill="none" />
+
+  <!-- 表示 dx 和 dy 的辅助虚线三角形 (从 A(3,6) 到 B(4.2,8.4)) -->
+  <!-- 点 A (3,6) 对应像素 (260,250) ; 点 B (4.2,8.4) 对应 (344,130) ; 点 C (4.2,6) 对应 (344,250) -->
+  <line x1="250" y1="250" x2="200" y2="250" stroke="green" stroke-width="1.5" stroke-dasharray="5,5" />
+  <line x1="250" y1="250" x2="250" y2="150" stroke="red" stroke-width="1.5" stroke-dasharray="5,5" />
+
+  <!-- 曲线上两个端点 A 和 B 用红色圆点强调 -->
+  <circle cx="200" cy="250" r="4" fill="gray" />
+  <circle cx="250" cy="150" r="4" fill="gray" />
+
+  <!-- 标注 dx 和 dy (斜体) -->
+  <text x="225" y="265" font-size="14" font-style="italic" text-anchor="middle" fill="green">dx</text>
+  <text x="265" y="205" font-size="14" font-style="italic" text-anchor="middle" fill="red">dy</text>
+
+  <!-- 可选: 在虚线两端添加小箭头指示方向 (简洁起见不加) -->
+</svg>

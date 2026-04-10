@@ -1,0 +1,114 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <title>分段函数曲线：C = 7 (x≤5) 与 C = 6x-23 (x>5) 从0开始</title>
+  <desc>坐标系x从0到12，y从0到45。红色曲线为分段函数，在x=5处连续，值为7。无额外标注。</desc>
+
+  <!-- 白色背景 -->
+  <rect x="0" y="0" width="800" height="600" fill="white" />
+
+  <!-- 绘制坐标轴：原点(50,550)对应(0,0)；x轴向右，y轴向上（屏幕y向下） -->
+  <!-- x轴主线 -->
+  <line x1="50" y1="550" x2="750" y2="550" stroke="black" stroke-width="1.5" />
+  <!-- y轴主线 -->
+  <line x1="50" y1="50" x2="50" y2="550" stroke="black" stroke-width="1.5" />
+
+  <!-- 轴箭头 -->
+  <polygon points="745,545 750,550 745,555" fill="black" /> <!-- x轴箭头 -->
+  <polygon points="45,55 50,50 55,55" fill="black" />    <!-- y轴箭头 -->
+
+  <!-- 刻度与标签 -->
+  <!-- x轴刻度：从0到12整数点，短线长10 -->
+  <!-- x_svg = 50 + x * (700/12) ≈ 50 + x * 58.3333 -->
+  <line x1="50" y1="545" x2="50" y2="555" stroke="black" stroke-width="1" /> <!-- x=0 -->
+  <line x1="108.3" y1="545" x2="108.3" y2="555" stroke="black" stroke-width="1" /> <!-- x=1 -->
+  <line x1="166.7" y1="545" x2="166.7" y2="555" stroke="black" stroke-width="1" /> <!-- x=2 -->
+  <line x1="225" y1="545" x2="225" y2="555" stroke="black" stroke-width="1" /> <!-- x=3 -->
+  <line x1="283.3" y1="545" x2="283.3" y2="555" stroke="black" stroke-width="1" /> <!-- x=4 -->
+  <line x1="341.7" y1="545" x2="341.7" y2="555" stroke="black" stroke-width="1" /> <!-- x=5 -->
+  <line x1="400" y1="545" x2="400" y2="555" stroke="black" stroke-width="1" /> <!-- x=6 -->
+  <line x1="458.3" y1="545" x2="458.3" y2="555" stroke="black" stroke-width="1" /> <!-- x=7 -->
+  <line x1="516.7" y1="545" x2="516.7" y2="555" stroke="black" stroke-width="1" /> <!-- x=8 -->
+  <line x1="575" y1="545" x2="575" y2="555" stroke="black" stroke-width="1" /> <!-- x=9 -->
+  <line x1="633.3" y1="545" x2="633.3" y2="555" stroke="black" stroke-width="1" /> <!-- x=10 -->
+  <line x1="691.7" y1="545" x2="691.7" y2="555" stroke="black" stroke-width="1" /> <!-- x=11 -->
+  <line x1="750" y1="545" x2="750" y2="555" stroke="black" stroke-width="1" /> <!-- x=12 -->
+
+  <!-- x轴数字标签 (标注主要点) -->
+  <text x="45" y="570" font-family="Arial" font-size="10">0</text>
+  <text x="105" y="570" font-family="Arial" font-size="10">1</text>
+  <text x="165" y="570" font-family="Arial" font-size="10">2</text>
+  <text x="225" y="570" font-family="Arial" font-size="10">3</text>
+  <text x="285" y="570" font-family="Arial" font-size="10">4</text>
+  <text x="340" y="570" font-family="Arial" font-size="10">5</text>
+  <text x="398" y="570" font-family="Arial" font-size="10">6</text>
+  <text x="456" y="570" font-family="Arial" font-size="10">7</text>
+  <text x="515" y="570" font-family="Arial" font-size="10">8</text>
+  <text x="573" y="570" font-family="Arial" font-size="10">9</text>
+  <text x="630" y="570" font-family="Arial" font-size="10">10</text>
+  <text x="688" y="570" font-family="Arial" font-size="10">11</text>
+  <text x="745" y="570" font-family="Arial" font-size="10">12</text>
+  <!-- x轴标签 "x" -->
+  <text x="770" y="540" font-family="Arial" font-size="14" font-weight="bold">x</text>
+
+  <!-- y轴刻度：从0到45间隔5，短线长10 -->
+  <!-- y_svg = 550 - y * (500/45) = 550 - y * 11.1111 -->
+  <line x1="45" y1="550" x2="55" y2="550" stroke="black" stroke-width="1" /> <!-- y=0 -->
+  <line x1="45" y1="494.4" x2="55" y2="494.4" stroke="black" stroke-width="1" /> <!-- y=5 -->
+  <line x1="45" y1="438.9" x2="55" y2="438.9" stroke="black" stroke-width="1" /> <!-- y=10 -->
+  <line x1="45" y1="383.3" x2="55" y2="383.3" stroke="black" stroke-width="1" /> <!-- y=15 -->
+  <line x1="45" y1="327.8" x2="55" y2="327.8" stroke="black" stroke-width="1" /> <!-- y=20 -->
+  <line x1="45" y1="272.2" x2="55" y2="272.2" stroke="black" stroke-width="1" /> <!-- y=25 -->
+  <line x1="45" y1="216.7" x2="55" y2="216.7" stroke="black" stroke-width="1" /> <!-- y=30 -->
+  <line x1="45" y1="161.1" x2="55" y2="161.1" stroke="black" stroke-width="1" /> <!-- y=35 -->
+  <line x1="45" y1="105.6" x2="55" y2="105.6" stroke="black" stroke-width="1" /> <!-- y=40 -->
+  <line x1="45" y1="50"   x2="55" y2="50"   stroke="black" stroke-width="1" /> <!-- y=45 -->
+
+  <!-- y轴数字标签 -->
+  <text x="25" y="555" font-family="Arial" font-size="10">0</text>
+  <text x="25" y="499" font-family="Arial" font-size="10">5</text>
+  <text x="20" y="443" font-family="Arial" font-size="10">10</text>
+  <text x="20" y="388" font-family="Arial" font-size="10">15</text>
+  <text x="20" y="332" font-family="Arial" font-size="10">20</text>
+  <text x="20" y="277" font-family="Arial" font-size="10">25</text>
+  <text x="20" y="221" font-family="Arial" font-size="10">30</text>
+  <text x="20" y="166" font-family="Arial" font-size="10">35</text>
+  <text x="20" y="110" font-family="Arial" font-size="10">40</text>
+  <text x="20" y="55"  font-family="Arial" font-size="10">45</text>
+  <!-- y轴标签 "C" -->
+  <text x="20" y="30" font-family="Arial" font-size="14" font-weight="bold">y</text>
+
+  <!-- 网格线 (浅灰色虚线) 整数x和整数y，避免与轴重叠 -->
+  <!-- 垂直网格 x = 1..12 -->
+  <line x1="108.3" y1="50" x2="108.3" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="166.7" y1="50" x2="166.7" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="225" y1="50" x2="225" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="283.3" y1="50" x2="283.3" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="341.7" y1="50" x2="341.7" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="400" y1="50" x2="400" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="458.3" y1="50" x2="458.3" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="516.7" y1="50" x2="516.7" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="575" y1="50" x2="575" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="633.3" y1="50" x2="633.3" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="691.7" y1="50" x2="691.7" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="750" y1="50" x2="750" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+
+  <!-- 水平网格 y = 5,10,...,40 -->
+  <line x1="50" y1="494.4" x2="750" y2="494.4" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="50" y1="438.9" x2="750" y2="438.9" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="50" y1="383.3" x2="750" y2="383.3" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="50" y1="327.8" x2="750" y2="327.8" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="50" y1="272.2" x2="750" y2="272.2" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="50" y1="216.7" x2="750" y2="216.7" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="50" y1="161.1" x2="750" y2="161.1" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="50" y1="105.6" x2="750" y2="105.6" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+
+  <!-- 绘制函数曲线（红色） -->
+  <!-- 水平部分: C=7 (x≤5) 从 x=0 到 x=5 -->
+  <!-- y=7 -> y_svg = 550 - 7*11.1111 = 472.22 -->
+  <line x1="50" y1="472.22" x2="341.7" y2="472.22" stroke="red" stroke-width="2" />
+
+  <!-- 斜线部分: C=6x-23 (x>5) 从 (5,7) 到 (11.333,45) 因为 y=45 是上边界 -->
+  <!-- x=11.333 -> x_svg = 50 + 11.333*58.3333 ≈ 711.1; y=45 -> y_svg=50 -->
+  <line x1="341.7" y1="472.22" x2="711.1" y2="50" stroke="red" stroke-width="2" />
+
+  <!-- 注：无任何额外标注、箭头或文本 -->
+</svg>

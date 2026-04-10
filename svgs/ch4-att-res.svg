@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="auto" style="background-color: white; font-family: Arial, sans-serif; display: block; margin: 0 auto;">
+  <!-- 背景 -->
+  <rect width="100%" height="100%" fill="white" />
+
+  <!-- ========= 矩阵网格：行=层，列=特征（800px 宽固定） ========= -->
+  <!-- 左上角 (150, 80)，总宽 580，高 440 -->
+  <!-- 列：特征1(160)，特征2(160)，⋯(100)，特征M(160) -->
+  <!-- 行：5行，每行高88，y=80,168,256,344,432 -->
+  <g stroke="#888" stroke-width="2">
+    <!-- 行背景（按层着色） -->
+    <rect x="150" y="80" width="580" height="88" fill="#e8f5e9" />   <!-- 输入层 -->
+    <rect x="150" y="168" width="580" height="88" fill="#e3f2fd" />  <!-- 隐藏层1 -->
+    <rect x="150" y="256" width="580" height="88" fill="#f5f5f5" />  <!-- 省略号行（中间层） -->
+    <rect x="150" y="344" width="580" height="88" fill="#e3f2fd" />  <!-- 隐藏层N -->
+    <rect x="150" y="432" width="580" height="88" fill="#fff3e0" />  <!-- 输出层 -->
+
+    <!-- 垂直线（列边界） -->
+    <line x1="310" y1="80" x2="310" y2="520" />  <!-- 特征1-2之间 -->
+    <line x1="470" y1="80" x2="470" y2="520" />  <!-- 特征2-省略号之间 -->
+    <line x1="570" y1="80" x2="570" y2="520" />  <!-- 省略号-特征M之间 -->
+    <line x1="730" y1="80" x2="730" y2="520" />  <!-- 特征M右边界 -->
+    <!-- 最左边界线 -->
+    <line x1="150" y1="80" x2="150" y2="520" />
+
+    <!-- 水平线（行边界） -->
+    <line x1="150" y1="168" x2="730" y2="168" />
+    <line x1="150" y1="256" x2="730" y2="256" />
+    <line x1="150" y1="344" x2="730" y2="344" />
+    <line x1="150" y1="432" x2="730" y2="432" />
+  </g>
+
+  <!-- 列标签（特征） -->
+  <text x="230" y="60" text-anchor="middle" font-size="22" font-weight="bold" fill="#2e7d32">特征1</text>
+  <text x="390" y="60" text-anchor="middle" font-size="22" font-weight="bold" fill="#2e7d32">特征2</text>
+  <text x="520" y="60" text-anchor="middle" font-size="28" font-weight="bold" fill="#666">⋯</text>
+  <text x="650" y="60" text-anchor="middle" font-size="22" font-weight="bold" fill="#2e7d32">特征M</text>
+
+  <!-- 行标签（层） -->
+  <text x="120" y="124" text-anchor="end" dominant-baseline="middle" font-size="22" font-weight="bold" fill="#1565c0">输入层</text>
+  <text x="120" y="212" text-anchor="end" dominant-baseline="middle" font-size="22" font-weight="bold" fill="#1565c0">隐藏层1</text>
+  <text x="120" y="300" text-anchor="end" dominant-baseline="middle" font-size="28" font-weight="bold" fill="#666">⋯</text>
+  <text x="120" y="388" text-anchor="end" dominant-baseline="middle" font-size="22" font-weight="bold" fill="#1565c0">隐藏层N</text>
+  <text x="120" y="476" text-anchor="end" dominant-baseline="middle" font-size="22" font-weight="bold" fill="#e65100">输出层</text>
+
+  <!-- 单元格内无任何文字 -->
+</svg>

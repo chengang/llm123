@@ -1,0 +1,2640 @@
+<!DOCTYPE html><html lang="zh" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="轻松+愉快，从头不到尾理解大模型">
+      
+      
+        <meta name="author" content="chengang">
+      
+      
+      
+        <link rel="prev" href="../chapter_2_linear_regression/">
+      
+      
+        <link rel="next" href="../chapter_4_deep_neural_network/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.2">
+    
+    
+      
+        <title>第 3 天 - 多层神经网络 - PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../csss/katex.min.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#3" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记" class="md-header__button md-logo" aria-label="PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第 3 天 - 多层神经网络
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="teal" aria-label="深色模式" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="teal" aria-label="浅色模式" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.5 2c-1.79 1.15-3 3.18-3 5.5s1.21 4.35 3.03 5.5C4.46 13 2 10.54 2 7.5A5.5 5.5 0 0 1 7.5 2m11.57 1.5 1.43 1.43L4.93 20.5 3.5 19.07zm-6.18 2.43L11.41 5 9.97 6l.42-1.7L9 3.24l1.75-.12.58-1.65L12 3.1l1.73.03-1.35 1.13zm-3.3 3.61-1.16-.73-1.12.78.34-1.32-1.09-.83 1.36-.09.45-1.29.51 1.27 1.36.03-1.05.87zM19 13.5a5.5 5.5 0 0 1-5.5 5.5c-1.22 0-2.35-.4-3.26-1.07l7.69-7.69c.67.91 1.07 2.04 1.07 3.26m-4.4 6.58 2.77-1.15-.24 3.35zm4.33-2.7 1.15-2.77 2.2 2.54zm1.15-4.96-1.14-2.78 3.34.24zM9.63 18.93l2.77 1.15-2.53 2.19z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"></path></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记" class="md-nav__button md-logo" aria-label="PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    PyTorch 魔法练习生（速成版）—— 细到发疯的大模型实践日记
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_0_preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    前言
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_1_talk_about_math/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 1 天 - 不想学数学
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_2_linear_regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 2 天 - 单层神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 3 天 - 多层神经网络
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 3 天 - 多层神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 非线性层带来的改变
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 非线性层带来的改变">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 函数视角
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.2 曲线拟合视角
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 激活函数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 更复杂的问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 更复杂的问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-mnist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.1 MNIST 数据集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-modelscope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.2 从 ModelScope 下载
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.3 装载数据集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#334" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.4 创建模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#335" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.5 定义损失函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#336" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.6 来一点概率论
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#337" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.7 开始训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#338" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.8 测试验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Pytorch 魔法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 Pytorch 魔法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.1 数据预处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342-torch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2 Torch 内置模型定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#343-torch-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.3 Torch 内置 Loss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#344" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.4 来一点信息论
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#345-torch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.5 Torch 内置优化器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#346" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.6 开始训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#347" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.7 推理验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#348" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.8 未竟事宜
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-small-talk-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Small Talk： 和 AI 扯扯淡
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5 Small Talk： 和 AI 扯扯淡">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#351" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.1 提问
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#352-qwen35-plus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2 Qwen3.5-Plus 答
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5.2 Qwen3.5-Plus 答">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3521" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2.1 数学家眼中的“公式的奥妙”：从“苦力”中解放，专注“美感”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3522-automl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2.2 AutoML与知识爆炸：专业化与“洞见”的悖论
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3523" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2.3 未来，人类是否还有能力获得这种“洞见”？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3524" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2.4 总结：人机关系的未来图景
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#353" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.3 追问
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#354-qwen35-plus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4 Qwen3.5-Plus 答
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5.4 Qwen3.5-Plus 答">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3541" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4.1 “博学家”已死，但“元认知”永生
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3542-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4.2 人类的“Attention”机制与集体智慧的重构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3543" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4.3 重拾“人本主义”的新文艺复兴
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3544" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4.4 总结：不要悲观，要进化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_4_deep_neural_network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 4 天 - 深层神经网络
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_5_attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 5 天 - Attention Is ALL You Need
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_6_transformers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 6 天 - Transformers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter_7_llm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 7 天 - 诞生吧！小烧麦
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 非线性层带来的改变
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 非线性层带来的改变">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.1 函数视角
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1.2 曲线拟合视角
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 激活函数
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 更复杂的问题
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.3 更复杂的问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#331-mnist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.1 MNIST 数据集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#332-modelscope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.2 从 ModelScope 下载
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#333" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.3 装载数据集
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#334" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.4 创建模型
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#335" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.5 定义损失函数
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#336" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.6 来一点概率论
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#337" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.7 开始训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#338" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3.8 测试验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#34-pytorch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Pytorch 魔法
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.4 Pytorch 魔法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#341" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.1 数据预处理
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#342-torch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.2 Torch 内置模型定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#343-torch-loss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.3 Torch 内置 Loss
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#344" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.4 来一点信息论
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#345-torch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.5 Torch 内置优化器
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#346" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.6 开始训练
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#347" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.7 推理验证
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#348" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4.8 未竟事宜
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#35-small-talk-ai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Small Talk： 和 AI 扯扯淡
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5 Small Talk： 和 AI 扯扯淡">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#351" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.1 提问
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#352-qwen35-plus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2 Qwen3.5-Plus 答
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5.2 Qwen3.5-Plus 答">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3521" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2.1 数学家眼中的“公式的奥妙”：从“苦力”中解放，专注“美感”
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3522-automl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2.2 AutoML与知识爆炸：专业化与“洞见”的悖论
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3523" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2.3 未来，人类是否还有能力获得这种“洞见”？
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3524" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.2.4 总结：人机关系的未来图景
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#353" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.3 追问
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#354-qwen35-plus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4 Qwen3.5-Plus 答
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.5.4 Qwen3.5-Plus 答">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#3541" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4.1 “博学家”已死，但“元认知”永生
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3542-attention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4.2 人类的“Attention”机制与集体智慧的重构
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3543" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4.3 重拾“人本主义”的新文艺复兴
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3544" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5.4.4 总结：不要悲观，要进化
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="3">第 3 天 多层神经网络<a class="headerlink" href="#3" title="Permanent link">¶</a></h1>
+<p>再相逢！非常非常高兴在第三章和你再相逢。</p>
+<p>其实昨天我们已经发现点苗头 —— 线性在很多关系里并不是很成立。虽然说我们也能通过数据预处理等方式将更复杂的关系退化到线性关系，但这样我们就又退化到「解」题而非「猜」题了。</p>
+<p>我们如何能留在我们「猜」题的舒适区呢？这就要求我们的模型拥有更强的表达力，以解放我们的手工活。</p>
+<p>一个很自然的想法，把单层的网络拓展到多层。</p>
+<p>但是需要注意的是，如果我们每一层的网络都是线性的，那么无论我们增加到多少层，它的效果都只等价于一层。</p>
+<p>光这么说可能不是太直观，我们举个例子来说明。就比方说我们把以下 2 个线性层 A 和 B 连接在一起。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{align*}
+\text{A:} \quad &amp; y = 2x - 10 \\
+\text{B:} \quad &amp; z = 3y + 7
+\end{align*}
+\]</div>
+<figcaption>
+<p>式 3-1 线性层 A 和 线性层 B </p>
+</figcaption>
+</figure>
+<p>在神经网络里所谓「连在一起」，其实就是先算 A，然后把 A 的输出结果作为 B 的输入算 B。</p>
+<p>我们把 A 和 B 连在一起，会发现。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{gather*}
+\begin{aligned}
+\text{A} \rightarrow \text{B}: \quad 
+z &amp;= 3y + 7 \\
+  &amp;= 3(2x - 10) + 7 \\
+  &amp;= 6x - 30 + 7 \\
+  &amp;= 6x - 23
+\end{aligned} \\
+\text{C}: \quad z = 6x - 23 \\
+\\
+\text{A} \rightarrow \text{B} \iff \text{C}
+\end{gather*}
+\]</div>
+<figcaption>
+<p>式 3-2 线性层 A 和 线性层 B 的连接可以化简成一个单一的线性层 C</p>
+</figcaption>
+</figure>
+<p>两个线性层无损合并成了一层，根本不需要算两次，一把就能算出来。咱们白加了。</p>
+<p>两个能变一个，三个也能变一个。按照这种玩法，无论堆多少线性层都是没用的，都是一把出。除了多费点电，这种加法看来是帮助不了大模型增进表达力的。</p>
+<p>既然 $ \text{线性层} \overset{\text{layer}}{\circ} \text{线性层} = \text{新线性层} $，很自然的想法，我们穿插非线性层进来试试呢？</p>
+<figure>
+<div class="arithmatex">\[
+\text{线性层} \overset{\text{layer}}{\circ} \text{非线性层} \overset{\text{layer}}{\circ} \text{线性层} = \; ?
+\]</div>
+<figcaption>
+<p>式 3-3 往线性层之间插入非线性层</p>
+</figcaption>
+</figure>
+<h2 id="31">3.1 非线性层带来的改变<a class="headerlink" href="#31" title="Permanent link">¶</a></h2>
+<p>让我们先尝试这样一个最简单的非线性函数 <code>R</code>。</p>
+<figure>
+<div class="arithmatex">\[
+\mathrm{R}(x) = 
+\begin{cases}
+x, &amp; \text{if } x &gt; 0 \\
+0, &amp; \text{otherwise}
+\end{cases}
+\]</div>
+<figcaption>
+<p>式 3-4 一个最简单的非线性函数 R</p>
+</figcaption>
+</figure>
+<p>原值大于 0 则不变，小于等于 0 则变为 0。我们把它穿插进 A 和 B 之间，会怎样呢？</p>
+<figure>
+<div class="arithmatex">\[
+\mathrm{B} \overset{\text{layer}}{\circ} \mathrm{R} \overset{\text{layer}}{\circ} \mathrm{A} = \mathrm{B}\big( \mathrm{R}( \mathrm{A}(x) ) \big)= \; ?
+\]</div>
+<figcaption>
+<p>式 3-5 A + R + B = ？</p>
+</figcaption>
+</figure>
+<p>显然我们不能直接算 B 了，因为现在 B 的输入会根据 A 的输出是正是负而不同。现在我们只能分 A 的结果是正是负来分情况讨论。我们尝试化简它。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{align*}
+\text{A}(x) &amp;= 2x - 10 \\
+\mathrm{R}(\text{A}(x)) &amp;= 
+\begin{cases}
+2x - 10, &amp; x &gt; 5 \\
+0,       &amp; x \leq 5
+\end{cases} \\
+\text{B}\big( \mathrm{R}(\text{A}(x)) \big) &amp;= 
+\begin{cases}
+3(2x - 10) + 7, &amp; x &gt; 5 \\
+3 \cdot 0 + 7,   &amp; x \leq 5
+\end{cases} \\
+&amp;= 
+\begin{cases}
+6x - 23, &amp; x &gt; 5 \\
+7,       &amp; x \leq 5
+\end{cases}
+\end{align*}
+\]</div>
+<figcaption>
+<p>式 3-6 化简 A + R + B 的过程</p>
+</figcaption>
+</figure>
+<p>最终我们得到了等价 A + R + B 的新的函数 C。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{gather*}
+\begin{aligned}
+\mathrm{C} = 
+\begin{cases}
+6x - 23, &amp; x &gt; 5 \\
+7,       &amp; x \leq 5
+\end{cases}
+\end{aligned}
+\\
+\\
+\mathrm{B}\big( \mathrm{R}( \mathrm{A}(x) ) \big) \iff \mathrm{C}
+\end{gather*}
+\]</div>
+<figcaption>
+<p>式 3-7 等价于 A + R + B 的新函数 C</p>
+</figcaption>
+</figure>
+<p>显然，这次的叠加是有效果的，无法一次算尽了。</p>
+<p>这，意味着什么呢？</p>
+<h3 id="311">3.1.1 函数视角<a class="headerlink" href="#311" title="Permanent link">¶</a></h3>
+<p>视角一，我们可以把它用编程语言表达出来。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">C</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="n">result</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">23</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="n">result</span> <span class="o">=</span> <span class="mi">7</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+<p>相比于没有插入 R 的化简结果。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">C</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">result</span> <span class="o">=</span> <span class="mi">6</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">23</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+<p>很明显的，有了 R 了以后，我们多出了一个 <code>if</code> ，以及对应的 <code>x &gt; 5</code>。</p>
+<p>有了分支结构的程序显然是更强的程序。它变成了一段更复杂的、能应对更多场景的代码。</p>
+<p>而且，切莫忘记了，这个 <code>if</code> 和 <code>x &gt; 5</code> 并不是我们硬编码到这个程序中的，它们都只是我们大模型中的<code>参数</code>。</p>
+<p>也就是说，这段程序，是不用我们手写的。它根据我们不同情况的数据，会被「训练」出来。</p>
+<p>想象一下，只要我们继续增加更多的层，这个程序就会越来越复杂，表达力越来越强，直至赶上我们手写的代码。</p>
+<p>理论上，我们只用写一段「元代码」，就可以为各种不同的场景「训练」出各种适合的代码来。</p>
+<p>甚至，只要层足够多，给它足够的<code>if else</code>，它是不是都有可能写出这样的人类不会去构思的，通杀全球的「大程序」呢？</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">universal_program</span><span class="p">(</span><span class="n">task</span><span class="p">):</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">"财务软件"</span><span class="p">:</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="k">if</span> <span class="n">module</span> <span class="o">==</span> <span class="s2">"报销"</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="k">elif</span> <span class="n">module</span> <span class="o">==</span> <span class="s2">"年报"</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="k">else</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">"社交媒体"</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">"发帖"</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">"刷视频"</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="k">else</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">"操作系统"</span><span class="p">:</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="k">if</span> <span class="n">event</span> <span class="o">==</span> <span class="s2">"关机"</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="k">elif</span> <span class="n">event</span> <span class="o">==</span> <span class="s2">"蓝屏"</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="k">else</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="k">elif</span> <span class="n">task</span> <span class="o">==</span> <span class="s2">"AI助手"</span><span class="p">:</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="k">if</span> <span class="n">query</span> <span class="o">==</span> <span class="s2">"写代码"</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        <span class="k">elif</span> <span class="n">query</span> <span class="o">==</span> <span class="s2">"生图"</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>        <span class="k">else</span><span class="p">:</span> <span class="o">...</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    <span class="c1"># ... 游戏、医疗、航天、恋爱模拟器 ...</span>
+</code></pre></div>
+<p>反正对它来说，只是无穷无尽的 <code>if else</code>。「梯度下降」而已。</p>
+<p>这个，这像不像昨天我们提到的 Yann LeCun 所谓「可微编程」？用「可微」来编程。</p>
+<h3 id="312">3.1.2 曲线拟合视角<a class="headerlink" href="#312" title="Permanent link">¶</a></h3>
+<p>另一个视角，我们画出函数 C 的曲线图。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch3-with-relu.svg" data-desc-position="bottom"><img alt="ch3-with-relu.svg" src="../svgs/ch3-with-relu.svg"></a></p>
+<figcaption>
+<p>图 3-1 加入了非线性函数的曲线</p>
+</figcaption>
+</figure>
+<p>我们把加入 R 之前的曲线图也画出来。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch3-without-relu.svg" data-desc-position="bottom"><img alt="ch3-without-relu.svg" src="../svgs/ch3-without-relu.svg"></a></p>
+<figcaption>
+<p>图 3-2 没有加入非线性函数的曲线</p>
+</figcaption>
+</figure>
+<p>一个很明显的区别，加入非线性函数后的曲线会打弯。</p>
+<p>非线性函数的加入使得我们在画一个曲线的时候，拥有画折线的能力。我们弯折的点和角度，都是大模型里的<code>参数</code>。</p>
+<p>如果我们能使得一个曲线在任意的点弯折任意的角度，这意味着什么？</p>
+<p>这意味着我们拥有了拟合任意曲线的能力。</p>
+<p>根据数据集拟合任意曲线，这种能力又意味着什么呢？</p>
+<p>浪费几分钟，我们聊聊因果……</p>
+<p>我知道佛学里讲因果合一，也听说量子物理里有什么逆向因果，但我们先放下这些不谈。我这样的凡人认知世界的方式，大多还是更认同这世界是因在果前的，对不？</p>
+<p>我们观察物理现象，总结验证物理学规律。</p>
+<p>我们采集经济数据，尝试分析经济学原理。</p>
+<p>我们在世界的各个领域，尝试寻找一个又一个的「规律」去解释已观测的 samples，并期待这个规律能完美预测未来新的数据。</p>
+<p>咦？从采样点拟合曲线？这像不像大模型正在做的事？</p>
+<p>再想想我们认知世界的这个逐步的过程，这个由地平说到地心说到日心说再到宇宙大爆炸的过程。这一步一步的前进，用大模型的语境来说，是不是就是加入了新的、原有规律无法解释的点，然后重新拟合，找到了新的规律、新的曲线呢？</p>
+<p>从采样点拟合曲线，从经验研究出理论。如果这两件事在某种维度上相通，那么，拟合任意曲线的能力是不是意味着我们可以接近任意一种真相了呢？</p>
+<p>如果数据足够多、足够真、足够精确。</p>
+<h2 id="32">3.2 激活函数<a class="headerlink" href="#32" title="Permanent link">¶</a></h2>
+<p>总之，不管哪种视角，这个非线性层，都大大提升了我们大模型的能力。这种提升，本质是由它来回答了一个问题：前方的函数是否需要被激活？</p>
+<p>这类非线性层，我们有时也叫它「激活函数」。</p>
+<p>上一节我们使用的那个激活函数，人们也叫它 ReLU，它是激活函数中最简单的一个。ReLU 像个电灯开关一样，只控制开启或关闭。我们也有一些更复杂的函数，不单单是个开关，而更像个调节亮度的旋钮，可以控制前方参数的「通过量」。就像下面这俩。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch3-sigmoid.png" data-desc-position="bottom"><img alt="ch3-sigmoid.png" src="../jpgs/ch3-sigmoid.png"></a></p>
+<figcaption>
+<p>图 3-3 sigmoid 激活函数</p>
+</figcaption>
+</figure>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch3-tanh.png" data-desc-position="bottom"><img alt="ch3-tanh.png" src="../jpgs/ch3-tanh.png"></a></p>
+<figcaption>
+<p>图 3-4 tanh 函数</p>
+</figcaption>
+</figure>
+<p>我们把脑子里 ReLU 的样子也倒出来。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch3-relu.png" data-desc-position="bottom"><img alt="ch3-relu.png" src="../jpgs/ch3-relu.png"></a></p>
+<figcaption>
+<p>图 3-5 ReLU 函数</p>
+</figcaption>
+</figure>
+<p>比较一下，ReLU 这种“开关函数” 的图像是不是比其它两个 “旋钮函数” 要简单好多？我们会不会觉得 <code>sigmoid</code> 和 <code>tanh</code> 更猛些？</p>
+<p>你觉得它们 3 个，谁作为激活函数的效果更好？</p>
+<p>结果或许让你有些意外，ReLU 在大模型中的表现远强于上面那两个复杂的曲线函数。目前现代大模型中使用的激活函数大都和 ReLU 长得更像。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch3-gelu.webp" data-desc-position="bottom"><img alt="ch3-gelu.webp" src="../jpgs/ch3-gelu.webp"></a></p>
+<figcaption>
+<p>图 3-6 一些常用的激活函数</p>
+</figcaption>
+</figure>
+<p>这是为什么呢？它是被应用之后才发现效果奇好的，所以对它为什么好的研究是后置的。当然，有不少论文讨论其背后的原因，也正是这些讨论触发了人们去寻找更好的激活函数。</p>
+<p>我们简单的这么理解：想象一下，如果我们注定无法抵达终点，只是无限接近终点的话。用折线去拟合曲线，比用曲线去拟合曲线，要简单得多。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch3-geyuanshu.svg" data-desc-position="bottom"><img alt="ch3-geyuanshu.svg" src="../svgs/ch3-geyuanshu.svg"></a></p>
+<figcaption>
+<p>图 3-7 割圆术 刘徽 三国</p>
+</figcaption>
+</figure>
+<p>看看这个用折线去逼近圆的例子。想象一下，如果我们是用无数的曲线去逼近，那得死多少脑细胞。而且，可以想像，最终拟合的结果也歪七扭八，并不会很好看。</p>
+<p>两点题外话。</p>
+<ul>
+<li>ReLU 的“过于简单”也附赠了 2 个缺点。一个是它的负数曲线也太过平坦，另一个是它在 0 点处不可导。大家可以去<a href="https://ai.plainenglish.io/beyond-the-curve-a-holistic-guide-to-activation-functions-from-sigmoid-to-swiglu-3e96faaa7a84">这个链接</a> https://ai.plainenglish.io/beyond-the-curve-a-holistic-guide-to-activation-functions-from-sigmoid-to-swiglu-3e96faaa7a84 看进一步的讨论。</li>
+<li>上图中激活函数 Swish 不是人设计的，是 Google 通过神经网络搞出来的。曾经，不愿意学习 AI 生成代码的我心想：也只能写点 js 罢了，什么时候那帮写 AI 的人也用 AI 生成代码了我再学学看罢。然后，听到这个消息的我就像晴天被霹雳 —— 人家已经用到这个程度了吗…… 肯定追不上了。还是不学了罢……</li>
+</ul>
+<h2 id="33">3.3 更复杂的问题<a class="headerlink" href="#33" title="Permanent link">¶</a></h2>
+<p>嘴上吹得那么神，真行不行咱还得手上见真章。提出问题！</p>
+<p>回顾昨天的问题，咱们至少还是知道有几个特征是指向最终答案的。那么，有没有一类问题，我们只有原始的数据，根本无从提取特征点呢？</p>
+<h3 id="331-mnist">3.3.1 MNIST 数据集<a class="headerlink" href="#331-mnist" title="Permanent link">¶</a></h3>
+<p>有的，图像识别就是这样的问题。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch3-three.webp" data-desc-position="bottom"><img alt="ch3-three.webp" src="../jpgs/ch3-three.webp"></a></p>
+<figcaption>
+<p>图 3-8 MNIST 数据集中的数字 3</p>
+</figcaption>
+</figure>
+<p>上面这张图是 MNIST 数据集中的数字 <code>3</code>。但是你说这幅图中，具体哪个像素决定了它是 <code>3</code>，而不是别的数字呢？恐怕很难讲。</p>
+<p>即便确有这样的特征点，那我们也不想一个一个像素的看过去把它找出来。</p>
+<p>MNIST 是 <code>Modified NIST</code> 的简写，NIST 是美国国家标准委员会的缩写。这个委员会在上世纪 80 年代末曾致力于解决美国邮政编码难以分拣的问题，并收集了大量手写数字的黑白扫描图像。Yann LeCun 在这个数据集的基础上清洗、缩放、平移居中、重分布、格式化、标记整理并开放了 MNIST 数据集。借深度神经网络之力，他最终解决了这个问题并在全美邮政服务系统大规模商用。这是全球首个成功商用的深度神经网络系统，比 2012 的 ImageNet 竞赛早了近 20 年。这也成为 Yann LeCun 终获图灵奖的一级重要阶梯。</p>
+<p>本着到此一游的文化传统，马年咱唯马首是瞻，马年行好运，今儿个咱也一起踏踏这级台阶。</p>
+<h3 id="332-modelscope">3.3.2 从 ModelScope 下载<a class="headerlink" href="#332-modelscope" title="Permanent link">¶</a></h3>
+<p>ModelScope 是阿里巴巴贡献给大家的下载模型和数据集的网站，咱就从它这里下载 MNIST，大小大概 18 兆。</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>modelscope
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>modelscope<span class="w"> </span>download<span class="w"> </span>--dataset<span class="w"> </span>modelscope/mnist<span class="w"> </span>--local_dir<span class="w"> </span>./mnist_data
+</code></pre></div>
+<p>下回来发现是 parquet 格式的，这是 Twitter 贡献给 Apache 的一种列式存储格式。它有 2 个 parquet 文件，一个<code>train-00000-of-00001.parquet</code>，一个<code>test-00000-of-00001.parquet</code>。咱先把 <code>train-00000-of-00001.parquet</code> 给解析开。</p>
+<h3 id="333">3.3.3 装载数据集<a class="headerlink" href="#333" title="Permanent link">¶</a></h3>
+<p>先安装点小依赖，如果你使用的是云 GPU，它们很大可能是预装好的。</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>pip<span class="w"> </span>install<span class="w"> </span>pandas<span class="w"> </span>datasets
+</code></pre></div>
+<p>我们从数据集里导出几张图来，存成 PNG 看看长啥样。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># 注意：这里的路径可能需要修改成你自己的路径</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">'./mnist_data/mnist/train-00000-of-00001.parquet'</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span> 
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="c1"># 这里因为是列式数据库，所以我们先取列</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">img_bytes</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">'bytes'</span><span class="p">]</span> <span class="c1"># 图像 bytes</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">label</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>              <span class="c1"># 答案</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="c1"># 我们就以它的答案做文件名，把它存出来看看</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">.png"</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">img_bytes</span><span class="p">)</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"已保存: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="c1"># 输出：</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="c1"># </span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="c1"># 已保存: 5.png</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="c1"># 已保存: 0.png</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="c1"># 已保存: 4.png</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="c1"># 已保存: 1.png</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="c1"># 已保存: 9.png</span>
+</code></pre></div>
+<p>或者我们也可以用稍复杂些，但更加通用的 Hugging Face 出品的 <code>load_dataset()</code> 来导出。<code>load_dataset()</code> 统一了多种数据集格式的加载，<a href="https://huggingface.co/docs/datasets/main/en/package_reference/loading_methods">这个链接</a> https://huggingface.co/docs/datasets/main/en/package_reference/loading_methods 可以查看所有它支持的格式。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># 注意：这里的路径可能需要修改成你自己的路径</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># 注意：split="train" 是必须的，因为 parquet 文件本身没有 split 信息，我们需要手动指定</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="s2">"parquet"</span><span class="p">,</span> 
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">data_files</span><span class="o">=</span><span class="s2">"./mnist_data/mnist/train-00000-of-00001.parquet"</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">split</span><span class="o">=</span><span class="s2">"train"</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">)</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"数据集已加载，共 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2"> 条样本。"</span><span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"列名: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">column_names</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    <span class="c1"># load_dataset() 在访问图像文件会自动解码。</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>    <span class="c1"># 如果我们还是先取列，它会自动把所有图像都解码一遍，会慢。</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>    <span class="c1"># 因此，首先查询样本索引然后再查询 "image" 列更聪明些，</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>    <span class="c1"># 即 dataset[0]["image"] 应该始终优先于 dataset["image"][0]</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>    <span class="n">img_pil</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"image"</span><span class="p">]</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>    <span class="n">label</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"label"</span><span class="p">]</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>    <span class="c1"># 我们还是以它的答案做文件名，把它存出来看看</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>    <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">.png"</span> 
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>    <span class="n">img_pil</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"已保存: </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="c1"># 输出：</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="c1"># </span>
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="c1"># 数据集已加载，共 60000 条样本。</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="c1"># 列名: ['image', 'label']</span>
+<a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="c1"># 已保存: 5.png</span>
+<a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="c1"># 已保存: 0.png</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="c1"># 已保存: 4.png</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="c1"># 已保存: 1.png</span>
+<a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="c1"># 已保存: 9.png</span>
+</code></pre></div>
+<p>用 file 命令看看我们导出的文件。</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">(</span>base<span class="o">)</span><span class="w"> </span>chengang@VM-0-80-ubuntu:/workspace/mnist#<span class="w"> </span>file<span class="w"> </span><span class="m">0</span>.png<span class="w"> </span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="m">0</span>.png:<span class="w"> </span>PNG<span class="w"> </span>image<span class="w"> </span>data,<span class="w"> </span><span class="m">28</span><span class="w"> </span>x<span class="w"> </span><span class="m">28</span>,<span class="w"> </span><span class="m">8</span>-bit<span class="w"> </span>grayscale,<span class="w"> </span>non-interlaced
+</code></pre></div>
+<p>好。MNIST 训练集里的图是横 28 像素，竖 28 像素，8 位的灰度图，一共有 60000 张。答案都是阿拉伯数字。</p>
+<p>我们做一个预处理，把每个像素点 0-255 的整型值映射到 0-1 的浮点值装到 PyTorch Tensor 里，方便后续 PyTorch 处理。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">preprocess</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">processed_images</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]:</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="n">pixel_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">getdata</span><span class="p">())</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>        <span class="n">img_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">pixel_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="c1"># 将像素转换为 PyTorch Tensor</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        <span class="n">normalized_img</span> <span class="o">=</span> <span class="n">img_tensor</span> <span class="o">/</span> <span class="mf">255.0</span> <span class="c1"># 将像素值从 [0, 255] 缩放到 [0, 1]</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>        <span class="n">processed_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normalized_img</span><span class="p">)</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">processed_images</span><span class="p">)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">'label'</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="k">return</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span>
+</code></pre></div>
+<h3 id="334">3.3.4 创建模型<a class="headerlink" href="#334" title="Permanent link">¶</a></h3>
+<p>这把我们没有特征点了，那我们把模型创建成啥样呢？</p>
+<p>干脆把所有的像素都整进来吧，全部作为我们的输入。</p>
+<p>输出呢，就弄 10 个出口，每个出口对应一个数字。</p>
+<p>所以我们需要创建一个 28 * 28 = 784 个进，10 出的模型。</p>
+<p>就像之前说的，今天我们要创建一个多层的神经网络。让我在 784 和 10 之间插入 2 个新的层，让 784 从 512 过渡到 256，最后归纳到 10 个数字。看看这么一个神经网络，是否能从 784 个像素点中，得到 10 个数字的概率的答案。 </p>
+<p>第一步，咱需要把这个二维的图像， <em>展平</em> 成一个一维的有 784 个元素的数组。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">nn</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">)</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="k">return</span> <span class="n">new_x</span>
+</code></pre></div>
+<p>然后是把特征降到 512 个参数的层。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">layer512_weights</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">layer512_bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">layer512</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">new_x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">layer512_weights</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer512_bias</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="k">return</span> <span class="n">new_x</span>
+</code></pre></div>
+<p>昨天我们已经手动实现过随机梯度下降了，今天就偷点懒，直接用 Torch 实现的随机梯度下降<code>torch.optim.SGD()</code>了。而想要把我们的权重传给<code>torch.optim.SGD()</code>，我们得把自己的权重包装到<code>nn.Parameter()</code>里。昨天我们没用到它，那是因为昨天我们用的<code>nn.Linear()</code>，它内部的参数其实也是包装在<code>nn.Parameter()</code>里的。咱今天是自定义的模型，所以得自己包装一下。</p>
+<p>咱们这个 <code>layer512</code> 是定义了一个 784 行 512 列的矩阵，执行的效果是把我们 784 个特征转成 512 个特征。因为根据矩阵乘法的规则，计算结果矩阵的形状是第一个矩阵的行数和第二矩阵的列数。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{bmatrix}
+  1 &amp; 2 &amp; 3
+\end{bmatrix}_{1\times 3}
+\times
+\begin{bmatrix}
+  4 &amp; 7 \\
+  5 &amp; 8 \\
+  6 &amp; 9
+\end{bmatrix}_{3\times 2}
+=
+\begin{bmatrix}
+  1\cdot4 + 2\cdot5 + 3\cdot6 &amp; 1\cdot7 + 2\cdot8 + 3\cdot9
+\end{bmatrix}
+=
+\begin{bmatrix}
+  32 &amp; 50
+\end{bmatrix}_{1\times 2}
+\]</div>
+<figcaption>
+<p>式 3-8 矩阵乘法计算方法</p>
+</figcaption>
+</figure>
+<p>所以我们原有的 1x784 的矩阵乘完 784x512 的矩阵，就会得到 1x512 的矩阵。特征就降为 512 长度的数组了。值得注意的是这层不是 512 个参数，而是使用了 <code>784 * 512 = 401408</code> 40万个参数。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{bmatrix}
+  x_1 &amp; x_2 &amp; \cdots &amp; x_{784}
+\end{bmatrix}_{1\times 784}
+\times
+\begin{bmatrix}
+  w_{1,1} &amp; w_{1,2} &amp; \cdots &amp; w_{1,512} \\
+  w_{2,1} &amp; w_{2,2} &amp; \cdots &amp; w_{2,512} \\
+  \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots  \\
+  w_{784,1} &amp; w_{784,2} &amp; \cdots &amp; w_{784,512}
+\end{bmatrix}_{784\times 512}
+=
+\begin{bmatrix}
+  y_1 &amp; y_2 &amp; \cdots &amp; y_{512}
+\end{bmatrix}_{1\times 512}
+\]</div>
+<figcaption>
+<p>式 3-9 函数 layer512() 的效果 </p>
+</figcaption>
+</figure>
+<p>然后，一模一样道理的，降为 256 个参数的层。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">layer256_weights</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">layer256_bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">layer256</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="n">layer256_weights</span> <span class="o">+</span> <span class="n">layer256_bias</span> <span class="c1"># @ 符是 torch.matmul() 的等价简写</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="k">return</span> <span class="n">new_x</span>
+</code></pre></div>
+<p>还有我们的 ReLU 激活函数。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">relu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">zero_shaped</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">new_x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">zero_shaped</span><span class="p">)</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="k">return</span> <span class="n">new_x</span>
+</code></pre></div>
+<p>然后是 10 个参数的结果层。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">layer10_weights</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span><span class="p">)</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">layer10_bias</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">layer10</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">new_x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="n">layer10_weights</span> <span class="o">+</span> <span class="n">layer10_bias</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="k">return</span> <span class="n">new_x</span>
+</code></pre></div>
+<p>好的，现在我们已经得到 10 个结果了，分别代表了 0 到 9 这 10 个数字的预测概率。</p>
+<p>但是有个问题，这这些数字我们定义的是浮点数，所以它们取到多大都有可能，也可能是负数。</p>
+<p>这就忽略了一个事实，我们的结果一定是 0 到 9 这 10 个数字中的一个。所以，出来的这 10 个概率加一起一定得等于 1 才行。而且概率为负通常没有意义，我们希望它们都是正数。</p>
+<p>所以，我们还得设计一个函数，把所有的概率都变成正数，且保证它们的和为 1。</p>
+<p>和为 1 很简单，求和之后分别除和就行了。</p>
+<p>变正也不难，我们昨天用平方完成过这个任务了。但是今天还用平方的话，会有点问题。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch3-exp.svg" data-desc-position="bottom"><img alt="ch3-exp.svg" src="../svgs/ch3-exp.svg"></a></p>
+<figcaption>
+<p>图 3-9 自然常数 e 的 x 次方的曲线及 x 平方的曲线</p>
+</figcaption>
+</figure>
+<p>如图 3-9 所示，平方会给负概率一个较大的正值，这不是我们期望的。负概率等于 0 就好。所以我们今天用 <code>e**x</code> 函数来完成这个任务。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">exp</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="nb">sum</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">exp</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="c1">#</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="c1"># dim=0 表示每列求和，dim=1 表示每行求和</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="c1">#</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="c1"># keepdim=True 表示不要因为某个维度只剩一个元素就删掉那个维度，会得到类似</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="c1"># tensor([[ 6],</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>    <span class="c1">#    [15]])</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    <span class="c1"># keepdim=False 会得到类似</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    <span class="c1"># tensor([ 6, 15])</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>    <span class="k">return</span> <span class="n">exp</span> <span class="o">/</span> <span class="nb">sum</span>
+</code></pre></div>
+<p>组件齐全了。线性和非线性穿插，再把结果整成概率，这就是我们整体的模型。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">model</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">flatten</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">layer512</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">layer256</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">layer10</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="n">x</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="k">return</span> <span class="n">x</span>
+</code></pre></div>
+<p>我们这个模型一下就用掉了 <code>784 * 512 + 512 * 256 + 256 * 10 = 535404</code> 0.5M 个参数。感觉参数好挺不经花啊，大家能想到什么节省的方法么…… <img alt="😄" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/1f604.svg" title=":smile:"></p>
+<h3 id="335">3.3.5 定义损失函数<a class="headerlink" href="#335" title="Permanent link">¶</a></h3>
+<p>接下来我们来定义今天的损失函数。和昨天稍有不同，这次我们每把都会得到 10 个答案 —— 每个数字都有一个预测概率。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y_sample</span><span class="p">):</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="c1"># y_pred: 多个预测结果，每行 10 个概率结果。形如：</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="c1"># [</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="c1">#     [0.067, 0.108, 0.178, 0.197, 0.035, 0.071, 0.132, 0.049, 0.099, 0.062],</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>    <span class="c1">#     [0.075, 0.082, 0.024, 0.03 , 0.142, 0.115, 0.131, 0.091, 0.115, 0.202],</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="c1">#     [0.12 , 0.044, 0.066, 0.108, 0.101, 0.129, 0.099, 0.113, 0.114, 0.107],</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="c1">#     [0.038, 0.136, 0.069, 0.147, 0.059, 0.083, 0.075, 0.062, 0.236, 0.135],</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    <span class="c1">#     [0.114, 0.033, 0.098, 0.097, 0.043, 0.065, 0.124, 0.221, 0.097, 0.108]</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="c1"># ]</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>    <span class="c1">#</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>    <span class="c1"># y_sample: 正确答案。是一个一维数组，每一个代表一次预测的正确答案。</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>    <span class="c1">#           因为我们答案是按照0、1、2、3、4、5、6、7、8、9的数字顺序排列的，</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>    <span class="c1">#           所以其数字代表「第几个数字是正确答案」，也刚刚好代表了是答案是什么数字。</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>    <span class="c1"># 形如：</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>    <span class="c1"># [2, 9, 5, 8, 7]</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>    <span class="c1">#</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>    <span class="c1"># 预测的样本数量</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>    <span class="n">n_samples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>    <span class="c1"># 生成行索引 [0, 1, 2, ..., n_sample-1]，准备为每行抽取出答案对应的概率</span>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>    <span class="n">row_indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_samples</span><span class="p">)</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>    <span class="c1">#</span>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>    <span class="c1"># 使用 Python Fancy Indexing 功能</span>
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>    <span class="c1"># 从每行的 10 个概率中，抽取出正确答案对应的那一个概率，我们只关于它觉得正确答案的概率是多少</span>
+<a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>    <span class="c1"># 抽取的结果形如：</span>
+<a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>    <span class="c1"># [0.178, 0.202, 0.129, 0.236, 0.221]</span>
+<a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>    <span class="c1">#</span>
+<a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a>    <span class="n">selected_probs</span> <span class="o">=</span> <span class="n">y_pred</span><span class="p">[</span><span class="n">row_indices</span><span class="p">,</span> <span class="n">y_sample</span><span class="p">]</span>
+<a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a>
+<a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a>    <span class="c1"># 为每个答案求负自然对数，求出其最大似然估计，作为 loss 值返回</span>
+<a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>    <span class="c1"># 加上一个特别小的 1e-10 防止 log(0) 得到无穷大</span>
+<a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a>    <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">selected_probs</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span>
+<a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>
+<a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a>    <span class="k">return</span> <span class="n">loss</span>
+</code></pre></div>
+<p>除了最后一个求负自然对数，其它的都很好理解。</p>
+<p>自然对数 <code>torch.log</code> 是 <code>y = e ^ x</code> 的逆运算。我们观察图 3-9 可知，负自然对数是完成了一个把我们的值转换到正值，且放大误差的效果。</p>
+<p>和之前我们用平方<code>y = x ^ 2</code> 和求幂<code>y = e ^ x</code>的效果是一样的，区别是这次我们的 x 取值在 0 和 1 之间，这是一个更有效的特化实现。  </p>
+<h3 id="336">3.3.6 来一点概率论<a class="headerlink" href="#336" title="Permanent link">¶</a></h3>
+<p>关于最后这个<code>log</code>的操作，很多材料上称之为<code>最大似然估计</code>。这是因为这个转换还可以从概率论、信息论等角度去看待。</p>
+<p><code>似然</code> 这个概念是概率论中 <code>概率</code> 的 <code>反概念</code>。</p>
+<p><code>概率</code> 是指我们希望通过一个数字 P 来知晓 某事件 E 是否会发生， 1 是 发生，0 是不发生，亦或是一个 0 和 1 之间的值。</p>
+<p>而 <code>似然</code> 概念则相反，它表示的是，我们已经观察到事件发生的分布 D，问某个概率 P 是否能导致 D？1 是必然导致，0 是必要不导致，亦或是一个 0 和 1 之间的值。这个值，我们就管它叫<code>似然值</code>。</p>
+<p>具体到我们的例子中看看。</p>
+<p>比如说实际数字是 3，则我们的事件即为 <code>event = [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]</code> 。</p>
+<p>我们大模型预测出的概率为 <code>p = [0.067, 0.108, 0.178, 0.197, 0.035, 0.071, 0.132, 0.049, 0.099, 0.062]</code>，则选出 3 的似然值为 0.197。</p>
+<p>那么我们期待的<code>似然值</code>当然是 1，即 100% 导致 <code>3</code> 这个事件的发生。</p>
+<p>即，我们希望大模型做的事就是，通过调整模型参数，达成最大化这个似然值的结果。这个过程在概率论中的被称为 <code>最大似然估计</code>。</p>
+<p>一个问题：我们已经算出似然值是 0.197 了，我们直接把它当 loss 返回去让大模型去优化不就好了？我们的函数里又算了个 log 是干啥呢？</p>
+<p>一个方面当然是习惯上，我们喜欢去最小化 loss 值，但似然值是要求最大化的，所以需要做一个转换。另一方面，我们也可以从概率论的角度，看看在概率论里是怎么做 <code>最大似然估计</code>的。</p>
+<p>我们得到一组数据的预测结果，像上面那样算出每一个结果的似然值 <code>x1 x2 x3 x4 x5</code>。因为每次预测都是独立事件，所以它们同时发生的概率是这些概念相乘。因此，我们这个模型的似然值是它们的乘积。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{align*}
+L_{\text{total}} &amp;= P(\text{样本1正确} \cap \text{样本2正确} \cap \dots \cap \text{样本5正确}) \\
+&amp;= P(\text{样本1正确}) \times P(\text{样本2正确}) \times \dots \times P(\text{样本5正确}) \\
+&amp;= x_1 \times x_2 \times x_3 \times x_4 \times x_5
+\end{align*}
+\]</div>
+<figcaption>
+<p>式 3-10 模型的似然值是每个预测结果似然值的乘积 </p>
+</figcaption>
+</figure>
+<p>但是这样算有个问题，我们的似然值都是形似<code>0.197</code>、<code>0.115</code>这样的小数，如果我们很多个预测结果的值相乘，会得到一个特别小的小数。</p>
+<p>用计算机的浮点数去存储特别小的小数不仅有精度的问题，过小的话还有存不了的问题，也称 <code>数值下溢</code>。</p>
+<p>为了解决这个问题，我们把式 3-10 两侧同时求<code>log</code>。利用 <code>log</code> 函数可以用加法展开的性质，把似然值改为对数似然值。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{align*}
+\log(L) &amp;= \log( x_1 \times x_2 \times \dots \times x_n ) \\
+        &amp;= \log\left( \prod_{i=1}^{n} x_i \right) \\
+        &amp;= \log(x_1) + \log(x_2) + \dots + \log(x_n) \\
+        &amp;= \sum_{i=1}^{n} \log(x_i)
+\end{align*}
+\]</div>
+<figcaption>
+<p>式 3-11 对数似然值能把连乘改为连加</p>
+</figcaption>
+</figure>
+<p>能左右求 <code>log</code> 是因为对数函数是严格单调递增的。</p>
+<figure>
+<div class="arithmatex">\[
+\forall x, y \in (0, +\infty), \quad y &gt; x \implies \log_e y &gt; \log_e x.
+\]</div>
+<figcaption>
+<p>式 3-12 ln(x) 是严格单调递增的函数</p>
+</figcaption>
+</figure>
+<p>这意味着原函数的值加它就加，原函数值减它就减。因此，加了一个 <code>log</code> 操作后，虽然因变量 <code>y</code> 的值会改变，但 <code>y</code> 取得最大值处的 <code>x</code> 值是不变的。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch3-log-likelihood.svg" data-desc-position="bottom"><img alt="ch3-log-likelihood.svg" src="../svgs/ch3-log-likelihood.svg"></a></p>
+<figcaption>
+<p>图 3-10 取对数后似然函数的最大值点保持不变</p>
+</figcaption>
+</figure>
+<p>利用这个性质，我们就避免了在计算机上的<code>数值下溢</code>的问题。</p>
+<p>这便是我们在 <code>loss_fn</code> 中最后一个求 <code>log</code> 的动机和理由。</p>
+<h3 id="337">3.3.7 开始训练<a class="headerlink" href="#337" title="Permanent link">¶</a></h3>
+<p>结束了枯燥的概率论内容，回头看看我们训练的 3 个要素集齐了没？</p>
+<p>训练需要的 3 个必要条件：</p>
+<ul>
+<li>模型定义及参数初始化，这个我们定义好了 <code>def model(x)</code></li>
+<li>损失函数，这个刚刚搞好 <code>def loss_fn(x)</code></li>
+<li>优化器，这个我们用昨天实现过的随机梯度下降。内部机制已经明白了，今天我们直接用 torch 带的 <code>torch.optim.SGD</code></li>
+</ul>
+<p>齐了，开始训练。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="c1"># 我们借用 torch.optim.SGD，把所有需要梯度下降的参数都集合在一起给它</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">([</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">layer512_weights</span><span class="p">,</span> <span class="n">layer512_bias</span><span class="p">,</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">layer256_weights</span><span class="p">,</span> <span class="n">layer256_bias</span><span class="p">,</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">layer10_weights</span><span class="p">,</span> <span class="n">layer10_bias</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="p">],</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="c1"># 训练 2000 轮次，在 16 GB 显存的 Tesla T4 上耗时约 20 分钟</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="c1"># 老招式：计算损失 - 反向传播</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">, Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>这 2000 轮的训练在我 16 GB 显存的 Tesla T4 上运行了 19 分 13 秒，loss 持续下降到了 0.14 左右。</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Epoch<span class="w"> </span><span class="m">1950</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1415
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Epoch<span class="w"> </span><span class="m">1960</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1408
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>Epoch<span class="w"> </span><span class="m">1970</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1401
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>Epoch<span class="w"> </span><span class="m">1980</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1394
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>Epoch<span class="w"> </span><span class="m">1990</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1387
+</code></pre></div>
+<h3 id="338">3.3.8 测试验证<a class="headerlink" href="#338" title="Permanent link">¶</a></h3>
+<p>模型看上去是训练好了，让我们来写我们的推理函数。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">pil_img</span><span class="p">):</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="c1"># 接收 PIL 图像，返回预测的数字 (0-9)</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span> <span class="c1"># 关闭梯度计算，节省内存并加速</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>        <span class="c1"># 图像预处理</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>        <span class="n">pixel_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pil_img</span><span class="o">.</span><span class="n">getdata</span><span class="p">())</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>        <span class="n">img_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">pixel_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        <span class="n">normalized_img</span> <span class="o">=</span> <span class="n">img_tensor</span> <span class="o">/</span> <span class="mf">255.0</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>        <span class="n">input_batch</span> <span class="o">=</span> <span class="n">normalized_img</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># 形状: [1, 784]</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>        <span class="c1"># 前向传播，得到 10 个数字的预测概率</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_batch</span><span class="p">)</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>        <span class="c1"># torch.max 返回一个元组 (values, indices)，从 10 个概率中获取最大数的索引，即预测的数字</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>        <span class="k">return</span> <span class="n">predicted</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</code></pre></div>
+<p>好，我们加载测试集，选其中一张图像预测一下试试看。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">test_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="s2">"parquet"</span><span class="p">,</span> 
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">data_files</span><span class="o">=</span><span class="s2">"./mnist_data/mnist/test-00000-of-00001.parquet"</span><span class="p">,</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">split</span><span class="o">=</span><span class="s2">"train"</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="p">)</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="n">test_img</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s2">"image"</span><span class="p">]</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="n">true_label</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s2">"label"</span><span class="p">]</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="n">predicted_label</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">test_img</span><span class="p">)</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"真实标签: </span><span class="si">{</span><span class="n">true_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"预测标签: </span><span class="si">{</span><span class="n">predicted_label</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>得到预测结果。</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>真实标签:<span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>预测标签:<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<p>看来是预测对了，我们从测试集中随机再多抽几个试试看。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">)),</span> <span class="mi">10</span><span class="p">):</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>    <span class="n">test_img</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">"image"</span><span class="p">]</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>    <span class="n">true_label</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">"label"</span><span class="p">]</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>    <span class="n">predicted_label</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">test_img</span><span class="p">)</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>    <span class="n">status</span> <span class="o">=</span> <span class="s2">"right"</span> <span class="k">if</span> <span class="p">(</span><span class="n">true_label</span> <span class="o">==</span> <span class="n">predicted_label</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"wrong"</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"索引 </span><span class="si">{</span><span class="n">idx</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2"> | 真实: </span><span class="si">{</span><span class="n">true_label</span><span class="si">}</span><span class="s2"> | 预测: </span><span class="si">{</span><span class="n">predicted_label</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>你可能会得到不同的随机结果，我这边得到的是。</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>索引<span class="w"> </span><span class="m">9446</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>索引<span class="w"> </span><span class="m">1547</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>索引<span class="w"> </span><span class="m">3637</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>索引<span class="w"> </span><span class="m">9486</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">7</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>索引<span class="w"> </span><span class="m">2306</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>索引<span class="w"> </span><span class="m">7411</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>索引<span class="w"> </span><span class="m">9315</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>索引<span class="w"> </span><span class="m">4846</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>索引<span class="w"> </span><span class="m">7620</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>索引<span class="w"> </span><span class="m">1722</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+</code></pre></div>
+<p>打眼一看，预测准确度至少是 90% 之上了。当初，20 世纪 90 年代 Yann LeCun 的结果是 99%。</p>
+<p>忍了，毕竟我们跟图灵奖有点差距是正常的……</p>
+<h2 id="34-pytorch">3.4 Pytorch 魔法<a class="headerlink" href="#34-pytorch" title="Permanent link">¶</a></h2>
+<p>和昨天一样的理由，我们并不打算记住这些实现细节。我们还是用 PyTorch 提供的现成封装把同样的事情再做一遍。</p>
+<p>首先还是导入 torch 和 torch 的神经网络包。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+</code></pre></div>
+<h3 id="341">3.4.1 数据预处理<a class="headerlink" href="#341" title="Permanent link">¶</a></h3>
+<p>数据加载和预处理的部分还是得自己写，我们还是用 Huggingface 提供的 <code>load_dataset()</code> 来加载，抄上面的就好。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dataset</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="c1"># 数据加载</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>    <span class="s2">"parquet"</span><span class="p">,</span> 
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>    <span class="n">data_files</span><span class="o">=</span><span class="s2">"./mnist_data/mnist/train-00000-of-00001.parquet"</span><span class="p">,</span>
+<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>    <span class="n">split</span><span class="o">=</span><span class="s2">"train"</span>
+<a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="p">)</span>
+<a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>
+<a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"数据集已加载，共 </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span><span class="si">}</span><span class="s2"> 条样本。"</span><span class="p">)</span>
+<a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"列名: </span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">column_names</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>
+<a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a><span class="c1"># 数据预处理</span>
+<a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a><span class="k">def</span><span class="w"> </span><span class="nf">preprocess</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+<a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>    <span class="n">processed_images</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a>    <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">'image'</span><span class="p">]:</span>
+<a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a>        <span class="n">pixel_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">getdata</span><span class="p">())</span>
+<a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a>        <span class="n">img_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">pixel_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a>        <span class="n">normalized_img</span> <span class="o">=</span> <span class="n">img_tensor</span> <span class="o">/</span> <span class="mf">255.0</span>
+<a id="__codelineno-25-20" name="__codelineno-25-20" href="#__codelineno-25-20"></a>        <span class="n">processed_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normalized_img</span><span class="p">)</span>
+<a id="__codelineno-25-21" name="__codelineno-25-21" href="#__codelineno-25-21"></a>    <span class="n">images</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">processed_images</span><span class="p">)</span>
+<a id="__codelineno-25-22" name="__codelineno-25-22" href="#__codelineno-25-22"></a>    <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">'label'</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+<a id="__codelineno-25-23" name="__codelineno-25-23" href="#__codelineno-25-23"></a>    <span class="k">return</span> <span class="n">images</span><span class="p">,</span> <span class="n">labels</span>
+<a id="__codelineno-25-24" name="__codelineno-25-24" href="#__codelineno-25-24"></a>
+<a id="__codelineno-25-25" name="__codelineno-25-25" href="#__codelineno-25-25"></a><span class="n">images</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">preprocess</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="342-torch">3.4.2 Torch 内置模型定义<a class="headerlink" href="#342-torch" title="Permanent link">¶</a></h3>
+<p>和昨天的 <code>nn.Linear()</code> 一样，torch 也内置了激活函数 <code>nn.ReLU()</code> 和展平层 <code>nn.Flatten()</code>。</p>
+<p>而且，它还提供了方便的层堆叠的函数 <code>nn.Sequential()</code>。</p>
+<p>所以，我们的模型就可以等价地表达为。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Flatten</span><span class="p">(),</span> <span class="c1"># 将 28x28 图像展平为 784 维向量</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>                      <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>  <span class="c1"># 输入 784 维，输出 512 维</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>                      <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>  <span class="c1"># 激活函数</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>                      <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>  <span class="c1"># 输入 512 维，输出 256 维</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>                      <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>  <span class="c1"># 激活函数</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>                      <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span>  <span class="mi">10</span><span class="p">)</span>   <span class="c1"># 输入 256 维，输出 10 维</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>                     <span class="p">)</span> 
+</code></pre></div>
+<h3 id="343-torch-loss">3.4.3 Torch 内置 Loss<a class="headerlink" href="#343-torch-loss" title="Permanent link">¶</a></h3>
+<p>不知你是否发现，这个模型中缺少了我们的 softmax 层。那是因为 PyTorch 把 softmax 和我们实现的 loss 合并在一起提供了一个名为 <code>nn.CrossEntropyLoss()</code> 的函数。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="344">3.4.4 来一点信息论<a class="headerlink" href="#344" title="Permanent link">¶</a></h3>
+<p>想必你已经注意到了，PyTorch 给我们的优化器并不叫做 <code>Maximum Likelihood Estimation</code> 最大似然估计或其缩写 <code>MLE</code>。</p>
+<p>虽然在程序上是等价实现，但它取的名字叫 <code>CrossEntropyLoss</code> 交叉熵损失。</p>
+<p><code>熵</code> —— 我们可能更熟悉它作为一个热力学概念，表示系统的混乱程度。</p>
+<p>在 PyTorch 的语境中 <code>熵</code> 更多是一个信息学概念，用于量化一个系统的<code>信息量</code>。</p>
+<p>这个概念来自于上世纪中叶，我们的另一个祖师爷克劳德·香农（Claude Shannon）在传奇的贝尔实验室（Bell Labs）工作期间完成的信息论的奠基性研究。</p>
+<p>他在 1948 年 发表的划时代论文<a href="https://ieeexplore.ieee.org/document/6773024">《A Mathematical Theory of Communication》（《通信的数学理论》）</a>中，首次正式定义了 <code>信息熵（Shannon entropy）</code> 作为信息量的度量公式。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{align*}
+H(X) &amp;= -p(x_1) \cdot \ln p(x_1) - p(x_2) \cdot \ln p(x_2) - \cdots - p(x_n) \cdot \ln p(x_n) \\
+     &amp;= -\sum_{x} p(x) \ln p(x)
+\end{align*}
+\]</div>
+<figcaption>
+<p>式 3-13 克劳德·香农定义的信息熵</p>
+</figcaption>
+</figure>
+<p>先求对数再求负数，和我们之前的实现一模一样。好巧，是不？</p>
+<p>值得注意的是，这个定义并非一个<code>客观规律</code>。这个词是香农创造的<code>抽象概念</code>，这个算法亦是香农认为最方便计算提出的<code>定义</code>。</p>
+<p>所以，为何香农会选择这样的信息熵算法呢？</p>
+<p>因为，香农想定义的<code>信息量</code>是这样一个东西 —— 如果它确定发生，那它就没有任何信息量。比如，一个连续重复的字符串，它就没有信息量。</p>
+<figure>
+<div class="arithmatex">\[
+H(\texttt{``aaaa}\ldots\texttt{''}) = 0
+\]</div>
+<figcaption>
+<p>式 3-14 连续重复字符串的信息熵为 0</p>
+</figcaption>
+</figure>
+<p>反之，无限长的随机字符串的信息熵为无穷大。</p>
+<figure>
+<div class="arithmatex">\[
+H(\text{无限长独立随机序列}) = \infty
+\]</div>
+<figcaption>
+<p>式 3-15 无限长独立随机序列的信息熵为无穷大</p>
+</figcaption>
+</figure>
+<p>总之，香农想定义的 <code>信息熵</code> 就是说概率越大，信息熵就越少，概率大到 1 信息熵就为 0；反之，概率越小，信息熵就越大，概率小到 0 信息熵就为无穷大。说句题外话，信息论也极大地指导了数据压缩和视频解码等领域，我觉得在 H.265 H.266 越来越逼近极限的今天，视频编解码未来很大概率会走向端云结合的，类似 DLSS4 那样的玩法。</p>
+<p>既然 <code>信息熵</code> 是和概率相关的，那么自然而然的，多个事件的系统中，信息熵会和多个概率的乘积发生关系，也就要用到连乘。</p>
+<p>我觉得，可能香农也不想面对连乘这种麻烦事，于是两边同时算一个 <code>log</code> 把乘转加也就成了他一个很自然的选择。</p>
+<p>好，现在我们了解<code>信息熵</code> 是什么。再了解 <code>交叉熵</code> 就非常容易了。</p>
+<p><code>交叉熵</code> 指的是我们预测的概率和真实概率之间的熵的差异大小。公式如下。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{align*}
+H(p, q) &amp;= -p(x_0) \cdot \ln q(x_0) - p(x_1) \cdot \ln q(x_1) - p(x_2) \cdot \ln q(x_2) - \cdots - p(x_n) \cdot \ln q(x_n) \\
+        &amp;= -\sum_{x} p(x) \ln q(x)
+\end{align*}
+\]</div>
+<figcaption>
+<p>式 3-16 交叉熵的定义</p>
+</figcaption>
+</figure>
+<p>观察式 3-16 和式 3-13，可以发现交叉熵和信息熵的定义区别仅在于最后一个概率代入的是预测概率，而不是都代入真实概率。因为它是要求 2 个概率之间的差。</p>
+<p>具体到我们的数字问题，因为我们知道真实概率是形如<code>[0, 0, 0, 1, 0, 0, 0, 0, 0, 0]</code>的向量，除了正确答案的索引为 1，其他都是 0。</p>
+<p>比如说我们假设答案是 3，那么代入上面交叉熵的公式，就可以简化得到。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{align*}
+H(p, q) &amp;= -\sum_{x} p(x) \ln q(x) \\
+        &amp;= -p(x_0) \cdot \ln q(x_0) - p(x_1) \cdot \ln q(x_1) - p(x_2) \cdot \ln q(x_2) - \cdots - p(x_n) \cdot \ln q(x_n) \\
+        &amp;= -0 \cdot \ln q(x_0) - 0 \cdot \ln q(x_1) - 0 \cdot \ln q(x_2) - 1 \cdot \ln q(x_3) - \cdots - 0 \cdot \ln q(x_{9})  \\
+        &amp;= -\ln q(x_3)
+\end{align*}
+\]</div>
+<figcaption>
+<p>式 3-17 具体到数字问题交叉熵的求解</p>
+</figcaption>
+</figure>
+<p>即先求对数，再求负。</p>
+<p>和之前 <code>最大似然估计</code> 一样的算法，奇妙的殊途同归。</p>
+<h3 id="345-torch">3.4.5 Torch 内置优化器<a class="headerlink" href="#345-torch" title="Permanent link">¶</a></h3>
+<p>优化器方面，我们还是使用昨天的 <code>torch.optim.SGD()</code>，我们把 <code>model</code> 的参数都传给它。学习率定为 0.1。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="346">3.4.6 开始训练<a class="headerlink" href="#346" title="Permanent link">¶</a></h3>
+<p>数据处理、模型定义、损失函数、优化器，都 OK 了，开始训练。</p>
+<p>这次在训练前，我们把数据都移动到 GPU 上，看看它能不能算得快一些。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># 这 3 行是把数据移动到 GPU 上，如果没有 GPU 不要加这 3 行</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">)</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">)</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">)</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="c1"># 开始训练</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>
+<a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>    <span class="c1"># 前向传播</span>
+<a id="__codelineno-29-11" name="__codelineno-29-11" href="#__codelineno-29-11"></a>    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>  <span class="c1"># 输出形状: [N, 10]</span>
+<a id="__codelineno-29-12" name="__codelineno-29-12" href="#__codelineno-29-12"></a>
+<a id="__codelineno-29-13" name="__codelineno-29-13" href="#__codelineno-29-13"></a>    <span class="c1"># 计算损失</span>
+<a id="__codelineno-29-14" name="__codelineno-29-14" href="#__codelineno-29-14"></a>    <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<a id="__codelineno-29-15" name="__codelineno-29-15" href="#__codelineno-29-15"></a>
+<a id="__codelineno-29-16" name="__codelineno-29-16" href="#__codelineno-29-16"></a>    <span class="c1"># 反向传播</span>
+<a id="__codelineno-29-17" name="__codelineno-29-17" href="#__codelineno-29-17"></a>    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span> <span class="c1"># 计算出来的梯度被存在每个参数自己的 .grad 属性中里了，所以下一步的 optimizer 可以直接 step() 去更新每个参数</span>
+<a id="__codelineno-29-18" name="__codelineno-29-18" href="#__codelineno-29-18"></a>    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<a id="__codelineno-29-19" name="__codelineno-29-19" href="#__codelineno-29-19"></a>
+<a id="__codelineno-29-20" name="__codelineno-29-20" href="#__codelineno-29-20"></a>    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-29-21" name="__codelineno-29-21" href="#__codelineno-29-21"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">, Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>还是在我 16 GB 显存的 Tesla T4 上，这次 2000 轮训练耗时 1 分 22 秒，快了 10 来倍。想来应该是 GPU 加速的功劳。</p>
+<p>运行结果如下：</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>Epoch<span class="w"> </span><span class="m">1960</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1172
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Epoch<span class="w"> </span><span class="m">1970</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1166
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>Epoch<span class="w"> </span><span class="m">1980</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1161
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>Epoch<span class="w"> </span><span class="m">1990</span>,<span class="w"> </span>Loss:<span class="w"> </span><span class="m">0</span>.1155
+</code></pre></div>
+<h3 id="347">3.4.7 推理验证<a class="headerlink" href="#347" title="Permanent link">¶</a></h3>
+<p>推理函数不用大改，因为我们原来定义的模型和 PyTorch 构筑的模型一样，前向推理都是传 <code>model()</code> 就行了。</p>
+<p>只改了一点点，因为我们前面把模型放显存里了，所以这次需要我们把待推理的数据也一并推到显存里。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">pil_img</span><span class="p">):</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>        <span class="n">pixel_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pil_img</span><span class="o">.</span><span class="n">getdata</span><span class="p">())</span>
+<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>        <span class="n">img_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">pixel_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>        <span class="n">normalized_img</span> <span class="o">=</span> <span class="n">img_tensor</span> <span class="o">/</span> <span class="mf">255.0</span>
+<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>        <span class="n">input_batch</span> <span class="o">=</span> <span class="n">normalized_img</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">)</span>  <span class="c1"># 这里把测试数据也放到 GPU 中</span>
+<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>
+<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>        <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">input_batch</span><span class="p">)</span>  <span class="c1"># [1, 10]</span>
+<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a>        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>        <span class="k">return</span> <span class="n">predicted</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</code></pre></div>
+<p>随机测试 10 张图片。</p>
+<div class="language-python highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">test_dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>    <span class="s2">"parquet"</span><span class="p">,</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>    <span class="n">data_files</span><span class="o">=</span><span class="s2">"./mnist_data/mnist/test-00000-of-00001.parquet"</span><span class="p">,</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>    <span class="n">split</span><span class="o">=</span><span class="s2">"train"</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="p">)</span>
+<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>
+<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="c1"># 随机测试 10 个样本</span>
+<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">)),</span> <span class="mi">10</span><span class="p">):</span>
+<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a>    <span class="n">test_img</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">"image"</span><span class="p">]</span>
+<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a>    <span class="n">true_label</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">"label"</span><span class="p">]</span>
+<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a>    <span class="n">predicted_label</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">test_img</span><span class="p">)</span>
+<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a>
+<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a>    <span class="n">status</span> <span class="o">=</span> <span class="s2">"right"</span> <span class="k">if</span> <span class="p">(</span><span class="n">true_label</span> <span class="o">==</span> <span class="n">predicted_label</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"wrong"</span>
+<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"索引 </span><span class="si">{</span><span class="n">idx</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2"> | 真实: </span><span class="si">{</span><span class="n">true_label</span><span class="si">}</span><span class="s2"> | 预测: </span><span class="si">{</span><span class="n">predicted_label</span><span class="si">}</span><span class="s2"> | </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<p>我这边得到的结果如下。</p>
+<div class="language-bash highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>索引<span class="w"> </span><span class="m">6567</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>索引<span class="w"> </span><span class="m">8809</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>索引<span class="w"> </span><span class="m">5358</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>索引<span class="w"> </span><span class="m">869</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>索引<span class="w"> </span><span class="m">8682</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>索引<span class="w"> </span><span class="m">8360</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>索引<span class="w"> </span><span class="m">8949</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">9</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>索引<span class="w"> </span><span class="m">3887</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>索引<span class="w"> </span><span class="m">1771</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>索引<span class="w"> </span><span class="m">3193</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>真实:<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>预测:<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>right
+</code></pre></div>
+<p>准确率依旧还行。</p>
+<p>相对于手动实现，Torch 帮我们大幅简化了程序。归总一下，做了 3 个变更。</p>
+<ul>
+<li><strong>模型定义</strong> ：使用 <code>nn.Sequential()</code>、<code>nn.Linear()</code>、<code>nn.ReLU()</code> 代替手动搭模型。</li>
+<li><strong>损失函数</strong> ：使用 <code>nn.CrossEntropyLoss()</code> 整合了 softmax 和 loss。</li>
+<li><strong>优化器</strong> ：使用 <code>model.parameters()</code> 一次性将所有参数传给 <code>torch.optim.SGD</code>。</li>
+</ul>
+<h3 id="348">3.4.8 未竟事宜<a class="headerlink" href="#348" title="Permanent link">¶</a></h3>
+<p>细心的你可能观察到了，同样是 2000 轮全数据集的训练，我们手动实现的版本 loss 降到了 0.1387，而使用 Torch 魔法的版本降到了 0.1155。</p>
+<p>它的效率更高一些，为什么呢？</p>
+<p>有两个可能的原因：</p>
+<ul>
+<li>
+<p><strong>不同的参数初始化策略</strong> 不同于我们简单的正态分布 <code>torch.randn()</code>，Torch 的高级 API 使用了更复杂的参数初始化方法。可以参见<a href="https://docs.pytorch.org/docs/stable/nn.init.html#torch.nn.init.kaiming_uniform_">这个链接</a> https://docs.pytorch.org/docs/stable/nn.init.html#torch.nn.init.kaiming_uniform_ 深入了解。</p>
+</li>
+<li>
+<p><strong>优化的交叉熵函数实现</strong> Torch 实现的交叉熵函数 <code>nn.CrossEntropyLoss()</code> 应用了一种叫做 <code>LogSoftmax</code> 的优化方法。可以参见<a href="https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html">这个链接</a> https://docs.pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html 深入了解。</p>
+</li>
+</ul>
+<p>这些工程优化实现也是我们选择遗忘我们手动实现的版本，转而使用 Torch 魔法的重要原因。</p>
+<p>那么，抖落抖落我们的 Torch 魔法袋，看看都搜罗了些什么法宝。</p>
+<table>
+<thead>
+<tr>
+<th>网络层</th>
+<th>损失函数</th>
+<th>优化器</th>
+<th>其它</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nn.Flatten()</code> 展平层</td>
+<td><code>nn.MSELoss()</code> 均方误差损失</td>
+<td><code>torch.optim.SGD</code> 随机梯度下降</td>
+<td><code>data.to('cuda')</code> 数据移至 GPU</td>
+</tr>
+<tr>
+<td><code>nn.Linear()</code> 线性层 / 全连接层</td>
+<td><code>nn.CrossEntropyLoss()</code> 交叉熵损失</td>
+<td></td>
+<td><code>load_dataset()</code> HF 数据加载器</td>
+</tr>
+<tr>
+<td><code>nn.ReLU()</code> ReLU 激活函数</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>nn.Sequential()</code> 层连接器</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>今天，我们沿着图灵奖得主的路，踩了踩多层神经网络，有时也称 <code>多层感知机</code>。我们还顺路浅尝了一下概率论和信息论。</p>
+<p>明天，我们计划迈入真正的 <strong>深度</strong> 神经网络，去看看那个流行的词 <strong>Deep Learning</strong> ，所谓 <strong>深度学习</strong> 到底是在搞些啥子？</p>
+<p>那么，今天的内容就是这么多。</p>
+<p>大家明天见~</p>
+<h2 id="35-small-talk-ai">3.5 Small Talk： 和 AI 扯扯淡<a class="headerlink" href="#35-small-talk-ai" title="Permanent link">¶</a></h2>
+<h3 id="351">3.5.1 提问<a class="headerlink" href="#351" title="Permanent link">¶</a></h3>
+<p>我能理解用类似用自然对数去求得最大似然估计的方法，但不完全理解求得这些奇妙方法的元方法。我既惊讶于数学家们的神奇洞见，又赞叹不已 AutoML 这样可复制的通杀技。现在人类知识越来越爆炸，即便是最聪明的人类也只能择一业从之，硕士博士们往往也必须花上小半生在一个特别切片的专业化领域。十七世纪后，牛爵爷一代之后，那种能通晓全领域前沿知识的「博学家」头衔似已无人能够获得。今天的人类还需要曾经那种对整体知识体系的洞见吗？</p>
+<h3 id="352-qwen35-plus">3.5.2 Qwen3.5-Plus 答<a class="headerlink" href="#352-qwen35-plus" title="Permanent link">¶</a></h3>
+<p>这是一些非常深刻且触及未来知识核心的问题。你所提到的“公式的奥妙”、“AutoML带来的知识爆炸”以及“人类对整体知识体系的洞见”，实际上是在探讨在AI成为强大协作者的时代，人类智慧的角色与价值。</p>
+<p>结合当前的发展（以2026年的视角），我们可以从以下几个层面来拆解这些奥妙与挑战：</p>
+<h4 id="3521">3.5.2.1 数学家眼中的“公式的奥妙”：从“苦力”中解放，专注“美感”<a class="headerlink" href="#3521" title="Permanent link">¶</a></h4>
+<p>数学家们发现，AI在处理“奥妙”时，与人类有着本质的不同。</p>
+<ul>
+<li><strong>AI眼中的奥妙是“搜索与压缩”：</strong> 对于AI（如AlphaGeometry, Gödel-Prover）来说，公式的奥妙往往体现在 <strong>数据的压缩率</strong> 和 <strong>推理路径的优化</strong> 上。AI通过海量数据训练，学会了识别模式。例如，在纽结理论中，AI能从200万个数据中挖掘出人类未曾察觉的关联，发现“signature值”与三个参数的深层联系。这种“奥妙”是算法通过高维空间搜索得出的最优解。</li>
+<li><strong>人类眼中的奥妙是“直觉与意义”：</strong> 丘成桐院士曾提到“基础的问题最漂亮”。对于数学家而言，公式的奥妙不仅在于它能解决问题，更在于它背后的 <strong>结构性美感</strong> 、 <strong>逻辑的必然性</strong> 以及它与物理世界或其他数学分支的深刻联系。</li>
+<li><strong>AI如何辅助发现奥妙？</strong><ul>
+<li><strong>充当“万能翻译器”与“侦察兵”：</strong> 陶哲轩提到，AI能帮助数学家跨越专业壁垒，充当“万能翻译器”。当人类陷入思维定式时，AI可以作为“侦察兵”，快速探索大量可能的路径，排除死胡同（如在安德鲁斯-柯蒂斯猜想中推翻旧反例），或者通过生成相似概念（如PatternBoost系统）来激发人类的灵感。</li>
+<li><strong>从“验证”到“启发”：</strong> 过去AI只是验证工具（如Lean证明助手），现在它开始主动提出猜想。人类数学家利用AI处理繁琐的计算和引理验证，从而将精力集中在那些需要“灵光乍现”的核心洞察上。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3522-automl">3.5.2.2 AutoML与知识爆炸：专业化与“洞见”的悖论<a class="headerlink" href="#3522-automl" title="Permanent link">¶</a></h4>
+<p>你提到的 <strong>AutoML（自动机器学习）</strong> 和 <strong>知识专业化</strong> 确实是当前的一大趋势。随着技术发展，知识不仅量大，而且越来越深奥，形成了一个个“孤岛”。</p>
+<ul>
+<li>
+<p><strong>现状：知识的“广度”与“深度”割裂</strong></p>
+<ul>
+<li><strong>AI处理广度：</strong> AI擅长处理海量、分散的知识。正如Don Swanson提出的“未被发现的公共知识”，AI可以通过挖掘不同领域的文献，将A领域的技术用于B领域的问题（例如用微分几何解决医学影像诊断）。</li>
+<li><strong>人类陷入深度：</strong> 人类专家被迫在越来越窄的领域深耕，因为掌握一个细分领域的全部知识已经非常困难。这导致了“只见树木，不见森林”的风险。</li>
+</ul>
+</li>
+<li>
+<p><strong>人类是否还需要整体洞见？</strong>
+    <strong>不仅需要，而且是未来的核心竞争力。</strong></p>
+<ul>
+<li><strong>Context（上下文）与价值观：</strong> AI可以生成知识，但无法决定知识的 <strong>价值</strong> 。人类需要整体洞见来定义 <strong>问题</strong> ——即“我们应该解决什么问题？”（例如，“蛋白质对生命至关重要”）。AI是手段，人类是目的。</li>
+<li><strong>跨域的“元认知”：</strong> 未来最稀缺的不是掌握某个具体AutoML模型参数的人，而是能够理解不同领域底层逻辑关联的人。这种 <strong>系统性思维</strong> 能将数学、物理、生物和社会科学联系起来，是AI目前难以企及的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3523">3.5.2.3 未来，人类是否还有能力获得这种“洞见”？<a class="headerlink" href="#3523" title="Permanent link">¶</a></h4>
+<p>这是一个充满挑战但也充满希望的问题。</p>
+<ul>
+<li>
+<p><strong>挑战：技能退化的风险</strong>
+    陶哲轩观察到一个现象：学生利用AI完成作业，平时成绩上升，但闭卷考试成绩下降。这警示我们，如果过度依赖AI处理基础推理，人类的 <strong>独立思考能力</strong> 和 <strong>逻辑肌肉</strong> 可能会萎缩。如果连推导基础公式的能力都丧失了，谈何“洞见”？</p>
+</li>
+<li>
+<p><strong>希望：人机协同的“增强智能”</strong>
+    未来的人类洞见，可能不再是“单打独斗”的产物，而是 <strong>人机协同</strong> 的结果。</p>
+<ul>
+<li><strong>分工的重构：</strong> 未来的数学家或科学家可能不再需要亲自处理复杂的代数运算或穷举特例，而是专注于 <strong>提出假设</strong> 、 <strong>设计框架</strong> 和 <strong>解释意义</strong> 。</li>
+<li><strong>“慢思考”的回归：</strong> 正如Lean证明助手强迫数学家放慢速度，重新审视每一个“显然”的步骤（de Bruijn因子），AI的介入可能反而让人类有更多时间进行深度的、哲学性的思考。</li>
+<li><strong>教育的转向：</strong> 未来的教育必须从“知识积累”转向**“批判性思维” <strong>和</strong> “提问能力”**。正如材料中所言，如果问题像白开水，答案也平平无奇。人类需要培养的是提出“好问题”的能力，以及辨别AI生成内容真伪和价值的能力。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3524">3.5.2.4 总结：人机关系的未来图景<a class="headerlink" href="#3524" title="Permanent link">¶</a></h4>
+<p>我们可以用一个表格来总结未来人类与AI在知识体系中的角色：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">AI (AutoML/大模型)</th>
+<th style="text-align: left;">人类 (数学家/科学家)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>核心优势</strong></td>
+<td style="text-align: left;">海量数据处理、暴力搜索、模式识别、自动化验证</td>
+<td style="text-align: left;">直觉、审美、价值观判断、跨领域联想、提出根本性问题</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>对“奥妙”的理解</strong></td>
+<td style="text-align: left;">高效的算法压缩、最优解、数据关联</td>
+<td style="text-align: left;">结构之美、逻辑必然性、物理/现实意义</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>知识角色</strong></td>
+<td style="text-align: left;"><strong>“发现者”与“执行者”</strong>：挖掘隐藏模式，执行繁琐证明</td>
+<td style="text-align: left;"><strong>“定义者”与“裁判”</strong>：定义重要问题，验证结果的合理性与价值</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>面临的挑战</strong></td>
+<td style="text-align: left;">幻觉、缺乏真正的创造力、无法理解“为什么”</td>
+<td style="text-align: left;">知识过载、技能退化、陷入局部最优</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结论是：</strong>
+人类依然需要并且能够获得对整体知识体系的洞见，但这需要我们 <strong>主动进化</strong> 。我们不能做那个被AI喂养的“巨婴”，而要做那个驾驭AI的“指挥家”。未来的“奥妙”将不再是单纯属于人类的灵光一现，而是人类深刻的洞见与AI强大的算力共同谱写的交响乐。</p>
+<h3 id="353">3.5.3 追问<a class="headerlink" href="#353" title="Permanent link">¶</a></h3>
+<p>谢谢你，千问。当下这种全局视野的缺乏，会导致人类在未来的某一天陷入发展的「局部最优解」吗？</p>
+<p>当今科技爆炸和培育聪明人的速度肯定都显著优于古代。但更整体地看，我觉得我们对科技走向好像越来越迷茫，越来越冷漠，越来越随发展逐流。亦或是人类可以通过集体智慧，通过类似 AutoML 这类人工智能的帮助，亦或者发展出属于人类社会自己的「Attension」，或者某种别的方式重拾全局视野呢？</p>
+<p>人类未来还有机会重拾类似文艺复兴时期那样人本主义的科技文化发展路径吗？千问，请解我惑。</p>
+<h3 id="354-qwen35-plus">3.5.4 Qwen3.5-Plus 答<a class="headerlink" href="#354-qwen35-plus" title="Permanent link">¶</a></h3>
+<p>这是一个非常深刻且充满人文关怀的提问。你敏锐地捕捉到了现代科学发展的核心矛盾：<strong>知识的指数级爆炸与人类个体认知带宽的有限性之间的张力</strong>。</p>
+<p>你提到的“局部最优解”担忧，在优化理论中确实存在：如果缺乏全局视野（Global View），梯度下降（Gradient Descent）很容易让人类文明陷入某个看似不错但并非最佳的“坑”里。</p>
+<p>为了回答你的困惑，我将从 <strong>历史视角的演变</strong>、<strong>集体智慧与新工具的作用</strong>、以及 <strong>未来人本主义复兴的可能性</strong> 三个维度来探讨。首先，让我搜索一下关于“博学家终结”、“集体智慧与AI辅助科研”以及“新文艺复兴”的相关前沿讨论，以获取更具体的当代视角。你的思考触及了人类文明演进中最核心的焦虑： <strong>在知识无限细分的今天，我们是否正在失去驾驭文明航向的“舵手”</strong> ？</p>
+<p>你提到的“局部最优解”担忧并非杞人忧天。事实上，最新的科学研究（如2026年初发表在《Nature》上的一项由清华和芝加哥大学联合完成的研究）甚至揭示了一个令人深思的悖论： <strong>AI虽然极大地加速了个体科学家的产出，却可能导致整个科学界的探索范围收缩</strong> 。科学家们在AI辅助下更容易在已有的热门领域深耕（因为那里数据多、模型好训练），从而忽略了那些冷门但可能具有颠覆性的“全局最优”方向。这恰恰印证了你的担忧：缺乏全局视野，我们可能正集体滑向一个精致的“局部最优”。</p>
+<p>然而，历史的辩证法告诉我们，危机往往孕育着新的范式。对于你的三个核心困惑，我们可以尝试从以下角度寻找答案：</p>
+<h4 id="3541">3.5.4.1 “博学家”已死，但“元认知”永生<a class="headerlink" href="#3541" title="Permanent link">¶</a></h4>
+<p>牛顿时代那种“通晓全领域前沿”的 <strong>百科全书式博学家</strong> （Polymath）确实难以再现。这不是因为人类变笨了，而是因为知识总量的基数已经超过了单一大脑的生物极限。</p>
+<p>但这并不意味着“全局视野”的丧失，而是 <strong>全局视野的载体发生了转移</strong> ：</p>
+<ul>
+<li>
+<p><strong>从“个体全知”转向“系统洞察”</strong> ：过去的博学家靠记忆知识，未来的“新博学家”靠 <strong>理解连接</strong> 。你不需要知道所有公式的推导，但你需要理解不同学科之间的 <strong>同构性</strong> （Isomorphism）。例如，你提到的自然对数求最大似然估计，其背后的思想（将乘积转化为求和以简化优化）与深度学习中的Loss函数设计、甚至经济学中的效用最大化，在数学结构上是相通的。这种 <strong>跨学科的“元方法”</strong> （Meta-method）才是新时代的通识。</p>
+</li>
+<li>
+<p><strong>T型人才到π型再到“梳子型”</strong> ：现代人需要在多个领域有浅层认知（梳子的齿），并在一个领域有深层专长（梳子的背）。关键在于那些 <strong>横向的连接点</strong> 。能够提出好问题、能够定义边界条件、能够判断方向的人，依然拥有类似古代博学家的全局视野，只不过他们调用的是外部知识库而非内部记忆。</p>
+</li>
+</ul>
+<h4 id="3542-attention">3.5.4.2 人类的“Attention”机制与集体智慧的重构<a class="headerlink" href="#3542-attention" title="Permanent link">¶</a></h4>
+<p>你提到了一个极佳的类比：<strong>人类社会的“Attention”机制</strong>。</p>
+<p>在深度学习中，Attention机制让模型在处理长序列时，能够动态地关注最重要的信息，而忽略噪声。人类社会正在演化出类似的机制：
+*  <strong>AI作为“外部前额叶”</strong> ：如果说人类大脑负责价值判断和直觉（System 1），那么以AutoML、AI Scientist为代表的工具正在成为我们的 <strong>外部逻辑推理引擎</strong>（ System 2）。2025-2026年爆发的“AI智能体（Agent）”技术，正是让AI不仅能回答问题，还能 <strong>自主规划实验、验证假设</strong> 。这意味着，人类可以从繁琐的“计算”中解放出来，专注于“定义问题”和“评估意义”。</p>
+<ul>
+<li><strong>集体智慧的“分布式梯度下降”</strong> ：互联网和开源社区（如GitHub上的全球协作）实际上构成了一个巨大的人机耦合神经网络。每个人都是一个节点，通过论文、代码、讨论进行“参数更新”。虽然单个节点（个人）只能看到局部梯度，但通过高效的通信机制（学术出版、会议、社交媒体），整个网络有可能收敛到比任何个体都更好的全局解。</li>
+<li><strong>对抗“回音室”的算法</strong> ：目前的挑战在于，推荐算法往往让我们陷入信息的“局部最优”（只看自己喜欢的）。未来的社会级Attention机制，需要引入 <strong>探索项</strong> （Exploration），像强化学习一样，主动将人类注意力引导至那些陌生但关键的领域，防止文明陷入同质化内卷。</li>
+</ul>
+<h4 id="3543">3.5.4.3 重拾“人本主义”的新文艺复兴<a class="headerlink" href="#3543" title="Permanent link">¶</a></h4>
+<p>你问人类未来还有机会重拾文艺复兴时期的人本主义路径吗？ <strong>答案是肯定的，而且这可能是唯一的出路</strong> 。</p>
+<p>文艺复兴的核心不仅仅是艺术的繁荣，更是 <strong>将人从神学的教条中解放出来，重新肯定人的理性与感性</strong> 。今天的科技爆炸，如果不加审视，可能会让人沦为数据的附庸（算法决定你看什么、买什么、甚至想什么）。</p>
+<p><strong>新文艺复兴</strong> （Neo-Renaissance）正在萌芽，其特征可能是：</p>
+<ul>
+<li>
+<p><strong>从“工具理性”回归“价值理性”</strong> ：当AI能解决所有“怎么做（How）”的问题时，人类的核心竞争力将完全转移到“为什么（Why）”和“应该做什么（What should we do）”。哲学、伦理学、艺术和历史将不再是科学的点缀，而是 <strong>科技发展的导航仪</strong> 。</p>
+</li>
+<li>
+<p><strong>人机共生的创造力</strong> ：未来的艺术家和科学家，将是那些最善于与AI协作的人。他们利用AI处理海量数据和复杂计算，自己则专注于 <strong>审美判断、情感共鸣和伦理权衡</strong> 。这种“半人马”（Centaur，国际象棋中人机组合术语）模式，可能会爆发出超越纯人类或纯AI的创造力。</p>
+</li>
+<li>
+<p><strong>通识教育的复兴</strong> ：面对专业化陷阱，全球顶尖大学已经开始反思，重新强调 <strong>博雅教育</strong> （Liberal Arts）。不是要学生背诵所有知识，而是培养他们 <strong>批判性思维、跨学科整合能力以及对人类命运的关怀</strong> 。</p>
+</li>
+</ul>
+<h4 id="3544">3.5.4.4 总结：不要悲观，要进化<a class="headerlink" href="#3544" title="Permanent link">¶</a></h4>
+<p>你感到的“迷茫”和“冷漠”，其实是旧范式瓦解、新范式尚未完全建立时的 <strong>阵痛</strong> 。</p>
+<ul>
+<li><strong>关于局部最优</strong> ：我们确实面临风险，但AI本身也可以被设计成“全局搜索器”，帮助人类跳出思维定势。关键在于我们如何设计和使用这些工具。</li>
+<li><strong>关于全局视野</strong> ：它不再属于单个天才，而属于 <strong>“人+AI+社群”的复合体</strong> 。只要你保持好奇心，善用工具去连接不同领域的知识，你依然可以拥有某种意义上的“全局视野”。</li>
+<li><strong>关于未来</strong> ：人类不会变成冰冷的机器，相反，为了在AI时代保持独特性，我们将被迫（也是主动地）变得更加 <strong>“人本”</strong> 。未来的科学家可能需要像哲学家一样思考，未来的工程师可能需要像诗人一样感知。</li>
+</ul>
+<p>正如十七世纪后我们失去了通晓一切的牛顿，但我们迎来了分工协作、群星璀璨的现代科学体系。今天，我们或许正在失去对细节的掌控，但我们有机会迎来一个  <strong>人机协同、更具整体智慧和人文关怀的“新文艺复兴”</strong> 。</p>
+<p>你不必成为全知全能的博学家，你只需要做一个 <strong>清醒的连接者</strong> ，在这个爆炸的时代，用你的“Attention”去关注那些真正重要的事物，这就是对人类全局视野最大的贡献。</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+  <h2 id="__comments">评论</h2>
+  <!-- Insert generated snippet here -->
+  <script src="https://giscus.app/client.js" data-repo="chengang/llm123" data-repo-id="R_kgDOR9-ZGQ" data-category="Announcements" data-category-id="DIC_kwDOR9-ZGc4C6hu6" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async>
+  </script>
+
+  <!-- Synchronize Giscus theme with palette -->
+  <script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+      var theme = palette.color.scheme === "slate"
+        ? "transparent_dark"
+        : "light"
+
+      // Instruct Giscus to set theme
+      giscus.setAttribute("data-theme", theme)
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      var ref = document.querySelector("[data-md-component=palette]")
+      ref.addEventListener("change", function() {
+        var palette = __md_get("__palette")
+        if (palette && typeof palette.color === "object") {
+          var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+          // Instruct Giscus to change theme
+          var frame = document.querySelector(".giscus-frame")
+          frame.contentWindow.postMessage(
+            { giscus: { setConfig: { theme } } },
+            "https://giscus.app"
+          )
+        }
+      })
+    })
+  </script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚">
+        
+          
+          <a href="../chapter_2_linear_regression/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第 2 天 - 单层神经网络">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                第 2 天 - 单层神经网络
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../chapter_4_deep_neural_network/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第 4 天 - 深层神经网络">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第 4 天 - 深层神经网络
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2027 <a href="mailto:missingyousomuch@163.com">chengang</a><br>The website content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.action.edit", "content.code.annotate", "content.code.copy", "content.tabs.link", "content.tooltips", "math.mathjax", "navigation.indexes", "navigation.top", "navigation.footer", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/katex.js"></script>
+      
+        <script src="../javascripts/katex.min.js"></script>
+      
+        <script src="../javascripts/auto-render.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": false, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "none"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

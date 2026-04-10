@@ -1,0 +1,172 @@
+<svg width="900" height="800" viewBox="0 0 900 800" xmlns="http://www.w3.org/2000/svg" style="background:white; font-family: Arial, sans-serif;">
+  <!-- 标题 -->
+  <text x="450" y="30" font-size="18" text-anchor="middle" fill="#333">数据标准化：不同尺度数据统一到相同Z轴</text>
+  <text x="450" y="55" font-size="14" text-anchor="middle" fill="#555">Z = (X - μ) / σ</text>
+
+  <!-- ================= 总用户数数据集 (大) ================= -->
+  <!-- 总用户数轴 (上方，长度650) -->
+  <line x1="120" y1="100" x2="770" y2="100" stroke="black" stroke-width="2" />
+  <line x1="120" y1="95" x2="120" y2="105" stroke="black" stroke-width="1" />
+  <line x1="770" y1="95" x2="770" y2="105" stroke="black" stroke-width="1" />
+  <!-- 标签“总用户数”，进一步左移至x=50，垂直中心对齐 -->
+  <text x="55" y="101" font-size="12" fill="black" text-anchor="start" dominant-baseline="middle">总用户数</text>
+  <text x="790" y="103" font-size="12" fill="black">→</text>
+
+  <!-- 标准化后数据轴 (居中，长度200，新范围350-550) -->
+  <line x1="350" y1="280" x2="550" y2="280" stroke="black" stroke-width="2" />
+  <line x1="350" y1="275" x2="350" y2="285" stroke="black" stroke-width="1" />
+  <line x1="550" y1="275" x2="550" y2="285" stroke="black" stroke-width="1" />
+  <!-- 标签“标准化值 Z”，移至新轴左侧x=310，垂直中心对齐 -->
+  <text x="280" y="281" font-size="12" fill="black" text-anchor="start" dominant-baseline="middle">标准化值 Z</text>
+  <text x="570" y="283" font-size="12" fill="black">→</text>
+
+  <!-- 大数据集: [30000,40000,50000,60000,70000,80000,100000,120000,150000,200000] μ=90000 σ≈50794 -->
+  <!-- Z值: -1.181, -0.984, -0.787, -0.591, -0.394, -0.197, 0.197, 0.591, 1.181, 2.166 -->
+  <!-- 原始点映射: x = 120 + (value-30000)*(650/170000) = 120 + (value-30000)*0.00382353 (不变) -->
+  <!-- 标准化点映射到新轴: x = 450 + Z * 46.17 (原340+Z*46.17, 整体右移110) -->
+
+  <!-- 1. 连接线 (虚线) 从大原始点到标准化点 -->
+  <line x1="120.0" y1="100" x2="395.5" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 30000 Z=-1.18 -> 450-1.18*46.17=395.5 -->
+  <line x1="158.2" y1="100" x2="404.6" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 40000 Z=-0.98 -> 450-0.98*46.17=404.6 -->
+  <line x1="196.5" y1="100" x2="413.7" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 50000 Z=-0.79 -> 450-0.79*46.17=413.7 -->
+  <line x1="234.7" y1="100" x2="422.7" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 60000 Z=-0.59 -> 450-0.59*46.17=422.7 -->
+  <line x1="272.9" y1="100" x2="431.8" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 70000 Z=-0.39 -> 450-0.39*46.17=431.8 -->
+  <line x1="311.2" y1="100" x2="440.9" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 80000 Z=-0.20 -> 450-0.20*46.17=440.9 -->
+  <line x1="387.6" y1="100" x2="459.1" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 100000 Z=0.20 -> 450+0.20*46.17=459.1 -->
+  <line x1="464.1" y1="100" x2="477.3" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 120000 Z=0.59 -> 450+0.59*46.17=477.3 -->
+  <line x1="578.8" y1="100" x2="504.5" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 150000 Z=1.18 -> 450+1.18*46.17=504.5 -->
+  <line x1="770.0" y1="100" x2="550.0" y2="280" stroke="#aaa" stroke-dasharray="4 4" /> <!-- 200000 Z=2.17 -> 450+2.17*46.17=550.0 -->
+
+  <!-- 2. 大原始数据点 (蓝色) 标注数值 (不变) -->
+  <circle cx="120.0" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="120.0" y="75" font-size="11" text-anchor="middle" fill="#1E88E5">30000</text>
+  <circle cx="158.2" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="158.2" y="130" font-size="11" text-anchor="middle" fill="#1E88E5">40000</text>
+  <circle cx="196.5" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="196.5" y="75" font-size="11" text-anchor="middle" fill="#1E88E5">50000</text>
+  <circle cx="234.7" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="234.7" y="130" font-size="11" text-anchor="middle" fill="#1E88E5">60000</text>
+  <circle cx="272.9" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="272.9" y="75" font-size="11" text-anchor="middle" fill="#1E88E5">70000</text>
+  <circle cx="311.2" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="311.2" y="130" font-size="11" text-anchor="middle" fill="#1E88E5">80000</text>
+  <circle cx="387.6" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="387.6" y="75" font-size="11" text-anchor="middle" fill="#1E88E5">100000</text>
+  <circle cx="464.1" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="464.1" y="130" font-size="11" text-anchor="middle" fill="#1E88E5">120000</text>
+  <circle cx="578.8" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="578.8" y="75" font-size="11" text-anchor="middle" fill="#1E88E5">150000</text>
+  <circle cx="770.0" cy="100" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+  <text x="770.0" y="130" font-size="11" text-anchor="middle" fill="#1E88E5">200000</text>
+
+  <!-- 3. 大标准化数据点 (红色) 标注Z值 (新坐标) -->
+  <circle cx="395.5" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="395.5" y="310" font-size="11" text-anchor="middle" fill="#DC3220">-1.18</text> <!-- 30000 -->
+  <circle cx="404.6" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="404.6" y="250" font-size="11" text-anchor="middle" fill="#DC3220">-0.98</text> <!-- 40000 -->
+  <circle cx="413.7" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="413.7" y="310" font-size="11" text-anchor="middle" fill="#DC3220">-0.79</text> <!-- 50000 -->
+  <circle cx="422.7" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="422.7" y="250" font-size="11" text-anchor="middle" fill="#DC3220">-0.59</text> <!-- 60000 -->
+  <circle cx="431.8" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="431.8" y="310" font-size="11" text-anchor="middle" fill="#DC3220">-0.39</text> <!-- 70000 -->
+  <circle cx="440.9" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="440.9" y="250" font-size="11" text-anchor="middle" fill="#DC3220">-0.20</text> <!-- 80000 -->
+  <circle cx="459.1" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="459.1" y="310" font-size="11" text-anchor="middle" fill="#DC3220">0.20</text> <!-- 100000 -->
+  <circle cx="477.3" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="477.3" y="250" font-size="11" text-anchor="middle" fill="#DC3220">0.59</text> <!-- 120000 -->
+  <circle cx="504.5" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="504.5" y="310" font-size="11" text-anchor="middle" fill="#DC3220">1.18</text> <!-- 150000 -->
+  <circle cx="550.0" cy="280" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+  <text x="550.0" y="250" font-size="11" text-anchor="middle" fill="#DC3220">2.17</text> <!-- 200000 -->
+
+  <!-- 标注大数据集均值 μ=90000 位置 (不变) -->
+  <line x1="349.4" y1="90" x2="349.4" y2="110" stroke="black" stroke-width="1" stroke-dasharray="2 2" />
+  <text x="349.4" y="60" font-size="12" text-anchor="middle" fill="black">μ = 90000</text>
+  <!-- 标注标准化均值 μ'=0 位置 (新中心450) -->
+  <line x1="450" y1="270" x2="450" y2="290" stroke="black" stroke-width="1" stroke-dasharray="2 2" />
+  <text x="450" y="235" font-size="12" text-anchor="middle" fill="black">μ' = 0</text>
+
+  <!-- 标注大数据集标准差范围 (不变) -->
+  <line x1="155.2" y1="85" x2="543.7" y2="85" stroke="green" stroke-width="2" />
+  <polygon points="155.2,85 150.2,82 150.2,88" fill="green" />
+  <polygon points="543.7,85 548.7,82 548.7,88" fill="green" />
+  <text x="349.4" y="45" font-size="11" text-anchor="middle" fill="green">σ ≈ 50794</text>
+  <!-- 标准化轴标准差范围 (新轴: -1: 450-46.17=403.8, +1: 450+46.17=496.2) -->
+  <line x1="403.8" y1="300" x2="496.2" y2="300" stroke="green" stroke-width="2" />
+  <polygon points="403.8,300 398.8,297 398.8,303" fill="green" />
+  <polygon points="496.2,300 501.2,297 501.2,303" fill="green" />
+  <text x="450" y="335" font-size="11" text-anchor="middle" fill="green">σ = 1</text>
+
+  <!-- ================= 推送方式数据集 [0,1,2] 轴右移110，中心与μ'=0对齐 ================= -->
+  <!-- 推送方式轴 (下方，y=360，长度50，中心x=450) -->
+  <line x1="425" y1="360" x2="475" y2="360" stroke="black" stroke-width="2" />
+  <line x1="425" y1="355" x2="425" y2="365" stroke="black" stroke-width="1" />
+  <line x1="475" y1="355" x2="475" y2="365" stroke="black" stroke-width="1" />
+  <!-- 标签“推送方式”，左移x=385，垂直中心对齐 -->
+  <text x="360" y="360" font-size="12" fill="black" text-anchor="start" dominant-baseline="middle">推送方式</text>
+
+  <!-- 小数据集均值和标准差: μ=1, σ≈0.8165, Z值: -1.225, 0, 1.225 -->
+  <!-- 小原始点映射: x = 425 + value * 25 (轴长50，值域0~2) -->
+  <!-- 小标准化点映射到同一Z轴: x = 450 + Z * 46.17 -->
+  <!-- 连接线从下方轴到Z轴 -->
+  <line x1="425" y1="360" x2="393.4" y2="280" stroke="#b07aa2" stroke-dasharray="4 4" stroke-opacity="0.7" /> <!-- 0 Z=-1.22 -> 450-1.22*46.17=393.4 -->
+  <line x1="450" y1="360" x2="450.0" y2="280" stroke="#b07aa2" stroke-dasharray="4 4" stroke-opacity="0.7" /> <!-- 1 Z=0 -->
+  <line x1="475" y1="360" x2="506.6" y2="280" stroke="#b07aa2" stroke-dasharray="4 4" stroke-opacity="0.7" /> <!-- 2 Z=1.22 -> 450+1.22*46.17=506.6 -->
+
+  <!-- 小原始数据点 (紫色) 标注数值 -->
+  <circle cx="425" cy="360" r="6" fill="#9b59b6" stroke="white" stroke-width="2" />
+  <text x="425" y="385" font-size="11" text-anchor="middle" fill="#9b59b6">0</text>
+  <circle cx="450" cy="360" r="6" fill="#9b59b6" stroke="white" stroke-width="2" />
+  <text x="450" y="385" font-size="11" text-anchor="middle" fill="#9b59b6">1</text>
+  <circle cx="475" cy="360" r="6" fill="#9b59b6" stroke="white" stroke-width="2" />
+  <text x="475" y="385" font-size="11" text-anchor="middle" fill="#9b59b6">2</text>
+
+  <!-- 小标准化数据点 (紫色) 标注Z值 -->
+  <circle cx="393.4" cy="280" r="6" fill="#9b59b6" stroke="white" stroke-width="2" />
+  <text x="393.4" y="250" font-size="11" text-anchor="middle" fill="#9b59b6">-1.22</text> <!-- 0 -->
+  <circle cx="450.0" cy="280" r="6" fill="#9b59b6" stroke="white" stroke-width="2" />
+  <text x="450.0" y="310" font-size="11" text-anchor="middle" fill="#9b59b6">0.00</text> <!-- 1 -->
+  <circle cx="506.6" cy="280" r="6" fill="#9b59b6" stroke="white" stroke-width="2" />
+  <text x="506.6" y="250" font-size="11" text-anchor="middle" fill="#9b59b6">1.22</text> <!-- 2 -->
+
+  <!-- 标注小数据集的均值和标准差信息 (更新后坐标) -->
+  <line x1="450" y1="350" x2="450" y2="370" stroke="#9b59b6" stroke-width="1" stroke-dasharray="2 2" />
+  <text x="450" y="340" font-size="11" text-anchor="middle" fill="#9b59b6">μ=1</text>
+  <!-- 标准差范围示意 (μ±σ: 0.1835 ~ 1.8165 对应 x 425+0.1835*25=429.6 和 425+1.8165*25=470.4) -->
+  <line x1="429.6" y1="370" x2="470.4" y2="370" stroke="#9b59b6" stroke-width="1.5" />
+  <polygon points="429.6,370 424.6,367 424.6,373" fill="#9b59b6" />
+  <polygon points="470.4,370 475.4,367 475.4,373" fill="#9b59b6" />
+  <text x="450" y="395" font-size="10" text-anchor="middle" fill="#9b59b6">σ≈0.816</text>
+
+  <!-- ================= 图例 (更新文字) ================= -->
+  <g transform="translate(700, 450)">
+    <circle cx="0" cy="0" r="7" fill="#1E88E5" stroke="white" stroke-width="2" />
+    <text x="15" y="4" font-size="12">总用户数</text>
+    <circle cx="0" cy="30" r="7" fill="#DC3220" stroke="white" stroke-width="2" />
+    <text x="15" y="34" font-size="12">总用户数标准化值</text>
+    <circle cx="0" cy="60" r="6" fill="#9b59b6" stroke="white" stroke-width="2" />
+    <text x="15" y="64" font-size="12">推送方式</text>
+    <circle cx="0" cy="90" r="6" fill="#9b59b6" stroke="white" stroke-width="2" />
+    <text x="15" y="94" font-size="12">推送方式标准化值</text>
+    <line x1="0" y1="120" x2="20" y2="120" stroke="#aaa" stroke-dasharray="4 4" />
+    <text x="25" y="124" font-size="12">对应关系</text>
+  </g>
+
+  <!-- 说明文字 -->
+  <text x="150" y="530" font-size="13" fill="#333" font-weight="bold">不同尺度数据标准化后均在相近的Z值区间：</text>
+  <text x="170" y="560" font-size="12" fill="#333">• 总用户数 [30000~200000] → Z ∈ [-1.18, 2.17]</text>
+  <text x="170" y="585" font-size="12" fill="#333">• 推送方式 [0,1,2] → Z ∈ [-1.22, 1.22]</text>
+  <text x="170" y="610" font-size="12" fill="#333">两者均以0为中心，标准差为1，实现了尺度统一。</text>
+
+  <!-- 计算参数 -->
+  <text x="150" y="660" font-size="12" fill="#555">总用户数: [30000,40000,50000,60000,70000,80000,100000,120000,150000,200000] μ=90000 σ≈50794</text>
+  <text x="150" y="685" font-size="12" fill="#555">推送方式: [0,1,2] μ=1 σ≈0.8165</text>
+  <text x="150" y="710" font-size="12" fill="#555">Z = (X - μ) / σ 使所有数据均值为0，标准差为1</text>
+
+  <!-- 箭头指示过程 -->
+  <path d="M450 160 L450 250" stroke="#666" stroke-width="1.5" fill="none" stroke-dasharray="2 2" />
+  <polygon points="450,250 445,240 455,240" fill="#666" transform="rotate(180,450,250)" />
+  <text x="485" y="200" font-size="12" fill="#666">减去μ，除以σ</text>
+</svg>

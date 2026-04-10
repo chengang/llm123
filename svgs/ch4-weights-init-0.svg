@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="1000" height="600" style="background-color: #f8f9fa; font-family: 'Segoe UI', Arial, sans-serif;">
+  <defs>
+    <!-- 节点渐变 -->
+    <linearGradient id="gradInput" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradHidden" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#50E3C2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3DCAB1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gradOutput" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5A623;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D38A1A;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 阴影滤镜 -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.15" />
+    </filter>
+    <filter id="shadowLight" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.1" />
+    </filter>
+  </defs>
+
+  <!-- 图例（右侧与 y 圆的右侧对齐） -->
+  <g transform="translate(715, 20)">
+    <rect x="0" y="0" width="140" height="110" rx="6" fill="#ffffff" filter="url(#shadowLight)" stroke="#ecf0f1" stroke-width="1"/>
+    
+    <!-- 输入节点 -->
+    <circle cx="20" cy="20" r="10" fill="url(#gradInput)" />
+    <text x="35" y="25" font-size="13" fill="#34495e">输入节点</text>
+    
+    <!-- 第1层节点 -->
+    <circle cx="20" cy="55" r="10" fill="url(#gradHidden)" />
+    <text x="35" y="60" font-size="13" fill="#34495e">第1层节点</text>
+    
+    <!-- 输出层 -->
+    <circle cx="20" cy="90" r="10" fill="url(#gradOutput)" />
+    <text x="35" y="95" font-size="13" fill="#34495e">输出层</text>
+  </g>
+
+  <!-- 网络连接（红色虚线表示初始化为 0） -->
+  <g stroke="#D0021B" stroke-width="2" stroke-dasharray="6,4">
+    <!-- 输入层到第 1 层 -->
+    <line x1="250" y1="210" x2="430" y2="210" />
+    <line x1="250" y1="450" x2="430" y2="210" />
+    <line x1="250" y1="210" x2="430" y2="450" />
+    <line x1="250" y1="450" x2="430" y2="450" />
+    
+    <!-- 第 1 层到输出层 -->
+    <line x1="450" y1="210" x2="770" y2="380" />
+    <line x1="450" y1="450" x2="770" y2="380" />
+  </g>
+
+  <!-- 输入节点 -->
+  <circle cx="210" cy="210" r="40" fill="url(#gradInput)" filter="url(#shadow)" />
+  <text x="210" y="215" font-size="20" fill="#ffffff" font-weight="bold" text-anchor="middle">x₁</text>
+
+  <circle cx="210" cy="450" r="40" fill="url(#gradInput)" filter="url(#shadow)" />
+  <text x="210" y="455" font-size="20" fill="#ffffff" font-weight="bold" text-anchor="middle">x₂</text>
+
+  <!-- 第 1 层节点 -->
+  <circle cx="470" cy="210" r="40" fill="url(#gradHidden)" filter="url(#shadow)" />
+  <text x="470" y="215" font-size="20" fill="#2c3e50" font-weight="bold" text-anchor="middle">w₁</text>
+
+  <circle cx="470" cy="450" r="40" fill="url(#gradHidden)" filter="url(#shadow)" />
+  <text x="470" y="455" font-size="20" fill="#2c3e50" font-weight="bold" text-anchor="middle">w₂</text>
+
+  <!-- 输出节点 -->
+  <circle cx="810" cy="380" r="45" fill="url(#gradOutput)" filter="url(#shadow)" />
+  <text x="810" y="385" font-size="22" fill="#ffffff" font-weight="bold" text-anchor="middle">y</text>
+</svg>

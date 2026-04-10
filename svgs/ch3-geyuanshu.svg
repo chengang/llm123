@@ -1,0 +1,35 @@
+<svg width="500" height="550" viewBox="0 0 500 550" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景可加白色 -->
+  <rect width="500" height="550" fill="white" />
+
+  <!-- 固定圆：黑色细线 -->
+  <circle cx="250" cy="250" r="200" stroke="black" stroke-width="1" fill="none" />
+  <!-- 圆心标记 -->
+  <circle cx="250" cy="250" r="3" fill="black" />
+
+  <!-- 内接正四边形 (虚线黑色) -->
+  <polygon points="250,50 450,250 250,450 50,250" 
+           stroke="black" stroke-width="1.5" stroke-dasharray="6 4" fill="none" stroke-opacity="0.8" />
+
+  <!-- 内接正八边形 (实线红色) 保留原坐标 -->
+  <polygon points="250,50 391.42,108.58 450,250 391.42,391.42 250,450 108.58,391.42 50,250 108.58,108.58" 
+           stroke="red" stroke-width="2" fill="none" stroke-opacity="0.8" />
+
+  <!-- 内接正十六边形 (点划线蓝色) 计算坐标保留两位小数 -->
+  <polygon points="250,50 326.54,65.22 391.42,108.58 434.78,173.46 450,250 434.78,326.54 391.42,391.42 326.54,434.78 250,450 173.46,434.78 108.58,391.42 65.22,326.54 50,250 65.22,173.46 108.58,108.58 173.46,65.22" 
+           stroke="blue" stroke-width="1.5" stroke-dasharray="8 3 2 3" fill="none" stroke-opacity="0.8" />
+
+  <!-- 图例 -->
+  <g transform="translate(80, 500)">
+    <text x="0" y="0" font-family="SimHei, Arial, sans-serif" font-size="14">图例：</text>
+    <line x1="50" y1="-5" x2="80" y2="-5" stroke="black" stroke-width="1.5" stroke-dasharray="6 4" />
+    <text x="90" y="0" font-family="SimHei, Arial, sans-serif" font-size="12">四边形</text>
+    <line x1="140" y1="-5" x2="170" y2="-5" stroke="red" stroke-width="2" />
+    <text x="180" y="0" font-family="SimHei, Arial, sans-serif" font-size="12">八边形</text>
+    <line x1="230" y1="-5" x2="260" y2="-5" stroke="blue" stroke-width="1.5" stroke-dasharray="8 3 2 3" />
+    <text x="270" y="0" font-family="SimHei, Arial, sans-serif" font-size="12">十六边形</text>
+  </g>
+
+  <!-- 标题 -->
+  <text x="250" y="30" text-anchor="middle" font-family="SimHei, Arial, sans-serif" font-size="20" fill="#333">割圆术</text>
+</svg>

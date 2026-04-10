@@ -1,0 +1,71 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 渐变定义：从深蓝到亮橙，象征从理论到实践 -->
+    <linearGradient id="grad-main" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2C3E50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EE4C2C;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 发光效果，用于强调核心节点 -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- 背景圆：代表完整的知识体系或地球/世界 -->
+  <circle cx="256" cy="256" r="240" fill="#f8f9fa" stroke="#e9ecef" stroke-width="4"/>
+
+  <!-- 核心元素 1: 梯度下降曲线 / 手搓的轨迹 -->
+  <!-- 这条线既代表数学中的优化路径，也抽象地构成了一只手正在向下探索的形状 -->
+  <path d="M 150 150 
+           C 200 150, 220 200, 256 256 
+           C 290 310, 320 350, 360 360" 
+        fill="none" 
+        stroke="url(#grad-main)" 
+        stroke-width="24" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        filter="url(#glow)"
+  />
+
+  <!-- 核心元素 2: 神经节点 / 最优解 / 被手搓出的模型 -->
+  <!-- 位于曲线的终点，象征通过数学优化找到的最佳参数 -->
+  <circle cx="360" cy="360" r="30" fill="#EE4C2C">
+    <animate attributeName="r" values="30;34;30" dur="3s" repeatCount="indefinite" />
+    <animate attributeName="opacity" values="1;0.8;1" dur="3s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- 核心元素 3: 数学符号 ∂ (偏微分) -->
+  <!-- 放置在左上角，作为背景水印，强调数学基础 -->
+  <text x="140" y="180" 
+        font-family="'Times New Roman', serif" 
+        font-weight="bold" 
+        font-size="80" 
+        fill="#2C3E50" 
+        opacity="0.15" 
+        transform="rotate(-15 140 180)">
+    ∂
+  </text>
+
+  <!-- 核心元素 4: 代码括号 < > -->
+  <!-- 象征“手搓代码”，环绕在周围 -->
+  <path d="M 180 100 Q 150 256 180 412" 
+        fill="none" 
+        stroke="#2C3E50" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        opacity="0.3"/>
+  <path d="M 332 100 Q 362 256 332 412" 
+        fill="none" 
+        stroke="#2C3E50" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        opacity="0.3"/>
+
+  <!-- 标题文字 (可选，如果只需要图标可删除此组) -->
+  <!-- 使用等宽字体体现代码感 -->
+  <g font-family="'Courier New', monospace" font-weight="bold" fill="#2C3E50">
+    <text x="256" y="460" font-size="24" text-anchor="middle" letter-spacing="2">LLM HAND-CODED</text>
+  </g>
+</svg>

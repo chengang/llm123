@@ -1,0 +1,134 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <title>对数函数曲线：log₂(x)、ln(x)、log₁₀(x) 中文标注</title>
+  <desc>在同一个坐标系中绘制以2为底的对数、自然对数、常用对数曲线。x范围0.2～10，y范围-3～4。曲线上添加了中文标签。</desc>
+  <!-- 白色背景 -->
+  <rect x="0" y="0" width="800" height="600" fill="white" />
+
+  <!-- 绘制坐标轴：原点在(100,550)，x轴向右，y轴向上（屏幕y向下，通过计算实现） -->
+  <!-- x轴主线 -->
+  <line x1="100" y1="550" x2="700" y2="550" stroke="black" stroke-width="1.5" />
+  <!-- y轴主线 -->
+  <line x1="100" y1="50" x2="100" y2="550" stroke="black" stroke-width="1.5" />
+
+  <!-- 轴箭头 (简单三角形) -->
+  <polygon points="695,545 700,550 695,555" fill="black" /> <!-- x轴箭头 -->
+  <polygon points="95,55 100,50 105,55" fill="black" />    <!-- y轴箭头 -->
+
+  <!-- 刻度与标签 (x轴: 1 到 10) -->
+  <!-- 刻度线 -->
+  <line x1="160" y1="545" x2="160" y2="555" stroke="black" stroke-width="1" /> <!-- x=1 -->
+  <line x1="220" y1="545" x2="220" y2="555" stroke="black" stroke-width="1" /> <!-- x=2 -->
+  <line x1="280" y1="545" x2="280" y2="555" stroke="black" stroke-width="1" /> <!-- x=3 -->
+  <line x1="340" y1="545" x2="340" y2="555" stroke="black" stroke-width="1" /> <!-- x=4 -->
+  <line x1="400" y1="545" x2="400" y2="555" stroke="black" stroke-width="1" /> <!-- x=5 -->
+  <line x1="460" y1="545" x2="460" y2="555" stroke="black" stroke-width="1" /> <!-- x=6 -->
+  <line x1="520" y1="545" x2="520" y2="555" stroke="black" stroke-width="1" /> <!-- x=7 -->
+  <line x1="580" y1="545" x2="580" y2="555" stroke="black" stroke-width="1" /> <!-- x=8 -->
+  <line x1="640" y1="545" x2="640" y2="555" stroke="black" stroke-width="1" /> <!-- x=9 -->
+  <line x1="700" y1="545" x2="700" y2="555" stroke="black" stroke-width="1" /> <!-- x=10 -->
+  <!-- x轴数字标签 -->
+  <text x="155" y="570" font-family="Arial" font-size="10">1</text>
+  <text x="215" y="570" font-family="Arial" font-size="10">2</text>
+  <text x="275" y="570" font-family="Arial" font-size="10">3</text>
+  <text x="335" y="570" font-family="Arial" font-size="10">4</text>
+  <text x="395" y="570" font-family="Arial" font-size="10">5</text>
+  <text x="455" y="570" font-family="Arial" font-size="10">6</text>
+  <text x="515" y="570" font-family="Arial" font-size="10">7</text>
+  <text x="575" y="570" font-family="Arial" font-size="10">8</text>
+  <text x="635" y="570" font-family="Arial" font-size="10">9</text>
+  <text x="693" y="570" font-family="Arial" font-size="10">10</text>
+  <!-- x轴标签 "x" -->
+  <text x="720" y="540" font-family="Arial" font-size="14" font-weight="bold">x</text>
+
+  <!-- y轴刻度：-3 到 4 -->
+  <!-- 计算y屏幕坐标：y_svg = 550 - (y + 3) * (500/7) ，500/7≈71.4286 -->
+  <!-- y = -3 -->
+  <line x1="95" y1="550" x2="105" y2="550" stroke="black" stroke-width="1" />
+  <text x="70" y="555" font-family="Arial" font-size="10">-3</text>
+  <!-- y = -2 -->
+  <line x1="95" y1="478.6" x2="105" y2="478.6" stroke="black" stroke-width="1" />
+  <text x="70" y="483" font-family="Arial" font-size="10">-2</text>
+  <!-- y = -1 -->
+  <line x1="95" y1="407.1" x2="105" y2="407.1" stroke="black" stroke-width="1" />
+  <text x="70" y="412" font-family="Arial" font-size="10">-1</text>
+  <!-- y = 0 -->
+  <line x1="95" y1="335.7" x2="105" y2="335.7" stroke="black" stroke-width="1" />
+  <text x="75" y="340" font-family="Arial" font-size="10">0</text>
+  <!-- y = 1 -->
+  <line x1="95" y1="264.3" x2="105" y2="264.3" stroke="black" stroke-width="1" />
+  <text x="75" y="269" font-family="Arial" font-size="10">1</text>
+  <!-- y = 2 -->
+  <line x1="95" y1="192.9" x2="105" y2="192.9" stroke="black" stroke-width="1" />
+  <text x="75" y="197" font-family="Arial" font-size="10">2</text>
+  <!-- y = 3 -->
+  <line x1="95" y1="121.4" x2="105" y2="121.4" stroke="black" stroke-width="1" />
+  <text x="75" y="126" font-family="Arial" font-size="10">3</text>
+  <!-- y = 4 -->
+  <line x1="95" y1="50" x2="105" y2="50" stroke="black" stroke-width="1" />
+  <text x="75" y="55" font-family="Arial" font-size="10">4</text>
+  <!-- y轴标签 "y" -->
+  <text x="60" y="30" font-family="Arial" font-size="14" font-weight="bold">y</text>
+
+  <!-- 绘制网格线 (浅灰色虚线) 可选，增加可读性 -->
+  <!-- 垂直网格对应整数x -->
+  <line x1="160" y1="50" x2="160" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="220" y1="50" x2="220" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="280" y1="50" x2="280" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="340" y1="50" x2="340" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="400" y1="50" x2="400" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="460" y1="50" x2="460" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="520" y1="50" x2="520" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="580" y1="50" x2="580" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="640" y1="50" x2="640" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="700" y1="50" x2="700" y2="550" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <!-- 水平网格对应整数y -->
+  <line x1="100" y1="478.6" x2="700" y2="478.6" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="100" y1="407.1" x2="700" y2="407.1" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="100" y1="335.7" x2="700" y2="335.7" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="100" y1="264.3" x2="700" y2="264.3" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="100" y1="192.9" x2="700" y2="192.9" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+  <line x1="100" y1="121.4" x2="700" y2="121.4" stroke="lightgray" stroke-width="0.8" stroke-dasharray="3,3" />
+
+  <!-- 绘制三条曲线 (使用折线近似，点取自x=0.2,0.3,0.5,0.8,1,1.5,2,3,4,5,6,7,8,9,10) -->
+  <!-- 曲线1: log2(x) 红色 -->
+  <path d="M112,501.6 L118,459.8 L130,407.1 L148,358.7 L160,335.7 L190,293.9 L220,264.3 L280,222.5 L340,192.9 L400,169.9 L460,151.1 L520,135.2 L580,121.4 L640,109.3 L700,98.4" 
+        fill="none" stroke="red" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- 曲线2: ln(x) 绿色 -->
+  <path d="M112,450.7 L118,421.7 L130,385.2 L148,351.7 L160,335.7 L190,306.8 L220,286.2 L280,257.2 L340,236.7 L400,220.8 L460,207.7 L520,196.7 L580,187.2 L640,178.8 L700,171.2" 
+        fill="none" stroke="green" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- 曲线3: log10(x) 蓝色 -->
+  <path d="M112,385.6 L118,373.1 L130,357.2 L148,342.6 L160,335.7 L190,323.1 L220,314.2 L280,301.6 L340,292.7 L400,285.8 L460,280.1 L520,275.4 L580,271.2 L640,267.6 L700,264.3" 
+        fill="none" stroke="blue" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+
+  <!-- 曲线中文标签 (位于x≈6附近，带半透明白色背景) -->
+  <!-- 以2为底 (红色) -->
+  <rect x="430" y="115" width="70" height="20" fill="white" fill-opacity="0.8" rx="3" ry="3" />
+  <text x="435" y="130" font-family="Arial" font-size="12" fill="red">以2为底</text>
+  <!-- 自然对数 (绿色) -->
+  <rect x="430" y="175" width="70" height="20" fill="white" fill-opacity="0.8" rx="3" ry="3" />
+  <text x="435" y="190" font-family="Arial" font-size="12" fill="green">自然对数</text>
+  <!-- 常用对数 (蓝色) -->
+  <rect x="430" y="285" width="70" height="20" fill="white" fill-opacity="0.8" rx="3" ry="3" />
+  <text x="435" y="300" font-family="Arial" font-size="12" fill="blue">常用对数</text>
+
+  <!-- 图例 -->
+  <rect x="535" y="50" width="160" height="110" fill="white" stroke="black" stroke-width="1" rx="5" ry="5" />
+  <!-- log2 红色 -->
+  <line x1="560" y1="75" x2="590" y2="75" stroke="red" stroke-width="2" />
+  <text x="600" y="80" font-family="Arial" font-size="14">y = log₂(x)</text>
+  <!-- ln 绿色 -->
+  <line x1="560" y1="105" x2="590" y2="105" stroke="green" stroke-width="2" />
+  <text x="600" y="110" font-family="Arial" font-size="14">y = ln(x)</text>
+  <!-- log10 蓝色 -->
+  <line x1="560" y1="135" x2="590" y2="135" stroke="blue" stroke-width="2" />
+  <text x="600" y="140" font-family="Arial" font-size="14">y = log₁₀(x)</text>
+
+  <!-- 额外说明：坐标系原点(1,0)处画一个小圆圈作为参考 -->
+  <circle cx="160" cy="335.7" r="3" fill="none" stroke="black" stroke-width="1" />
+  <text x="170" y="325" font-family="Arial" font-size="9">(1,0)</text>
+
+  <!-- 绘制标题 -->
+  <!--<text x="300" y="30" font-family="Arial" font-size="18" font-weight="bold" fill="#333">对数函数曲线比较</text>-->
+</svg>

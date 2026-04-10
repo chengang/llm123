@@ -1,0 +1,51 @@
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .line { stroke: #cbd5e1; stroke-width: 1.5; }
+      .node-in { fill: #3b82f6; }
+      .node-out { fill: #10b981; }
+      .text-in { fill: #ffffff; font-size: 16px; text-anchor: middle; dominant-baseline: central; font-weight: bold; }
+      .text-out { fill: #ffffff; font-size: 16px; text-anchor: middle; dominant-baseline: central; font-weight: bold; }
+    </style>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="800" height="600" fill="#f8fafc" rx="15" />
+
+  <!-- 连接线 -->
+  <line x1="200" y1="100" x2="600" y2="150" class="line"/>
+  <line x1="200" y1="100" x2="600" y2="300" class="line"/>
+  <line x1="200" y1="100" x2="600" y2="450" class="line"/>
+  <line x1="200" y1="200" x2="600" y2="150" class="line"/>
+  <line x1="200" y1="200" x2="600" y2="300" class="line"/>
+  <line x1="200" y1="200" x2="600" y2="450" class="line"/>
+  <line x1="200" y1="300" x2="600" y2="150" class="line"/>
+  <line x1="200" y1="300" x2="600" y2="300" class="line"/>
+  <line x1="200" y1="300" x2="600" y2="450" class="line"/>
+  <line x1="200" y1="400" x2="600" y2="150" class="line"/>
+  <line x1="200" y1="400" x2="600" y2="300" class="line"/>
+  <line x1="200" y1="400" x2="600" y2="450" class="line"/>
+  <line x1="200" y1="500" x2="600" y2="150" class="line"/>
+  <line x1="200" y1="500" x2="600" y2="300" class="line"/>
+  <line x1="200" y1="500" x2="600" y2="450" class="line"/>
+
+  <!-- 输入层节点 -->
+  <circle cx="200" cy="100" r="24" class="node-in" />
+  <text x="200" y="100" class="text-in">x₁</text>
+  <circle cx="200" cy="200" r="24" class="node-in" />
+  <text x="200" y="200" class="text-in">x₂</text>
+  <circle cx="200" cy="300" r="24" class="node-in" />
+  <text x="200" y="300" class="text-in">x₃</text>
+  <circle cx="200" cy="400" r="24" class="node-in" />
+  <text x="200" y="400" class="text-in">x₄</text>
+  <circle cx="200" cy="500" r="24" class="node-in" />
+  <text x="200" y="500" class="text-in">x₅</text>
+
+  <!-- 输出层节点 -->
+  <circle cx="600" cy="150" r="24" class="node-out" />
+  <text x="600" y="150" class="text-out">y₁</text>
+  <circle cx="600" cy="300" r="24" class="node-out" />
+  <text x="600" y="300" class="text-out">y₂</text>
+  <circle cx="600" cy="450" r="24" class="node-out" />
+  <text x="600" y="450" class="text-out">y₃</text>
+</svg>
