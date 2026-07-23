@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 450" width="100%" height="100%" style="background-color: #f8f9fa; font-family: system-ui, -apple-system, sans-serif;">
+  <defs>
+    <!-- 箭头定义 -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    </marker>
+    <!-- 阴影滤镜 -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <!-- 输入部分 -->
+  <g transform="translate(80, 180)">
+    <rect x="0" y="0" width="140" height="60" rx="8" fill="#3b82f6" filter="url(#shadow)"/>
+    <text x="70" y="25" font-size="16" fill="#ffffff" font-weight="bold" text-anchor="middle" dominant-baseline="central">输入 整数编码</text>
+    <text x="70" y="45" font-size="14" fill="#dbeafe" text-anchor="middle" dominant-baseline="central">索引 = 2</text>
+  </g>
+
+  <!-- 嵌入矩阵部分 -->
+  <g transform="translate(300, 80)">
+    <!-- 矩阵背景 -->
+    <rect x="0" y="20" width="300" height="270" rx="8" fill="#ffffff" stroke="#d1d5db" stroke-width="2" filter="url(#shadow)"/>
+    
+    <!-- 矩阵标题 -->
+    <rect x="0" y="0" width="300" height="40" rx="8" fill="#f59e0b" />
+    <rect x="0" y="20" width="300" height="20" fill="#f59e0b" />
+    <text x="150" y="25" font-size="16" fill="#ffffff" font-weight="bold" text-anchor="middle" dominant-baseline="central">self.weight（嵌入矩阵）</text>
+
+    <!-- 矩阵列索引 -->
+    <g font-size="12" fill="#6b7280" text-anchor="middle">
+      <text x="50" y="35">列 1</text>
+      <text x="150" y="35">列 2</text>
+      <text x="250" y="35">列 3</text>
+    </g>
+
+    <!-- 矩阵行 0 -->
+    <g>
+      <rect x="10" y="50" width="280" height="40" rx="4" fill="#f3f4f6"/>
+      <text x="50" y="70" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_00</text>
+      <text x="150" y="70" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_01</text>
+      <text x="250" y="70" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_02</text>
+      <text x="-5" y="70" font-size="14" fill="#6b7280" text-anchor="end" dominant-baseline="central">行 0</text>
+    </g>
+
+    <!-- 矩阵行 1 -->
+    <g>
+      <rect x="10" y="100" width="280" height="40" rx="4" fill="#f3f4f6"/>
+      <text x="50" y="120" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_10</text>
+      <text x="150" y="120" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_11</text>
+      <text x="250" y="120" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_12</text>
+      <text x="-5" y="120" font-size="14" fill="#6b7280" text-anchor="end" dominant-baseline="central">行 1</text>
+    </g>
+
+    <!-- 矩阵行 2（高亮：被取出） -->
+    <g>
+      <rect x="10" y="150" width="280" height="40" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+      <text x="50" y="170" font-size="14" fill="#92400e" font-weight="bold" text-anchor="middle" dominant-baseline="central">w_20</text>
+      <text x="150" y="170" font-size="14" fill="#92400e" font-weight="bold" text-anchor="middle" dominant-baseline="central">w_21</text>
+      <text x="250" y="170" font-size="14" fill="#92400e" font-weight="bold" text-anchor="middle" dominant-baseline="central">w_22</text>
+      <text x="-5" y="170" font-size="14" fill="#d97706" font-weight="bold" text-anchor="end" dominant-baseline="central">行 2</text>
+    </g>
+
+    <!-- 矩阵行 3 -->
+    <g>
+      <rect x="10" y="200" width="280" height="40" rx="4" fill="#f3f4f6"/>
+      <text x="50" y="220" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_30</text>
+      <text x="150" y="220" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_31</text>
+      <text x="250" y="220" font-size="14" fill="#4b5563" text-anchor="middle" dominant-baseline="central">w_32</text>
+      <text x="-5" y="220" font-size="14" fill="#6b7280" text-anchor="end" dominant-baseline="central">行 3</text>
+    </g>
+  </g>
+
+  <!-- 连接箭头 1：输入到矩阵行 2 -->
+  <g fill="none" stroke="#4b5563" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M 220 210 C 250 210, 250 280, 295 280" />
+  </g>
+  <text x="270" y="240" font-size="14" fill="#4b5563" font-weight="bold" text-anchor="middle" dominant-baseline="central">取出行 2</text>
+
+  <!-- 连接箭头 2：矩阵行 2 到输出 -->
+  <g fill="none" stroke="#4b5563" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M 600 280 L 670 280" />
+  </g>
+  <text x="640" y="270" font-size="14" fill="#4b5563" font-weight="bold" text-anchor="middle" dominant-baseline="central">向量</text>
+
+  <!-- 输出部分 -->
+  <g transform="translate(680, 230)">
+    <rect x="0" y="0" width="160" height="60" rx="8" fill="#10b981" filter="url(#shadow)"/>
+    <text x="80" y="25" font-size="16" fill="#ffffff" font-weight="bold" text-anchor="middle" dominant-baseline="central">输出 嵌入向量</text>
+    <text x="80" y="45" font-size="14" fill="#d1fae5" text-anchor="middle" dominant-baseline="central">[w_20, w_21, w_22]</text>
+  </g>
+
+  <!-- 底部核心提示 -->
+  <g transform="translate(250, 380)">
+    <rect x="0" y="0" width="400" height="35" rx="17.5" fill="#f3f4f6" stroke="#d1d5db"/>
+    <text x="200" y="22" font-size="16" fill="#4b5563" font-weight="bold" text-anchor="middle" dominant-baseline="central">💡 整数编码仅用于取出矩阵中的某一行向量</text>
+  </g>
+</svg>

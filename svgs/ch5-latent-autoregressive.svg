@@ -1,0 +1,60 @@
+<svg width="750" height="520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 箭头标记 -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#2c3e50"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#27ae60"/>
+    </marker>
+    <!-- 计算单元渐变 -->
+    <linearGradient id="phiGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f5b041"/>
+      <stop offset="100%" stop-color="#f39c12"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 左侧层级标签 -->
+  <text x="40" y="58" font-size="20" fill="#333" font-family="Arial, sans-serif">输出层</text>
+  <text x="40" y="254" font-size="20" fill="#333" font-family="Arial, sans-serif">隐状态</text>
+  <text x="40" y="435" font-size="20" fill="#333" font-family="Arial, sans-serif">输入</text>
+
+  <!-- 输出 y_t，与分叉竖线对齐 -->
+  <text x="480" y="60" text-anchor="middle" dominant-baseline="middle" font-size="26" font-style="italic" fill="#27ae60" font-family="Arial, sans-serif">
+    y<tspan baseline-shift="sub" font-size="18" font-style="italic">t</tspan>
+  </text>
+
+  <!-- 单步模块外框：x=180，宽390，水平中线 x=375 -->
+  <rect x="180" y="120" width="390" height="260" rx="22" ry="22" fill="#fafafa" stroke="#bdc3c7" stroke-width="1.5"/>
+
+  <!-- φ 计算单元：水平+垂直双重居中，中心与矩形几何中心完全重合 -->
+  <rect x="337.5" y="226" width="75" height="48" rx="4" ry="4" fill="url(#phiGrad)" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="375" y="250" text-anchor="middle" dominant-baseline="middle" font-size="24" font-style="italic" fill="white" font-family="Arial, sans-serif">φ</text>
+
+  <!-- 左侧隐状态输入：无箭头，沿中线贯穿 -->
+  <line x1="100" y1="250" x2="260" y2="250" stroke="#2c3e50" stroke-width="2.5"/>
+  <text x="140" y="235" font-size="22" font-style="italic" fill="#2c3e50" font-family="Arial, sans-serif">
+    h<tspan baseline-shift="sub" font-size="16">t-1</tspan>
+  </text>
+
+  <!-- 输入 x_t：从下往上，圆弧汇入主线 -->
+  <text x="250" y="450" text-anchor="middle" font-size="24" font-style="italic" fill="#3498db" font-family="Arial, sans-serif">
+    x<tspan baseline-shift="sub" font-size="17">t</tspan>
+  </text>
+  <line x1="250" y1="425" x2="250" y2="260" stroke="#3498db" stroke-width="2"/>
+  <path d="M 250 260 Q 250 250 260 250" stroke="#3498db" stroke-width="2" fill="none"/>
+
+  <!-- 汇合后共同输入 φ 的箭头 -->
+  <line x1="260" y1="250" x2="337.5" y2="250" stroke="#2c3e50" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- 向上分叉的输出分支（底层） -->
+  <path d="M 470 250 Q 480 250 480 240 L 480 78" stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+
+  <!-- 连续的隐状态输出主线（顶层）：φ 右端直达 h_t，全程无断裂 -->
+  <line x1="412.5" y1="250" x2="610" y2="250" stroke="#2c3e50" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- 隐状态输出标注 h_t -->
+  <text x="630" y="254" font-size="24" font-style="italic" fill="#2c3e50" font-family="Arial, sans-serif">
+    h<tspan baseline-shift="sub" font-size="17">t</tspan>
+  </text>
+</svg>

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <defs>
+    <style>
+      .encoder-box { fill: #d6e4ff; stroke: #4a90e2; stroke-width: 2; }
+      .decoder-box { fill: #ffd6d6; stroke: #e24a4a; stroke-width: 2; }
+      .context-ellipse { fill: #f0f0f0; stroke: #999; stroke-width: 2; }
+      .arrow { stroke: #666; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+      .text { font-family: Arial, sans-serif; font-size: 18px; text-anchor: middle; }
+      .label { font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+    </marker>
+  </defs>
+  
+  <!-- Encoder label (保持原位，因为框向右移了，它自然就露出来了) -->
+  <text x="50" y="80" class="label" fill="#4a90e2">Encoder</text>
+  
+  <!-- Encoder boxes - 向右移动 40px -->
+  <!-- 原 x=120 -> 新 x=160 -->
+  <rect x="160" y="50" width="60" height="40" class="encoder-box" rx="5" />
+  <text x="190" y="75" class="text">I</text>
+  
+  <!-- 原 x=190 -> 新 x=230 -->
+  <rect x="230" y="50" width="60" height="40" class="encoder-box" rx="5" />
+  <text x="260" y="75" class="text">catch</text>
+  
+  <!-- 原 x=260 -> 新 x=300 -->
+  <rect x="300" y="50" width="80" height="40" class="encoder-box" rx="5" />
+  <text x="340" y="75" class="text">fire</text>
+  
+  <!-- 原 x=350 -> 新 x=390 -->
+  <rect x="390" y="50" width="40" height="40" class="encoder-box" rx="5" />
+  <text x="410" y="75" class="text">in</text>
+  
+  <!-- 原 x=400 -> 新 x=440 -->
+  <rect x="440" y="50" width="70" height="40" class="encoder-box" rx="5" />
+  <text x="475" y="75" class="text">my</text>
+  
+  <!-- 原 x=480 -> 新 x=520 -->
+  <rect x="520" y="50" width="70" height="40" class="encoder-box" rx="5" />
+  <text x="555" y="75" class="text">heart</text>
+  
+  <!-- Encoder arrows - 调整坐标 -->
+  <path d="M 220 70 L 230 70" class="arrow" />
+  <path d="M 290 70 L 300 70" class="arrow" />
+  <path d="M 380 70 L 390 70" class="arrow" />
+  <path d="M 430 70 L 440 70" class="arrow" />
+  <path d="M 510 70 L 520 70" class="arrow" />
+  
+  <!-- Context vector - 放大并居中调整 -->
+  <!-- 覆盖范围大约是 x=160 到 x=590，中心点在 (160+590)/2 = 375 -->
+  <!-- 半径 rx 设为 220 以完全覆盖 -->
+  <ellipse cx="375" cy="150" rx="220" ry="40" class="context-ellipse" />
+  <text x="375" y="155" class="text" font-size="16">上下文变量</text>
+  <text x="375" y="175" class="text" font-size="14">[0.3, 0.7, -1.2, 0.9, -1.5]</text>
+  
+  <!-- Connection from apple to context - 调整路径 -->
+  <!-- apple 中心 x=555, 椭圆中心 x=375 -->
+  <path d="M 555 90 L 555 120 L 375 120" class="arrow" />
+  
+  <!-- Connection from context to decoder first box - 调整路径 -->
+  <!-- 椭圆底部 (375, 190), decoder1 中心 (190, 200) -->
+  <path d="M 375 190 L 375 200 L 190 200" class="arrow" />
+  
+  <!-- Decoder label (保持原位) -->
+  <text x="50" y="220" class="label" fill="#e24a4a">Decoder</text>
+  
+  <!-- Decoder boxes - 向右移动 40px -->
+  <!-- 原 x=120 -> 新 x=160 -->
+  <rect x="160" y="200" width="60" height="40" class="decoder-box" rx="5" />
+  <text x="190" y="225" class="text">我</text>
+  
+  <!-- 原 x=190 -> 新 x=230 -->
+  <rect x="230" y="200" width="60" height="40" class="decoder-box" rx="5" />
+  <text x="260" y="225" class="text">内</text>
+  
+  <!-- 原 x=260 -> 新 x=300 -->
+  <rect x="300" y="200" width="60" height="40" class="decoder-box" rx="5" />
+  <text x="330" y="225" class="text">心</text>
+  
+  <!-- 原 x=330 -> 新 x=370 -->
+  <rect x="370" y="200" width="60" height="40" class="decoder-box" rx="5" />
+  <text x="400" y="225" class="text">中</text>
+  
+  <!-- 原 x=400 -> 新 x=440 -->
+  <rect x="440" y="200" width="60" height="40" class="decoder-box" rx="5" />
+  <text x="470" y="225" class="text">激</text>
+  
+  <!-- 原 x=470 -> 新 x=510 -->
+  <rect x="510" y="200" width="70" height="40" class="decoder-box" rx="5" />
+  <text x="545" y="225" class="text">荡</text>
+  
+  <!-- Decoder arrows - 调整坐标 -->
+  <path d="M 220 220 L 230 220" class="arrow" />
+  <path d="M 290 220 L 300 220" class="arrow" />
+  <path d="M 360 220 L 370 220" class="arrow" />
+  <path d="M 430 220 L 440 220" class="arrow" />
+  <path d="M 500 220 L 510 220" class="arrow" />
+</svg>

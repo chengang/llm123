@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" text-rendering="geometricPrecision" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif">
+  <title>sigmoid 及其导数</title>
+  <desc>在同一坐标系中绘制 sigmoid(x) 与其导数 sigmoid(x)*(1-sigmoid(x))，x 范围 -6 到 6。</desc>
+
+  <rect width="480" height="360" fill="#ffffff"/>
+
+  <!-- 网格 -->
+  <g stroke="#eef0f3" stroke-width="1" shape-rendering="crispEdges">
+    <line x1="50"     y1="20"  x2="50"     y2="320"/>
+    <line x1="118.33" y1="20"  x2="118.33" y2="320"/>
+    <line x1="186.67" y1="20"  x2="186.67" y2="320"/>
+    <line x1="255"    y1="20"  x2="255"    y2="320"/>
+    <line x1="323.33" y1="20"  x2="323.33" y2="320"/>
+    <line x1="391.67" y1="20"  x2="391.67" y2="320"/>
+    <line x1="460"    y1="20"  x2="460"    y2="320"/>
+    <line x1="50" y1="45"    x2="460" y2="45"/>
+    <line x1="50" y1="170"   x2="460" y2="170"/>
+    <line x1="50" y1="295"   x2="460" y2="295"/>
+  </g>
+
+  <!-- 坐标轴 -->
+  <g stroke="#374151" stroke-width="1" shape-rendering="crispEdges">
+    <line x1="50"  y1="295" x2="460"  y2="295"/>
+    <line x1="255" y1="20"  x2="255"  y2="320"/>
+  </g>
+
+  <!-- 刻度 -->
+  <g fill="#374151" font-size="10" text-anchor="middle">
+    <text x="50"     y="334">-6</text>
+    <text x="118.33" y="334">-4</text>
+    <text x="186.67" y="334">-2</text>
+    <text x="255"    y="334">0</text>
+    <text x="323.33" y="334">2</text>
+    <text x="391.67" y="334">4</text>
+    <text x="460"    y="334">6</text>
+  </g>
+  <g fill="#374151" font-size="10" text-anchor="end" dominant-baseline="middle">
+    <text x="44" y="45">1.0</text>
+    <text x="44" y="170">0.5</text>
+    <text x="44" y="295">0.0</text>
+  </g>
+
+  <!-- 轴标签 -->
+  <text x="460" y="309" fill="#374151" font-size="11" text-anchor="end">x</text>
+  <text x="255" y="14"  fill="#374151" font-size="11" text-anchor="middle">y</text>
+
+  <!-- sigmoid(x) -->
+  <path fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        d="M 50,294.38 L 84.17,293.33 L 118.33,290.5 L 152.5,283.14 L 169.58,276.04 L 186.67,265.2 L 203.75,249.39 L 220.83,227.76 L 237.92,200.61 L 255,170 L 272.08,139.39 L 289.17,112.24 L 306.25,90.61 L 323.33,74.8 L 340.42,63.97 L 357.5,56.86 L 391.67,49.5 L 425.83,46.67 L 460,45.62"/>
+
+  <!-- 导数 sigmoid'(x) = sigmoid(x) * (1 - sigmoid(x)) -->
+  <path fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 3"
+        d="M 50,294.38 L 84.17,293.34 L 118.33,290.59 L 152.5,283.71 L 169.58,277.48 L 186.67,268.75 L 203.75,257.71 L 220.83,245.85 L 237.92,236.25 L 255,232.5 L 272.08,236.25 L 289.17,245.85 L 306.25,257.71 L 323.33,268.75 L 340.42,277.48 L 357.5,283.71 L 391.67,290.59 L 425.83,293.34 L 460,294.38"/>
+
+  <!-- 图例 -->
+  <g font-size="11" fill="#374151">
+    <rect x="318" y="100" width="138" height="46" fill="#ffffff" stroke="#e5e7eb" rx="4"/>
+    <line x1="328" y1="114" x2="352" y2="114" stroke="#2563eb" stroke-width="2"/>
+    <text x="358" y="114" dominant-baseline="middle">sigmoid(x)</text>
+    <line x1="328" y1="134" x2="352" y2="134" stroke="#ea580c" stroke-width="2" stroke-dasharray="5 3"/>
+    <text x="358" y="134" dominant-baseline="middle">σ(x)·(1 − σ(x))</text>
+  </g>
+</svg>
+

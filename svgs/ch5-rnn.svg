@@ -1,0 +1,92 @@
+<svg width="1400" height="550" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#2c3e50"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <polygon points="0 0, 10 5, 0 10" fill="#27ae60"/>
+    </marker>
+    <linearGradient id="phiGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f5b041"/>
+      <stop offset="100%" stop-color="#f39c12"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 左侧层级标签，位置固定 -->
+  <text x="40" y="58" font-size="20" fill="#333" font-family="Arial, sans-serif">输出层</text>
+  <text x="40" y="254" font-size="20" fill="#333" font-family="Arial, sans-serif">隐状态</text>
+  <text x="40" y="435" font-size="20" fill="#333" font-family="Arial, sans-serif">输入</text>
+
+  <!-- 三个时间步单元外框，整体保持右移后的布局 -->
+  <rect x="180" y="120" width="360" height="260" rx="22" ry="22" fill="#fafafa" stroke="#bdc3c7" stroke-width="1.5"/>
+  <rect x="580" y="120" width="360" height="260" rx="22" ry="22" fill="#fafafa" stroke="#bdc3c7" stroke-width="1.5"/>
+  <rect x="980" y="120" width="360" height="260" rx="22" ry="22" fill="#fafafa" stroke="#bdc3c7" stroke-width="1.5"/>
+
+  <!-- 输入 x 序列 -->
+  <text x="282.5" y="450" text-anchor="middle" font-size="24" font-style="italic" fill="#3498db" font-family="Arial, sans-serif">
+    x<tspan baseline-shift="sub" font-size="17">t-1</tspan>
+  </text>
+  <line x1="282.5" y1="425" x2="282.5" y2="260" stroke="#3498db" stroke-width="2"/>
+  <path d="M 282.5 260 Q 282.5 250 292.5 250" stroke="#3498db" stroke-width="2" fill="none"/>
+
+  <text x="682.5" y="450" text-anchor="middle" font-size="24" font-style="italic" fill="#3498db" font-family="Arial, sans-serif">
+    x<tspan baseline-shift="sub" font-size="17">t</tspan>
+  </text>
+  <line x1="682.5" y1="425" x2="682.5" y2="260" stroke="#3498db" stroke-width="2"/>
+  <path d="M 682.5 260 Q 682.5 250 692.5 250" stroke="#3498db" stroke-width="2" fill="none"/>
+
+  <text x="1082.5" y="450" text-anchor="middle" font-size="24" font-style="italic" fill="#3498db" font-family="Arial, sans-serif">
+    x<tspan baseline-shift="sub" font-size="17">t+1</tspan>
+  </text>
+  <line x1="1082.5" y1="425" x2="1082.5" y2="260" stroke="#3498db" stroke-width="2"/>
+  <path d="M 1082.5 260 Q 1082.5 250 1092.5 250" stroke="#3498db" stroke-width="2" fill="none"/>
+
+  <!-- 输出 y 分叉 -->
+  <path d="M 455 250 Q 465 250 465 240 L 465 78" stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="465" y="60" text-anchor="middle" dominant-baseline="middle" font-size="26" font-style="italic" fill="#27ae60" font-family="Arial, sans-serif">
+    y<tspan baseline-shift="sub" font-size="18">t-1</tspan>
+  </text>
+
+  <path d="M 855 250 Q 865 250 865 240 L 865 78" stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="865" y="60" text-anchor="middle" dominant-baseline="middle" font-size="26" font-style="italic" fill="#27ae60" font-family="Arial, sans-serif">
+    y<tspan baseline-shift="sub" font-size="18">t</tspan>
+  </text>
+
+  <path d="M 1255 250 Q 1265 250 1265 240 L 1265 78" stroke="#27ae60" stroke-width="2" fill="none" marker-end="url(#arrow-green)"/>
+  <text x="1265" y="60" text-anchor="middle" dominant-baseline="middle" font-size="26" font-style="italic" fill="#27ae60" font-family="Arial, sans-serif">
+    y<tspan baseline-shift="sub" font-size="18">t+1</tspan>
+  </text>
+
+  <!-- 隐状态主线：仅把左端从 x=100 右移到 x=130，避开左侧“隐状态”文字 -->
+  <line x1="130" y1="250" x2="292.5" y2="250" stroke="#2c3e50" stroke-width="2.5"/>
+
+  <line x1="292.5" y1="250" x2="322.5" y2="250" stroke="#2c3e50" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="397.5" y1="250" x2="692.5" y2="250" stroke="#2c3e50" stroke-width="2.5"/>
+
+  <line x1="692.5" y1="250" x2="722.5" y2="250" stroke="#2c3e50" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="797.5" y1="250" x2="1092.5" y2="250" stroke="#2c3e50" stroke-width="2.5"/>
+
+  <line x1="1092.5" y1="250" x2="1122.5" y2="250" stroke="#2c3e50" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="1197.5" y1="250" x2="1400" y2="250" stroke="#2c3e50" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- 隐状态标注 -->
+  <text x="560" y="235" text-anchor="middle" font-size="22" font-style="italic" fill="#2c3e50" font-family="Arial, sans-serif">
+    h<tspan baseline-shift="sub" font-size="16">t-1</tspan>
+  </text>
+  <text x="960" y="235" text-anchor="middle" font-size="22" font-style="italic" fill="#2c3e50" font-family="Arial, sans-serif">
+    h<tspan baseline-shift="sub" font-size="16">t</tspan>
+  </text>
+  <text x="1370" y="235" text-anchor="middle" font-size="22" font-style="italic" fill="#2c3e50" font-family="Arial, sans-serif">
+    h<tspan baseline-shift="sub" font-size="16">t+1</tspan>
+  </text>
+
+  <!-- φ 计算单元 -->
+  <rect x="322.5" y="226" width="75" height="48" rx="4" ry="4" fill="url(#phiGrad)" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="360" y="250" text-anchor="middle" dominant-baseline="middle" font-size="24" font-style="italic" fill="white" font-family="Arial, sans-serif">φ</text>
+
+  <rect x="722.5" y="226" width="75" height="48" rx="4" ry="4" fill="url(#phiGrad)" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="760" y="250" text-anchor="middle" dominant-baseline="middle" font-size="24" font-style="italic" fill="white" font-family="Arial,Sans-serif">φ</text>
+
+  <rect x="1122.5" y="226" width="75" height="48" rx="4" ry="4" fill="url(#phiGrad)" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="1160" y="250" text-anchor="middle" dominant-baseline="middle" font-size="24" font-style="italic" fill="white" font-family="Arial, sans-serif">φ</text>
+</svg>
