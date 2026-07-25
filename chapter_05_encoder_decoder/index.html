@@ -2237,10 +2237,10 @@ x_t \sim P(x_t \mid x_1, x_2, \dots, x_{t-1})
 </figcaption>
 </figure>
 <p>下标 <code>h</code> 是 <code>hidden</code> 的缩写，意思是隐状态相关的变量。</p>
-<p>$ \mathbf{b}<em xh="xh">h $ 照例是偏置量，求导一求就求没了，我们先不管它。然后就还剩下一个 $ \mathbf{X}_t \mathbf{W}</em>} $ 一个 $ \mathbf{H<em hh="hh">{t-1} \mathbf{W}</em> $ 和 一个 $ \phi() $ 了。我们一个一个来看。</p>
-<p>$ {X}<em xh="xh">t $ 是最新输入的字符，所以 $ \mathbf{X}_t \mathbf{W}</em> $ 其实就是新输入的字符和它配套的权重的乘积。</p>
-<p>$ \mathbf{H}<em t-1="t-1">{t-1} $ 是所谓隐状态，所以  $ \mathbf{H}</em> $ 是隐状态和它配套权重的乘积。} \mathbf{W}_{hh</p>
-<p>很显然，前面两个东西都是线性的。所以，最后的 $ \phi() $ 就是负责给我们引入非线性的激活函数了。</p>
+<p><span class="arithmatex">\(\mathbf{b}_h\)</span> 照例是偏置量，求导一求就求没了，我们先不管它。然后就还剩下一个 <span class="arithmatex">\(\mathbf{X}_t \mathbf{W}_{xh}\)</span> 一个 <span class="arithmatex">\(\mathbf{H}_{t-1} \mathbf{W}_{hh}\)</span> 和 一个 <span class="arithmatex">\(\phi()\)</span> 了。我们一个一个来看。</p>
+<p><span class="arithmatex">\({X}_t\)</span> 是最新输入的字符，所以 <span class="arithmatex">\(\mathbf{X}_t \mathbf{W}_{xh}\)</span> 其实就是新输入的字符和它配套的权重的乘积。</p>
+<p><span class="arithmatex">\(\mathbf{H}_{t-1}\)</span> 是所谓隐状态，所以 <span class="arithmatex">\(\mathbf{H}_{t-1} \mathbf{W}_{hh}\)</span> 是隐状态和它配套权重的乘积。</p>
+<p>很显然，前面两个东西都是线性的。所以，最后的 <span class="arithmatex">\(\phi()\)</span> 就是负责给我们引入非线性的激活函数了。</p>
 <h4 id="5221">5.2.2.1 选择激活函数<a class="headerlink" href="#5221" title="Permanent link">¶</a></h4>
 <p>我们为 RNN 选择一个什么样的激活函数呢？</p>
 <p>或者说，如果不是无脑选择 ReLU，我们面对具体的神经网络和诸多激活函数，我们应该依据什么标准来选择激活函数呢？</p>
