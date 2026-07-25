@@ -24,7 +24,7 @@
     
     
       
-        <title>第 6 天 - 《Attention is ALL YOU NEED》 - 小烧麦诞生记：怀胎十日遇见你</title>
+        <title>第 6 天 - 《Attention is All You Need》 - 小烧麦诞生记：怀胎十日遇见你</title>
       
     
     
@@ -132,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              第 6 天 - 《Attention is ALL YOU NEED》
+              第 6 天 - 《Attention is All You Need》
             
           </span>
         </div>
@@ -462,7 +462,7 @@
   <span class="md-ellipsis">
     
   
-    第 6 天 - 《Attention is ALL YOU NEED》
+    第 6 天 - 《Attention is All You Need》
   
 
     
@@ -480,7 +480,7 @@
   <span class="md-ellipsis">
     
   
-    第 6 天 - 《Attention is ALL YOU NEED》
+    第 6 天 - 《Attention is All You Need》
   
 
     
@@ -775,15 +775,19 @@
   
 
 
-<h1 id="6-attention-is-all-you-need">第 6 天 《Attention is ALL YOU NEED》<a class="headerlink" href="#6-attention-is-all-you-need" title="Permanent link">¶</a></h1>
-<p>今天的标题必须不玩任何小聪明，原文照抄《Attention is ALL YOU NEED》这个标题。</p>
+<h1 id="6-attention-is-all-you-need">第 6 天 《Attention is All You Need》<a class="headerlink" href="#6-attention-is-all-you-need" title="Permanent link">¶</a></h1>
+<p>今天的标题必须不玩任何小聪明，原文照抄《Attention is All You Need》这个标题。</p>
 <p>不仅是因为它的知名度、开创性和巨大的影响力，更多是因为这个标题足够妙、足够值得玩味。</p>
-<p>第 6 天，我们一起来领略属于《Attention is ALL YOU NEED》的妙处。</p>
+<p>第 6 天，我们一起来领略属于《Attention is All You Need》的妙处。</p>
 <p>这篇论文的引言部分完美接上了我们第 5 天的工作。它在论文开篇如此说道。</p>
 <blockquote>
 <p>Recurrent neural networks, long short-term memory [12] and gated recurrent [7] neural networks in particular, have been firmly established as state of the art approaches in sequence modeling and transduction problems such as language modeling and machine translation [29, 2, 5]. Numerous efforts have since continued to push the boundaries of recurrent language models and encoder-decoder architectures.</p>
+</blockquote>
+<p>RNN、LSTM、GRU 已经是目前解决序列和翻译问题的最好方案，继而 RNN 又发展出了编码器-解码器架构。</p>
+<blockquote>
 <p>Recurrent models typically factor computation along the symbol positions of the input and output sequences. Aligning the positions to steps in computation time, they generate a sequence of hidden states ht, as a function of the previous hidden state ht−1 and the input for position t. This inherently sequential nature precludes parallelization within training examples, which becomes critical at longer sequence lengths, as memory constraints limit batching across examples. Recent work has achieved significant improvements in computational efficiency through factorization tricks [18] and conditional computation [26], while also improving model performance in case of the latter. The fundamental constraint of sequential computation, however, remains.</p>
 </blockquote>
+<p>RNN 会顺序生成一系列的隐状态，这种顺序性质使得它难以并行化。有一些研究提升了它的效率，但是并没有改变它顺序计算的性质。</p>
 <h2 id="61">6.1 新的问题：钱太多！<a class="headerlink" href="#61" title="Permanent link">¶</a></h2>
 <p>第 5 天，我们完成了循环神经网络，引入了隐变量，We made 神经网络 greater again！</p>
 <p>但 RNN 也绝非完美。它确实很好的完成了任务，但仅限于学者们的领域。</p>

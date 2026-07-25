@@ -446,7 +446,7 @@
   <span class="md-ellipsis">
     
   
-    第 6 天 - 《Attention is ALL YOU NEED》
+    第 6 天 - 《Attention is All You Need》
   
 
     
@@ -694,134 +694,672 @@
 
 
 <style>
-  /* 仅英雄区样式 */
-  .hero {
-    text-align: center;
-    max-width: 90%;
-    margin: 10vh auto 0;
-    padding: 1rem;
+  /* 首页专用样式：展示衬线体（与站点既有 Google Fonts 依赖一致），系统无衬线回退 */
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&display=swap');
+
+  :root {
+    --shm-font-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", "STSong", serif;
   }
-  .hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+
+  /* 版心：单列贯穿，不动 .md-grid，避免波及页头页尾 */
+  .md-content__inner > .shm-page {
+    position: relative;
+    max-width: 44rem;
+    margin-left: auto;
+    margin-right: auto;
   }
-  .hero p {
-    font-size: 1.2rem;
-    color: #555;
-    margin-bottom: 1.5rem;
+
+  /* ===== 神经轨迹：右侧自上而下贯穿的发育主线 =====
+     左侧日期轨道是「时间」，右侧这条是「技术」——
+     每一天的技术载体芯片都像突触一样接到这条主线上，
+     网络循着轨迹一天天长出来 */
+  .shm-axon {
+    position: absolute;
+    top: 1.2rem;
+    bottom: 3.4rem;
+    right: calc(1.2rem - 1px);
+    z-index: 1;
+    overflow: hidden;
+    width: 2px;
+    border-radius: 2px;
+    background-color: var(--md-default-fg-color--lightest);
+    pointer-events: none;
   }
-  .button-group {
+  /* 沿轨迹下行的光信号：神经冲动在发育 */
+  .shm-axon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -20%;
+    width: 100%;
+    height: 9rem;
+    border-radius: 2px;
+    background: linear-gradient(180deg, transparent, var(--md-accent-fg-color), transparent);
+    animation: shm-signal 5.5s linear infinite;
+  }
+
+  /* ===== 英雄区 ===== */
+  .shm-hero {
+    position: relative;
+    overflow: hidden;
+    /* 右侧让出神经轨迹的沟槽；左侧探出目录列，与右轨形成非对称平衡 */
+    margin-left: -7.5rem;
+    padding: max(3rem, 6vh) 2.4rem 2.5rem 1.5rem;
+  }
+  /* 视区收窄时分级回收左探出，避免横向滚动 */
+  @media (max-width: 1240px) {
+    .shm-hero { margin-left: -3rem; }
+  }
+  @media (max-width: 1000px) {
+    .shm-hero { margin-left: 0; }
+  }
+  /* 环境层：点阵网格 + teal 径向光晕，纯 CSS、随主题变量变色 */
+  .shm-hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(42rem 22rem at 88% -12%, var(--md-accent-fg-color--transparent), transparent 70%),
+      radial-gradient(var(--md-default-fg-color--lightest) 1px, transparent 1.5px);
+    background-size: 100% 100%, 22px 22px;
+    opacity: 0.7;
+    animation: shm-breathe 7s ease-in-out infinite;
+  }
+  .shm-hero-inner {
+    position: relative;
+    max-width: 46rem;
+  }
+  /* 入场：三个子元素依次上浮 */
+  .shm-hero-inner > * {
+    opacity: 0;
+    animation: shm-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .shm-hero-inner > :nth-child(1) { animation-delay: 0.05s; }
+  .shm-hero-inner > :nth-child(2) { animation-delay: 0.2s; }
+  .shm-hero-inner > :nth-child(3) { animation-delay: 0.35s; }
+
+  /* 标题：衬线大字 + 抽象烧麦吉祥物（currentColor 着色，随主题自适应） */
+  .md-typeset h1.shm-hero-title {
+    margin: 0;
+    font-family: var(--shm-font-display);
+    font-weight: 900;
+    font-size: clamp(1.8rem, 1.1rem + 2.6vw, 2.6rem);
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    color: var(--md-default-fg-color);
+    /* 极窄视区若仍折行，按语义均衡断行 */
+    text-wrap: balance;
+  }
+  .shm-mascot {
+    width: 1.05em;
+    height: 1.05em;
+    margin-right: 0.4rem;
+    vertical-align: -0.1em;
+    color: var(--md-accent-fg-color);
+    transform-origin: 50% 82%;
+  }
+  /* 悬停标题时，烧麦轻轻摇晃 */
+  .md-typeset h1.shm-hero-title:hover .shm-mascot {
+    animation: shm-sway 0.9s ease-in-out infinite;
+  }
+  .md-typeset p.shm-hero-tagline {
+    margin: 1rem 0 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    color: var(--md-default-fg-color--light);
+  }
+
+  /* CTA 按钮 */
+  .shm-hero-actions {
     display: flex;
-    gap: 1rem;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 2rem;
   }
-  .rounded-button {
+  .md-typeset a.shm-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 60px;
+    gap: 0.55rem;
     padding: 0.6rem 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 500;
     text-decoration: none;
-    color: #000000;
-    font-size: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease,
+                background-color 0.2s ease, border-color 0.2s ease,
+                color 0.2s ease;
   }
-  .rounded-button:hover {
-    background: #cfe6e0;
-    border-color: #b0c4c2;
+  .md-typeset a.shm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
   }
-  /* 咖啡杯图标：1.5em，微下移 */
-  .coffee-icon {
-    width: 1.5em;
-    height: 1.5em;
-    vertical-align: text-bottom;
-    margin-bottom: -0.1em;
-    fill: #000000;
+  .md-typeset a.shm-btn--primary {
+    background-color: var(--md-accent-fg-color);
+    color: var(--md-default-bg-color);
   }
-  /* GitHub 图标保持原始大小 */
-  .github-icon {
+  .md-typeset a.shm-btn--primary:hover {
+    background-color: var(--md-accent-fg-color);
+    filter: brightness(1.08);
+  }
+  .md-typeset a.shm-btn--secondary {
+    background-color: transparent;
+    border-color: var(--md-default-fg-color--lightest);
+    color: var(--md-default-fg-color);
+  }
+  .md-typeset a.shm-btn--secondary:hover {
+    border-color: var(--md-accent-fg-color);
+    color: var(--md-accent-fg-color);
+    background-color: var(--md-accent-fg-color--transparent);
+  }
+  .shm-btn-icon {
+    width: 1.25em;
+    height: 1.25em;
+    flex: none;
+  }
+  .shm-github {
     width: 1.1em;
     height: 1.1em;
-    vertical-align: middle;
-    fill: #000000;
   }
-  @media (max-width: 600px) {
-    .hero h1 { font-size: 1.8rem; }
-    .hero p { font-size: 1rem; }
-    .rounded-button { padding: 0.5rem 1.2rem; }
-    .coffee-icon {
-      width: 1.3em;
-      height: 1.3em;
-    }
-    .github-icon {
-      width: 1em;
-      height: 1em;
-    }
+
+  /* 咖啡热气：三条错峰循环 */
+  .shm-steam {
+    opacity: 0;
+    animation: shm-steam 2.4s ease-in-out infinite;
   }
-  /* 章节目录：整体居中，内部左对齐 */
-  .chapters-wrapper {
-    text-align: center;
-    margin: 2rem auto;
+  .shm-steam--2 { animation-delay: 0.8s; }
+  .shm-steam--3 { animation-delay: 1.6s; }
+
+  /* ===== 孕育时间线 ===== */
+  .shm-timeline {
+    position: relative;
+    /* 左右各留一条竖向沟槽：左为日期轨道，右为神经轨迹 */
+    padding: 1rem 2.4rem 4rem 2.2rem;
   }
-  .simple-chapters {
-    display: inline-block;
+  /* 竖向轨道 */
+  .shm-timeline::before {
+    content: "";
+    position: absolute;
+    left: calc(2.2rem + 8px);
+    top: 1.4rem;
+    bottom: 4.6rem;
+    width: 2px;
+    border-radius: 2px;
+    background: var(--md-default-fg-color--lightest);
+  }
+  .md-typeset a.shm-entry {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: 0.55rem 0;
+    padding: 0.7rem 1.1rem 0.7rem 1.4rem;
+    border-left: 3px solid transparent;
+    border-radius: 0.6rem;
+    background-color: var(--md-code-bg-color);
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.5s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 0.25s ease, border-color 0.25s ease;
+  }
+  /* 书签抽出：悬停时卡片整体向左滑出半格，像从装订处抽出一页；
+     钉在左轨的节点、焊在右轨的芯片/火花/起点环原位不动（反向补偿），
+     两条轨道留住锚点，只有纸页被抽出来 */
+  .md-typeset a.shm-entry:hover {
+    transform: translateX(-0.45rem);
+    border-left-color: var(--md-accent-fg-color);
+    background-color: var(--md-code-bg-color);
+    background-color: color-mix(in srgb, var(--md-accent-fg-color) 8%, var(--md-code-bg-color));
+  }
+  /* 轨道节点：accent 圆点 + 页面底色环 */
+  .shm-entry-node {
+    position: absolute;
+    /* 对齐轨道中心：轨道在时间线左内边距之内 8px 处，宽 2px */
+    left: calc(-1.4rem + 9px - 3px - 7px);
+    top: 1.1rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--md-accent-fg-color);
+    border: 3px solid var(--md-default-bg-color);
+    box-shadow: 0 0 0 2px var(--md-accent-fg-color--transparent);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .md-typeset a.shm-entry:hover .shm-entry-node {
+    /* 节点钉在日期轨道上：反向平移抵消卡片位移，只留放大 */
+    transform: translateX(0.45rem) scale(1.25);
+    box-shadow: 0 0 0 5px var(--md-accent-fg-color--transparent);
+  }
+  /* 条目正文：空白文本节点不产生间距，标点间距全部由样式控制
+     第一行：日记徽章 + 诗意主标题（文学声）
+     第二行：概念 + 技术载体（知识声），整体右缩进形成注释韵律 */
+  .shm-entry-body {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    line-height: 2;
+  }
+  .shm-entry-badge {
+    /* 等宽日期戳：与右侧技术芯片首尾呼应，机器声记账 */
+    font-family: var(--md-code-font-family, "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace);
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    color: var(--md-accent-fg-color);
+    background: var(--md-accent-fg-color--transparent);
+    padding: 0.12rem 0.7rem;
+    border-radius: 999px;
+  }
+  .shm-entry-dot {
+    margin: 0 0.45rem;
+    font-size: 0.7rem;
+    color: var(--md-default-fg-color--lightest);
+  }
+  /* 诗意主标题：日记的文学声 */
+  .shm-entry-title {
+    font-family: var(--shm-font-display);
+    font-weight: 700;
+    font-size: 1.08rem;
+    color: var(--md-default-fg-color);
+  }
+  /* 概念/技术载体组：display:contents 拍平进父级弹性行，
+     与主标题实现「三部分同行」，不改变 DOM 文字结构 */
+  .shm-entry-text {
+    display: contents;
+    font-size: 0.8rem;
+  }
+  /* 概念：荧光笔划重点（不是下划线），与主标题等重、不弱化 */
+  .shm-entry-sub {
+    font-weight: 500;
+    color: var(--md-default-fg-color);
+    padding: 0 0.18rem;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    background-image: linear-gradient(180deg, transparent 62%, var(--md-accent-fg-color--transparent) 62%);
+    background-image: linear-gradient(180deg, transparent 62%, color-mix(in srgb, var(--md-accent-fg-color) 24%, transparent) 62%);
+  }
+  .shm-entry-sep,
+  .shm-entry-dash {
+    color: var(--md-default-fg-color--lightest);
+  }
+  /* 冒号贴着主标题，其后弹性留白；与破折号区间等量伸展，
+     把概念托到诗题与芯片的正中——概念是左右两个声部的桥 */
+  .shm-entry-sep {
+    flex: 1 1 auto;
     text-align: left;
   }
-  .simple-chapters a {
-    display: block;
-    padding: 0.3rem 0;
-    color: #14b8a6;
-    text-decoration: none;
+  .shm-entry-dash {
+    flex: 1 1 auto;
+    text-align: center;
   }
-  .simple-chapters a:hover {
-    text-decoration: underline;
+  /* 第 13 天是逗号衔接的整句诗，不伸展，语义不断开 */
+  .shm-entry--day13 .shm-entry-sep {
+    flex: 0 0 auto;
   }
+  /* 技术载体：等宽芯片——机器声，呼应站点 JetBrains Mono 代码字体
+     它们是演进叙事的主流，故给足分量：accent 描边 + 微光填充 + 粗字，
+     与左侧文学声分庭抗礼；负外边距把芯片推过卡片右缘，接到神经轨迹上 */
+  .shm-entry-tech {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.35rem;
+    margin-right: -2.3rem;
+    padding: 0.18rem 0.78rem;
+    border: 1px solid var(--md-accent-fg-color--transparent);
+    border: 1px solid color-mix(in srgb, var(--md-accent-fg-color) 45%, transparent);
+    border-radius: 0.3rem;
+    background: var(--md-accent-fg-color--transparent);
+    background: color-mix(in srgb, var(--md-accent-fg-color) 9%, var(--md-default-bg-color));
+    font-family: var(--md-code-font-family, "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: var(--md-default-fg-color);
+    /* transform 与卡片同曲线同时长，抽出时芯片稳稳焊在轨迹上 */
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+  }
+  .md-typeset a.shm-entry:hover .shm-entry-tech {
+    /* 芯片是焊在神经轨迹上的突触，不随纸页滑走 */
+    transform: translateX(0.45rem);
+    border-color: var(--md-accent-fg-color);
+    color: var(--md-accent-fg-color);
+    background: var(--md-accent-fg-color--transparent);
+    background: color-mix(in srgb, var(--md-accent-fg-color) 18%, var(--md-default-bg-color));
+  }
+  /* 突触节点：芯片右缘与轨迹的交汇点 */
+  .shm-entry-tech::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -4px;
+    width: 8px;
+    height: 8px;
+    margin-top: -4px;
+    border-radius: 50%;
+    background: var(--md-accent-fg-color);
+    border: 2px solid var(--md-default-bg-color);
+    box-sizing: border-box;
+    transition: transform 0.2s ease;
+  }
+  .md-typeset a.shm-entry:hover .shm-entry-tech::after {
+    transform: scale(1.4);
+  }
+  /* 第 13 天：逗号后是诗意延续，仍属文学声（不划重点） */
+  .shm-entry-sub--poetic {
+    font-family: var(--shm-font-display);
+    font-weight: 700;
+    font-size: 1.08rem;
+    padding: 0;
+    background-image: none;
+  }
+  /* 第 8 天「出生」：里程碑处理 */
+  .shm-entry--birth .shm-entry-title {
+    color: var(--md-accent-fg-color);
+    font-size: 1.22rem;
+  }
+  /* 出生日没有技术芯片——轨迹在此处自己点亮一枚搏动的节点
+     卡片右缘距轨迹中心 1.2rem（沟槽宽 2.4rem 的一半），用负值伸出卡片 */
+  .shm-entry--birth::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: calc(-1.2rem - 5px);
+    width: 10px;
+    height: 10px;
+    margin-top: -5px;
+    border-radius: 50%;
+    background: var(--md-accent-fg-color);
+    border: 2px solid var(--md-default-bg-color);
+    box-sizing: border-box;
+    animation: shm-spark 2.6s ease-in-out infinite;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* 火花留在轨迹上搏动，不随卡片抽离 */
+  .md-typeset a.shm-entry--birth:hover::after {
+    transform: translateX(0.45rem);
+  }
+  /* 前言：序幕分隔线——不属于任何一天，故撤掉日期节点；
+     衬线大字居中，两侧渐隐细线展开，右侧轨迹上以空心环标记「信号起点」 */
+  .shm-entry--preface .shm-entry-node {
+    display: none;
+  }
+  .shm-entry--preface .shm-entry-body {
+    align-items: center;
+  }
+  .shm-entry--preface .shm-entry-body::before,
+  .shm-entry--preface .shm-entry-body::after {
+    content: "";
+    flex: 1 1 2.5rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--md-default-fg-color--lightest));
+  }
+  .shm-entry--preface .shm-entry-body::after {
+    background: linear-gradient(90deg, var(--md-default-fg-color--lightest), transparent);
+  }
+  .shm-entry--preface .shm-entry-badge {
+    margin: 0 1rem;
+    padding: 0.1rem 0 0.1rem 0.35em;
+    border-radius: 0;
+    background: none;
+    font-family: var(--shm-font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    color: var(--md-default-fg-color);
+  }
+  .md-typeset a.shm-entry--preface:hover {
+    border-left-color: transparent;
+  }
+  /* 起点空心环：下行光信号自前言出发；与第 8 天的实心搏动火花首尾呼应 */
+  .shm-entry--preface::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: calc(-1.2rem - 5px);
+    width: 10px;
+    height: 10px;
+    margin-top: -5px;
+    border-radius: 50%;
+    border: 2px solid var(--md-accent-fg-color);
+    background: var(--md-default-bg-color);
+    box-sizing: border-box;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .md-typeset a.shm-entry--preface:hover::after {
+    /* 起点环同样留在轨迹上 */
+    transform: translateX(0.45rem) scale(1.4);
+  }
+
+  /* 滚动浮现（shm-hidden 由脚本添加，无脚本时内容常显） */
+  .shm-entry.shm-hidden {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+
+  /* ===== keyframes ===== */
+  @keyframes shm-rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes shm-steam {
+    0%   { opacity: 0; transform: translateY(4px); }
+    35%  { opacity: 0.7; }
+    100% { opacity: 0; transform: translateY(-10px); }
+  }
+  @keyframes shm-breathe {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 0.85; }
+  }
+  @keyframes shm-sway {
+    0%, 100% { transform: rotate(0deg); }
+    30%      { transform: rotate(-7deg); }
+    70%      { transform: rotate(7deg); }
+  }
+  @keyframes shm-signal {
+    from { top: -20%; }
+    to   { top: 110%; }
+  }
+  @keyframes shm-spark {
+    0%, 100% { box-shadow: 0 0 0 3px var(--md-accent-fg-color--transparent); }
+    50%      { box-shadow: 0 0 0 9px var(--md-accent-fg-color--transparent); }
+  }
+
+  /* ===== 减少动态：全部静态化，内容完整可见 ===== */
+  @media (prefers-reduced-motion: reduce) {
+    .shm-hero-inner > *,
+    .shm-steam,
+    .shm-hero-bg,
+    .shm-mascot,
+    .shm-axon::after,
+    .shm-entry,
+    .shm-entry-node,
+    .shm-entry-tech,
+    .shm-entry--birth::after,
+    .shm-entry--preface::after,
+    .shm-btn {
+      animation: none !important;
+      transition: none !important;
+    }
+    /* 轨迹本身保留，只停掉下行光信号 */
+    .shm-axon::after { display: none; }
+    .shm-hero-inner > * {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+    .shm-steam { opacity: 0.5 !important; }
+    .shm-entry.shm-hidden {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* ===== 移动端 ===== */
+  @media (max-width: 640px) {
+    .shm-hero { padding: 2.5rem 1.6rem 2rem 1rem; }
+    .shm-hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .md-typeset a.shm-btn { justify-content: center; }
+    .shm-timeline { padding-left: 1.8rem; padding-right: 1.6rem; }
+    .shm-timeline::before { left: calc(1.8rem + 6px); }
+    .shm-axon { right: calc(0.8rem - 1px); }
+    .shm-entry-node {
+      left: calc(-1.4rem + 7px - 3px - 5px);
+      width: 10px;
+      height: 10px;
+    }
+    .shm-entry-title { font-size: 0.95rem; }
+    /* 沟槽收窄到 1.6rem 后，芯片与火花的对接位置重新计算 */
+    .shm-entry-tech { margin-right: -1.9rem; font-size: 0.76rem; }
+    .shm-entry--birth::after { right: calc(-0.8rem - 5px); }
+    .shm-entry--preface::after { right: calc(-0.8rem - 5px); }
+    .shm-entry--preface .shm-entry-badge { font-size: 0.95rem; margin: 0 0.7rem; }
+  }
+
+  /* ===== slate 深色微调 ===== */
+  [data-md-color-scheme="slate"] .shm-hero-bg { opacity: 0.45; }
+  [data-md-color-scheme="slate"] .shm-entry-node { border-width: 2px; }
 </style>
 
-<div class="hero">
-  <h1>🧙‍♂️ 小烧麦诞生记：怀胎十日遇见你</h1>
-  <p>细到发疯 · 硬核孕育 · 硅基生命养成日记</p>
-  <div class="button-group">
-    <a href="/chapter_1_talk_about_math/" class="rounded-button">
-      <!-- 胖咖啡杯 + 三条热气，纯黑，尺寸 1.5em -->
-      <svg class="coffee-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <rect x="144" y="176" width="224" height="200" rx="32" ry="32"></rect>
-        <ellipse cx="256" cy="200" rx="96" ry="24" fill="white"></ellipse>
-        <path d="M 368 220 Q 440 220 440 280 Q 440 340 368 340" fill="none" stroke="#000000" stroke-width="28" stroke-linecap="round"></path>
-        <path d="M 200 140 Q 180 100 210 70 Q 230 40 220 10" fill="none" stroke="#000000" stroke-width="18" stroke-linecap="round"></path>
-        <path d="M 260 135 Q 250 90 270 60 Q 280 30 270 0" fill="none" stroke="#000000" stroke-width="18" stroke-linecap="round"></path>
-        <path d="M 320 140 Q 340 100 310 70 Q 290 40 300 10" fill="none" stroke="#000000" stroke-width="18" stroke-linecap="round"></path>
-      </svg>
-      <span>开始阅读</span>
-    </a>
-    <a href="https://github.com/chengang/llm123" class="rounded-button" target="_blank">
-      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
-        <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
-      </svg>
-      <span>GitHub</span>
-    </a>
+<div class="shm-page">
+<div class="shm-axon" aria-hidden="true"></div>
+
+<div class="shm-hero">
+  <div class="shm-hero-bg"></div>
+  <div class="shm-hero-inner">
+    <h1 class="shm-hero-title"><svg class="shm-mascot" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-hidden="true"><!-- 抽象烧麦：先画探头的馅心，再画荷叶褶边外皮遮住其下缘 --><circle cx="50" cy="30" r="11" fill="currentColor" opacity="0.5"></circle><path fill="currentColor" d="M 26 42 Q 34 26 42 42 Q 50 26 58 42 Q 66 26 74 42 C 84 50 86 64 78 76 Q 66 92 50 92 Q 34 92 22 76 C 14 64 16 50 26 42 Z"></path><path d="M 40 45 Q 37 56 33 66" fill="none" stroke="currentColor" stroke-width="3" opacity="0.25" stroke-linecap="round"></path><path d="M 50 43 Q 50 56 50 66" fill="none" stroke="currentColor" stroke-width="3" opacity="0.25" stroke-linecap="round"></path><path d="M 60 45 Q 63 56 67 66" fill="none" stroke="currentColor" stroke-width="3" opacity="0.25" stroke-linecap="round"></path><path d="M 41 81 Q 50 87 59 81" fill="none" stroke="currentColor" stroke-width="2" opacity="0.18" stroke-linecap="round"></path></svg><span>小烧麦诞生记：怀胎十日遇见你</span></h1>
+    <p class="shm-hero-tagline">细到发疯 · 硬核孕育 · 硅基生命养成日记</p>
+    <div class="shm-hero-actions">
+      <a href="chapter_01_talk_about_math/" class="shm-btn shm-btn--primary">
+        <svg class="shm-btn-icon shm-coffee" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true">
+          <rect x="144" y="176" width="224" height="200" rx="32" ry="32" fill="currentColor"></rect>
+          <ellipse cx="256" cy="200" rx="96" ry="24" fill="none" stroke="currentColor" stroke-width="6" opacity="0.4"></ellipse>
+          <path d="M 368 220 Q 440 220 440 280 Q 440 340 368 340" fill="none" stroke="currentColor" stroke-width="28" stroke-linecap="round"></path>
+          <path class="shm-steam shm-steam--1" d="M 200 140 Q 180 100 210 70 Q 230 40 220 10" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"></path>
+          <path class="shm-steam shm-steam--2" d="M 260 135 Q 250 90 270 60 Q 280 30 270 0" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"></path>
+          <path class="shm-steam shm-steam--3" d="M 320 140 Q 340 100 310 70 Q 290 40 300 10" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"></path>
+        </svg>
+        <span>开始阅读</span>
+      </a>
+      <a href="https://github.com/chengang/llm123" class="shm-btn shm-btn--secondary" target="_blank">
+        <svg class="shm-btn-icon shm-github" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" aria-hidden="true">
+          <path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
+        </svg>
+        <span>GitHub</span>
+      </a>
+    </div>
   </div>
 </div>
 
-<div class="chapters-wrapper">
-  <div class="simple-chapters">
-    <a href="chapter_00_preface/">前言</a>
-    <a href="chapter_01_talk_about_math/">第 1 天・从演算到胡猜：变化率 —— 单神经元</a>
-    <a href="chapter_02_linear_regression/">第 2 天・渐进明细地猜：梯度下降 —— 单层神经网络</a>
-    <a href="chapter_03_multilayer_perceptron/">第 3 天・拟合任意曲线：激活函数 —— 多层神经网络</a>
-    <a href="chapter_04_deep_neural_network/">第 4 天・无限的表达力：残差模块 —— 深层神经网络</a>
-    <a href="chapter_05_encoder_decoder/">第 5 天・长相忆唯不忘：隐变量 —— 编码器-解码器</a>
-    <a href="chapter_06_attention/">第 6 天・语义是流淌的：注意力机制 —— 《Attention is ALL You Need》</a>
-    <a href="chapter_07_transformer/">第 7 天・从翻译到写作：Decoder-Only —— 现代 Transformer</a>
-    <a href="chapter_08_llm/">第 8 天・出生了，我的小烧麦</a>
-    <a href="chapter_09_instruction_tuning/">第 9 天・会叫爸爸啦！对话能力 —— 指令微调</a>
-    <a href="chapter_10_knowledge_distillation/">第 10 天・上小学啦：学习能力 —— 知识蒸馏</a>
-    <a href="chapter_11_chain_of_thought/">第 11 天・上中学啦：数理能力 —— 思维链</a>
-    <a href="chapter_12_reinforcement_learning/">第 12 天・上大学啦：自学能力 —— 强化学习</a>
-    <a href="chapter_13_safety_alignment/">第 13 天・是大人了，儿行千里父担忧 —— 安全对齐</a>
-  </div>
+<div class="shm-timeline">
+  <a href="chapter_00_preface/" class="shm-entry shm-entry--preface">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body">
+      <span class="shm-entry-badge">前言</span>
+    </div>
+  </a>
+  <a href="chapter_01_talk_about_math/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 1 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">从演算到胡猜</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">变化率</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">单神经元</span></span>
+    </div>
+  </a>
+  <a href="chapter_02_linear_regression/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 2 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">渐进明细地猜</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">梯度下降</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">单层神经网络</span></span>
+    </div>
+  </a>
+  <a href="chapter_03_multilayer_perceptron/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 3 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">拟合任意曲线</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">激活函数</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">多层神经网络</span></span>
+    </div>
+  </a>
+  <a href="chapter_04_deep_neural_network/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 4 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">无限的表达力</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">残差模块</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">深层神经网络</span></span>
+    </div>
+  </a>
+  <a href="chapter_05_encoder_decoder/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 5 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">长相忆唯不忘</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">隐变量</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">编码器-解码器</span></span>
+    </div>
+  </a>
+  <a href="chapter_06_attention/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 6 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">语义是流淌的</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">注意力</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">《Attention is ALL You Need》</span></span>
+    </div>
+  </a>
+  <a href="chapter_07_transformer/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 7 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">从翻译到写作</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">Decoder-Only</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">现代 Transformer</span></span>
+    </div>
+  </a>
+  <a href="chapter_08_llm/" class="shm-entry shm-entry--birth">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 8 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">出生了，我的小烧麦！</span>
+    </div>
+  </a>
+  <a href="chapter_09_instruction_tuning/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 9 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">会叫爸爸啦！</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">对话能力</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">指令微调</span></span>
+    </div>
+  </a>
+  <a href="chapter_10_knowledge_distillation/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 10 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">上小学啦</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">学习能力</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">知识蒸馏</span></span>
+    </div>
+  </a>
+  <a href="chapter_11_chain_of_thought/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 11 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">上中学啦</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">数理能力</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">思维链</span></span>
+    </div>
+  </a>
+  <a href="chapter_12_reinforcement_learning/" class="shm-entry">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 12 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">上大学啦</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">自学能力</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">强化学习</span></span>
+    </div>
+  </a>
+  <a href="chapter_13_safety_alignment/" class="shm-entry shm-entry--day13">
+    <div class="shm-entry-node"></div>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 13 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">是大人了，儿行千里父担忧</span>
+      <span class="shm-entry-text"><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">安全对齐</span></span>
+    </div>
+  </a>
 </div>
+</div>
+
+<script>
+  // 时间线滚动浮现：无脚本 / 不支持 IntersectionObserver / 系统开启减少动态时，内容保持常显
+  (function () {
+    'use strict';
+    var entries = Array.prototype.slice.call(document.querySelectorAll('.shm-entry'));
+    if (!entries.length) { return; }
+    var motionOK = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!('IntersectionObserver' in window) || !motionOK) { return; }
+    entries.forEach(function (el) { el.classList.add('shm-hidden'); });
+    var observer = new IntersectionObserver(function (items) {
+      items.forEach(function (item) {
+        if (item.isIntersecting) {
+          item.target.classList.remove('shm-hidden');
+          observer.unobserve(item.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    entries.forEach(function (el) { observer.observe(el); });
+  })();
+</script>
 
 
 

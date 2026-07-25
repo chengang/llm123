@@ -1006,7 +1006,7 @@
   <span class="md-ellipsis">
     
   
-    第 6 天 - 《Attention is ALL YOU NEED》
+    第 6 天 - 《Attention is All You Need》
   
 
     
@@ -2304,10 +2304,10 @@ x_t \sim P(x_t \mid x_1, x_2, \dots, x_{t-1})
 </figcaption>
 </figure>
 <p>最后我们看到，梯度最终是激活函数的导数和隐变量对应权重 $ \mathbf{W}_{hh} $ 的乘积。</p>
-<p>别忘了，我们是一个 **循环**神经网络，所以我们的梯度实际是会乘以它的 t 次方 $ (\mathbf{W}_{hh})^t $。</p>
+<p>别忘了，我们是一个 <strong>循环</strong> 神经网络，所以我们的梯度实际是会乘以它的 t 次方 $ (\mathbf{W}_{hh})^t $。</p>
 <p>还是那个逻辑，如果大于 1 会起飞，小于 1 则会消失。</p>
 <p>对比  <code>tanh</code> 和 <code>sigmoid</code> 的导数，我们可以看出它们导数的值都小于 1。也就是说，在连乘时，它们都有使得梯度减小的倾向。具体来说， <code>sigmoid</code> 的导数在 0 到 0.25 之间，<code>tanh</code> 的导在 0 到 1 之间。相对而言， <code>tanh</code> 使得梯度下降的程度更小一些。选一个相对好一点的，那我们就选 <code>tanh</code> 啦。</p>
-<p>小结一下这一段对于激活函数的选择方法，我们在前几天激活函数为神经网络引入非线性这个最最重要的贡献之上，又进一步加深了对它的理解。除了给网络带来非线性，它会参与前向和反向推导，这使得我们可以去思考或者说需要去思考非线性所带来的 <strong>副作用</strong>。神经网络是被这个激活函数的副作用坑害还是可以借用以增强网络的表达，这就是我们具体选择激活函数的核心考量。</p>
+<p>小结一下这一段对于激活函数的选择方法，我们在前几天激活函数为神经网络引入非线性这个最最重要的贡献之上，又进一步加深了对它的理解。除了给网络带来非线性，它会参与前向和反向推导，这使得我们可以去思考或者说需要去思考非线性所带来的 <strong>副作用</strong> 。神经网络是被这个激活函数的副作用坑害还是可以借用以增强网络的表达，这就是我们具体选择激活函数的核心考量。</p>
 <p>好吧，具体来说，对于我们的 RNN，我们选出了 <code>tanh</code>。那么，接下来我们就来实现我们的神经网络。</p>
 <h4 id="5222">5.2.2.2 实现隐变量模块<a class="headerlink" href="#5222" title="Permanent link">¶</a></h4>
 <p>首先，把我们最基础的小积木 —— 图 5-1 给实现出来。</p>
@@ -3829,13 +3829,13 @@ on Sequence Modeling》</a>。这篇论文在音乐和语音领域对比 GRU 和
         
         
           
-          <a href="../chapter_06_attention/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第 6 天 - 《Attention is ALL YOU NEED》">
+          <a href="../chapter_06_attention/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第 6 天 - 《Attention is All You Need》">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 下一页
               </span>
               <div class="md-ellipsis">
-                第 6 天 - 《Attention is ALL YOU NEED》
+                第 6 天 - 《Attention is All You Need》
               </div>
             </div>
             <div class="md-footer__button md-icon">
