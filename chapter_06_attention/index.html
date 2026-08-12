@@ -3,11 +3,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="从梯度下降到安全对齐，从初识世界的“胡猜”到拥有自学能力的“长大成人”。这是我们共同记录的一个AI大模型孕育与成长的故事。以父辈的温情与期待，走进大模型的底层逻辑，看一个数字生命是如何在代码中诞生。">
+        <meta name="description" content="从梯度下降到安全对齐，从初识世界的“胡猜”到拥有自学能力的“长大成人”。这是我们共同记录的一个AI大模型孕育与成长的故事。以父辈的温情与期待，走进大模型的底层逻辑，看一个数字生命是如何在代码中诞生">
       
       
         <meta name="author" content="chengang">
       
+      
+        <link rel="canonical" href="https://llm123.yikuyiku.com/chapter_06_attention/">
       
       
         <link rel="prev" href="../chapter_05_encoder_decoder/">
@@ -51,6 +53,8 @@
     
     
       <link rel="stylesheet" href="../csss/katex.min.css">
+    
+      <link rel="stylesheet" href="../csss/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -565,7 +569,73 @@
   <a href="#651" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.5.1 自注意力
+        6.5.1 「自」注意力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#652-q-k" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.2 Q 和 K
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#653-k-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.3 K 和 V
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#654" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.4 缩放点积注意力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#655" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.5 因果注意力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#656" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.6 多头注意力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#657" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.7 位置编码
       
     </span>
   </a>
@@ -578,34 +648,34 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#62-transformer" class="md-nav__link">
+  <a href="#66-transformer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2 复刻 Transformer
+        6.6 复刻 Transformer
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="6.2 复刻 Transformer">
+    <nav class="md-nav" aria-label="6.6 复刻 Transformer">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#621" class="md-nav__link">
+  <a href="#661" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.1 数据准备
+        6.6.1 数据准备
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="6.2.1 数据准备">
+    <nav class="md-nav" aria-label="6.6.1 数据准备">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#6211-wmt" class="md-nav__link">
+  <a href="#6611-wmt" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.1.1 WMT 数据集
+        6.6.1.1 WMT 数据集
       
     </span>
   </a>
@@ -613,10 +683,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6212-bpe-tokenizer" class="md-nav__link">
+  <a href="#6612-bpe-tokenizer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.1.2 BPE Tokenizer
+        6.6.1.2 BPE Tokenizer
       
     </span>
   </a>
@@ -624,10 +694,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6223-dataloader" class="md-nav__link">
+  <a href="#6623-dataloader" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.2.3 组装 Dataloader
+        6.6.2.3 组装 Dataloader
       
     </span>
   </a>
@@ -640,10 +710,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#622-transformer" class="md-nav__link">
+  <a href="#662-transformer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.2 组装 Transformer 网络
+        6.6.2 组装 Transformer 网络
       
     </span>
   </a>
@@ -938,7 +1008,73 @@
   <a href="#651" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.5.1 自注意力
+        6.5.1 「自」注意力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#652-q-k" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.2 Q 和 K
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#653-k-v" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.3 K 和 V
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#654" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.4 缩放点积注意力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#655" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.5 因果注意力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#656" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.6 多头注意力
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#657" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.5.7 位置编码
       
     </span>
   </a>
@@ -951,34 +1087,34 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#62-transformer" class="md-nav__link">
+  <a href="#66-transformer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2 复刻 Transformer
+        6.6 复刻 Transformer
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="6.2 复刻 Transformer">
+    <nav class="md-nav" aria-label="6.6 复刻 Transformer">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#621" class="md-nav__link">
+  <a href="#661" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.1 数据准备
+        6.6.1 数据准备
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="6.2.1 数据准备">
+    <nav class="md-nav" aria-label="6.6.1 数据准备">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#6211-wmt" class="md-nav__link">
+  <a href="#6611-wmt" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.1.1 WMT 数据集
+        6.6.1.1 WMT 数据集
       
     </span>
   </a>
@@ -986,10 +1122,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6212-bpe-tokenizer" class="md-nav__link">
+  <a href="#6612-bpe-tokenizer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.1.2 BPE Tokenizer
+        6.6.1.2 BPE Tokenizer
       
     </span>
   </a>
@@ -997,10 +1133,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#6223-dataloader" class="md-nav__link">
+  <a href="#6623-dataloader" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.2.3 组装 Dataloader
+        6.6.2.3 组装 Dataloader
       
     </span>
   </a>
@@ -1013,10 +1149,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#622-transformer" class="md-nav__link">
+  <a href="#662-transformer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        6.2.2 组装 Transformer 网络
+        6.6.2 组装 Transformer 网络
       
     </span>
   </a>
@@ -1066,19 +1202,20 @@
 <p>Recurrent neural networks, long short-term memory [12] and gated recurrent [7] neural networks in particular, have been firmly established as state of the art approaches in sequence modeling and transduction problems such as language modeling and machine translation [29, 2, 5]. Numerous efforts have since continued to push the boundaries of recurrent language models and encoder-decoder architectures.</p>
 </blockquote>
 <p>RNN、LSTM、GRU 已经是目前解决序列和翻译问题的最好方案，继而 RNN 又发展出了编码器-解码器架构。</p>
-<p>可见，当时它面临的情况正是我们当前的进展。</p>
+<p>看，当时它面临的情况正是我们当前的进展。</p>
 <p>今天，我们一起来欣赏 Transformer 的创造者，划分新旧时代的《Attention is All You Need》。</p>
 <h2 id="62">6.2 新的问题：钱太多！<a class="headerlink" href="#62" title="Permanent link">¶</a></h2>
-<p>昨天，我们手撸了 RNN 循环神经网络，引入了隐变量，让神经网络学会了从信息中去芜存菁，学会了所谓「思考」。</p>
-<p>但 RNN 仍非完美。它完成了任务，但仅限于研究者们的领域。当世界首富、世界最著名风险投资机构的总裁和世界第一的互联网科技企业一起带着天量海量的资金进入这个领域，一切都变了……</p>
-<p>RNN 的隐变量确实已经触及到了「思考」的核心，但它「思考」的速度相对于 OpenAI 的 10 亿美元投资、Google 招募的人才级别和它内部的海量数据，还是太慢。彼时，深度学习已经度过了它最后一段黑暗时期，现在的它处于狂长身体的时期，它需要一个能够更快吃掉数据、更快消耗算力、更快花光美刀的新架构。</p>
-<p>我在<a href="https://www.huxiu.com/article/4799236.html">虎嗅网</a>上读到一个很有趣的说法，说现如今大模型像是 150 年前的美国铁路潮 —— 资本在后面不停加煤，前面一群工程师们疯狂地铺铁轨。有趣的是，这两次浪潮中，华人都扮演着重要角色。但和 150 年前不同的是，大模型这列车是飞驰在还没铺好的铁轨上。</p>
+<p>昨天，我们构建 RNN 循环神经网络，引入隐变量，让神经网络学着从信息中去芜存菁，学会了所谓「思考」。</p>
+<p>RNN 仍非完美。它完成了任务，但仅限于研究者们的领域。当世界首富、世界最著名风险投资机构的总裁和世界第一的互联网科技企业一起带着天量海量的资金进入这个领域，一切都变了……</p>
+<p>RNN 的隐变量确实已经触及到了「思考」的核心，但它「思考」的速度相对于 OpenAI 的 10 亿美元投资、Google 招募的人才级别和它内部的海量数据，还是太慢。彼时，深度学习已经度过了它最后一段黑暗时期，现在的它正处于疯狂生长的时期，它需要一个能够更快吃掉数据、更快消耗算力、更快花光美刀的新架构新身体。</p>
+<p>我在<a href="https://www.huxiu.com/article/4799236.html">虎嗅网</a>上读到一个很有趣的说法，说现如今大模型像是 150 年前的美国铁路潮 —— 资本在后面不停加煤，前面一群工程师们疯狂地铺铁轨。 <del>有趣的是，这两次浪潮中，华人都扮演着重要角色。</del> 但和 150 年前不同的是，大模型这列车是飞驰在还没铺好的铁轨上。</p>
 <h2 id="63">6.3 新问题之二：多义词怎么办？<a class="headerlink" href="#63" title="Permanent link">¶</a></h2>
 <p>之前，我们通过 Embedding 已经让网络可以理解词义了，它能够知道苹果和梨是意思相近的词。</p>
-<p>但还有一个问题 —— 「苹果很甜」和「苹果手机」里的苹果不是一个意思，永久的将苹果这个词放在梨的旁边怕是不太适宜吧？有时候把苹果放在「小米手机」的「小米」旁边也还不错。</p>
-<p>苹果一会儿是个水果，一会儿又是一个科技品牌。它拥有 2 种完全不同的意思，这种词有时被称为是 multi-sense word embeddings 多义词向量。</p>
-<p>那怎么办呢？</p>
-<p>两种思路。一种思路比较直接，就让「苹果」有 多个不同的向量表示。这种思路的难点在于所谓的「词义消歧」word-sense disambiguation，即如何从某个词的多种向量表示中选到最合适的那个呢？挖坑容易，填坑难呐。</p>
+<p>但还有问题 —— 「苹果很甜」和「苹果手机」里的「苹果」不是一个意思。</p>
+<p>无视上下文，无脑把「苹果」放在「梨」的旁边怕是不太行？有时候把「苹果」也需要被放在「小米手机」的「小米」旁边。</p>
+<p>苹果一会儿是个水果，一会儿又是一个手机品牌。它能拥有多种完全不同的意思，这就是所谓的 multi-sense word embeddings 多义词向量。</p>
+<p>怎么办呢？</p>
+<p>两种思路。比较直接的思路是，就让「苹果」有 多个不同的向量表示。这种思路的难点在于所谓的「词义消歧」word-sense disambiguation，即如何从某个词的多种向量表示中选到最合适的那个呢？挖坑容易，填坑难呐。</p>
 <p>另一种思路是使用动态的词向量，让「苹果」和「手机」去计算，算出它在当前句子中合适的向量表示。这种思路的难点在于 —— 我如何知道「苹果」是该和「手机」来计算，而不是句子里别的词呢？</p>
 <p>如果是每个词和每个词都算，那么计算复杂度岂非是 <span class="arithmatex">\(\mathcal{O}(n^2)\)</span> ？那我让它读一篇《活着》岂不是要起飞？</p>
 <h2 id="64">6.4 新问题之三：长距离依赖<a class="headerlink" href="#64" title="Permanent link">¶</a></h2>
@@ -1091,7 +1228,7 @@
 <p>如果顺着读，那么直到结尾，我们才能知道开头的「这个人」指代的是「凤辣子」。可此时，我们的隐变量经过了太多迭代，可能已经无力去变更最前面的表示了。</p>
 <p>总的来说，RNN 缺乏并行能力和多义词理解能力，RNN 还缺乏一种「回眸」的能力 —— 一种在处理当前词时，直接关联到遥远上下文的能力。</p>
 <h2 id="65">6.5 新的解：注意力机制<a class="headerlink" href="#65" title="Permanent link">¶</a></h2>
-<p>在 2017 年 6 月之前，这些问题已经被学者们观察到，并都在加以缓解。</p>
+<p>2017 年 6 月，这些问题已经被研究者们观察到，而且都在想办法解决。</p>
 <p>比如说，用更方便 GPU 处理的卷积来改善 RNN 难以并行计算的问题。</p>
 <p>比如说，2014 年，加拿大蒙特利尔大学的 Dzmitry Bahdanau 和 Kyunghyun Cho、Yoshua Bengio 共同了提出的 Bahdanau 注意力机制。Dzmitry Bahdanau 现在是 CIFAR 的主席。</p>
 <figure>
@@ -1100,24 +1237,36 @@
 <p>图 6-1 Dzmitry Bahdanau</p>
 </figcaption>
 </figure>
-<p>Bahdanau 注意力机制让 RNN 可以在输出时访问任意的输入序列的某些部分，避开隐变量的压缩失真。</p>
+<p>Bahdanau 注意力机制让 RNN 可以在输出时访问任意的输入序列的某些部分，这样就能避开隐变量的压缩失真。</p>
 <figure>
 <p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch6-bahdanau-attention.webp" data-desc-position="bottom"><img alt="ch6-bahdanau-attention.webp" src="../jpgs/ch6-bahdanau-attention.webp"></a></p>
 <figcaption>
 <p>图 6-2 Bahdanau 注意力</p>
 </figcaption>
 </figure>
-<p>2017 年 6 月，OpenAI 创立 1 年有余，剑指深度学习的 Google Brain 已经 5 岁多了。是时，Google Brain 把 《Attention is All You Need》上传了 arXiv，当年 12 月在 NIPS 会议正式发表。论文开创性地提出，神经网络可以完全不使用循环结构和卷积，仅使用注意力机制来完成对词的理解。</p>
+<p>2017 年 6 月，Altman 的 OpenAI 创立 1 年有余，Google 的 Google Brain 已经 5 岁了。是时，Ashish Vaswani、Noam Shazeer、Niki Parmar、Jakob Uszkoreit、Llion Jones、Aidan N. Gomez、Łukasz Kaiser、Illia Polosukhin 把 《Attention is All You Need》上传了 arXiv，当年 12 月在 NIPS 会议正式发表。该论文开创性地提出，神经网络可以完全不使用循环结构和卷积，仅使用注意力机制来完成对词的理解。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch6-ashish-vaswani.jpg" data-desc-position="bottom"><img alt="ch6-ashish-vaswani.jpg" src="../jpgs/ch6-ashish-vaswani.jpg"></a></p>
+<figcaption>
+<p>图 6-3 Ashish Vaswani</p>
+</figcaption>
+</figure>
 <p>加州的那个夏天，Google Brain 的天才们给这列飞驰的火车狠狠地铺上了一段新的铁轨。</p>
-<h3 id="651">6.5.1 自注意力<a class="headerlink" href="#651" title="Permanent link">¶</a></h3>
+<h3 id="651">6.5.1 「自」注意力<a class="headerlink" href="#651" title="Permanent link">¶</a></h3>
 <p>自注意力机制的「自」意思是 —— 它关注的是序列自身。</p>
-<p>和 Bahdanau 那种注意力的区别在于，「自」注意力机制评估的是输入序列本身各个词的关系，而非计算输入序列和输出这样两个不同的序列间的关系。</p>
+<p>和 Bahdanau 那种注意力的区别在于，「自」注意力机制评估的是同一个序列内部各个词的关系，而非计算输入序列和输出这样两个不同的序列间的关系。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch6-self-attention.png" data-desc-position="bottom"><img alt="ch6-self-attention.png" src="../jpgs/ch6-self-attention.png"></a></p>
+<figcaption>
+<p>图 6-4 「自」注意力</p>
+</figcaption>
+</figure>
 <p>他们发现，句子中的特定词可以直接固定多义词的意思。</p>
 <p>比如，如果后面是「手机」这个词，那么「苹果」就肯定不是水果了。</p>
-<p>注意力机制让词能在更小的局部范围里，直接参考相关词来调整自己的意思，而不需要隐变量里压缩的整篇文章里的内容。</p>
+<p>注意力机制让词能在更小的局部范围里，直接参考相关词来调整自己的意思，而不需要隐变量里压缩的整篇文章的内容。</p>
 <p>昨天我们引入的 Embedding 层 —— 用向量来表示词的这种做法，恰好为这种调整提供了极大的便利。</p>
 <p>既然词义本身就是一个浮点数数组，那么改变它的意思无非把一个数值映射成另一个数值。</p>
-<p>而所谓「映射」，其实可以是各种的向量计算，只要是相同维度的向量进向量出的就行。这种向量运算天然可微、天然可学习、天然适合 GPU。</p>
+<p>而所谓「映射」，其实无非是各种向量计算，只要是相同维度的向量进向量出的就行。这种向量运算天然可微、天然可学习、天然适合交给 GPU。</p>
 <p>我们来举个最简单的例子，来说明如何通过向量映射来实现对语言的「理解」。</p>
 <p>我们假设一个语言只有「水果的甜度」和「手机的品牌」这两个意义的维度。</p>
 <figure>
@@ -1183,30 +1332,20 @@
 <figure>
 <div class="arithmatex">\[
 E_{\text{甜}} = \begin{bmatrix}
-1.6 &amp; 0.1 \\
-0.2 &amp; 0.1
+0.4 &amp; -0.4 
 \end{bmatrix}
 \]</div>
 <figcaption>
 <p>式 6-1 假设「甜」的向量表示</p>
 </figcaption>
 </figure>
-<p>那么，有「甜」的时候，「苹果」就会变成这样。</p>
+<p>那么，我们可以用「甜」去理解「苹果」。</p>
 <figure>
 <div class="arithmatex">\[
 \begin{aligned}
-&amp; {E}_{\text{苹果\_new}} = E_{\text{苹果}} \times E_{\text{甜}} \\
-&amp;= \begin{bmatrix} 0.5 &amp; 0.5 \end{bmatrix}
-\begin{bmatrix}
-1.6 &amp; 0.1 \\
-0.2 &amp; 0.1
-\end{bmatrix} \\
-&amp;= \begin{bmatrix}
-0.5 \times 1.6 + 0.5 \times 0.2 &amp; 0.5 \times 0.1 + 0.5 \times 0.1
-\end{bmatrix} \\
-&amp;= \begin{bmatrix}
-0.8 + 0.1 &amp; 0.05 + 0.05
-\end{bmatrix} \\
+&amp; {E}_{\text{苹果\_new}} \\
+&amp;= E_{\text{苹果}} + E_{\text{甜}} \\
+&amp;= \begin{bmatrix} 0.5 &amp; 0.5 \end{bmatrix} + \begin{bmatrix} 0.4 &amp; -0.4 \end{bmatrix} \\
 &amp;= \begin{bmatrix}
 0.9 &amp; 0.1
 \end{bmatrix}
@@ -1220,49 +1359,295 @@ E_{\text{甜}} = \begin{bmatrix}
 <figure>
 <div class="arithmatex">\[
 E_{\text{手机}} = \begin{bmatrix}
-0.1 &amp; 1.6 \\
-0.1 &amp; 0.2
+-0.4 &amp; 0.4 
 \end{bmatrix}
 \]</div>
 <figcaption>
 <p>式 6-3 假设「手机」的向量表示</p>
 </figcaption>
 </figure>
-<p>那么，有「手机」的时候，「苹果」就会变成这样。</p>
+<p>那么，用「手机」去理解的「苹果」就会变成这样。</p>
 <figure>
 <div class="arithmatex">\[
 \begin{aligned}
-&amp; {E}_{\text{苹果\_new}} = E_{\text{苹果}} \times E_{\text{手机}} \\
-&amp;= \begin{bmatrix} 0.5 &amp; 0.5 \end{bmatrix}
-\begin{bmatrix}
-0.1 &amp; 1.6 \\
-0.1 &amp; 0.2
-\end{bmatrix} \\
-&amp;= \begin{bmatrix}
-0.5 \times 0.1 + 0.5 \times 0.1 &amp; 0.5 \times 1.6 + 0.5 \times 0.2
-\end{bmatrix} \\
-&amp;= \begin{bmatrix}
-0.05 + 0.05  &amp; 0.8 + 0.1 
-\end{bmatrix} \\
-&amp;= \begin{bmatrix}
-0.1 &amp; 0.9
-\end{bmatrix}
+&amp; {E}_{\text{苹果\_new}} \\
+&amp;= E_{\text{苹果}} + E_{\text{手机}} \\
+&amp;= \begin{bmatrix} 0.5 &amp; 0.5 \end{bmatrix} + \begin{bmatrix} -0.4 &amp; 0.4 \end{bmatrix} \\
+&amp;= \begin{bmatrix} 0.1 &amp; 0.9 \end{bmatrix}
 \end{aligned}
 \]</div>
 <figcaption>
 <p>式 6-4 有「手机」时「苹果」的向量表示</p>
 </figcaption>
 </figure>
-<p>这样，我们就实现了同一个「苹果」在不同的上下文中表达不同的意思。并且这种「理解」是输入序列独自完成的，此时的它还没进入网络呢。</p>
-<p>需要指出的是，上面我们举了一个我们方便的理解的极端例子 —— 「苹果」的意思彻底改变了。但是，我们需要意识到，词语们即使没有发生我们日常理解的那种意思改变，配上不同的其他词，它的意思其实也在发生轻微的改变。</p>
-<p>而无论是从 0 到 1 的彻底改变，还是细微的些许改变，它们都能轻松被这个词的 Embedding 表示所表达，毕竟 Embedding 就是一堆浮点数而已。更重要的，这些改变的映射方式，能够被神经网络所捕捉所学习。</p>
-<h2 id="62-transformer">6.2 复刻 Transformer<a class="headerlink" href="#62-transformer" title="Permanent link">¶</a></h2>
+<p>这样，我们就实现了同一个「苹果」在不同的上下文中表达不同的意思。并且这种「理解」是输入序列独自完成的。</p>
+<p>当然，我们的例子极度简化了注意力的工作机制。</p>
+<p>真像我们这样做的话，会有一些妨碍网络收敛的问题。比如说对称性问题 —— 因为加法满足交换律的缘故，「苹果」很关注「甜」，那么「甜」就一定会很关注「苹果」。</p>
+<p>但在语言中，关系往往不是对称的。「苹果」很需要去关注「甜」，因为那是它的属性。但「甜」可能并不需要太去关注「苹果」，它还可能去形容「甜妹子」之类别的词。</p>
+<p>所以，我们希望有一种计算注意力的方式，它是不对称的。</p>
+<h3 id="652-q-k">6.5.2 Q 和 K<a class="headerlink" href="#652-q-k" title="Permanent link">¶</a></h3>
+<p>《Attention is All You Need》首先搞出了用 Q、K、V 这种计算注意力的方式，它们管它叫「缩放点积注意力」。</p>
+<p>首先，它通过 <span class="arithmatex">\(W_q, W_k, W_v\)</span> 三个可学习的权重矩阵，把每一个 Token 都变成 3 个表达 —— Query、Key、Value。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch6-qkv.png" data-desc-position="bottom"><img alt="ch6-qkv.png" src="../jpgs/ch6-qkv.png"></a></p>
+<figcaption>
+<p>图 6-5 QKV 让每个词都一变三</p>
+</figcaption>
+</figure>
+<p><span class="arithmatex">\(W_q, W_k, W_v\)</span> 这三个矩阵在本质上没有什么区别，由于上图中它们位置的不同，它们在神经网络的训练中会自然地学会不同用途。和之前一样，可微编程。</p>
+<p>有了 <span class="arithmatex">\(Q, K, V\)</span> 之后，我们就不用 Token 本身的 Embedding 去计算注意力了。我们用当前词的 <span class="arithmatex">\(Q\)</span> 和每一个词的 <span class="arithmatex">\(K\)</span> 去计算出「注意力评分」。因为查询词和被查询词分别被变换成了 <span class="arithmatex">\(Q\)</span> 和 <span class="arithmatex">\(K\)</span>，所以这种机制避免了「苹果」关注「甜」的时候，「甜」就必须很关注「甜」。</p>
+<p>岔开说一句，总是说「关注」，感觉很别扭。一个「词」怎么会去「关注」另一个「词」呢？很荒谬啊……</p>
+<p>但大家都用这个词。而且更关键的是，我确实没有找到更合适的词去表达「attention」这个英文词。但是我觉得在这里有必要澄清一下这个英文词的原意，或者说是我对它的理解。</p>
+<p>attention 应该是拆成 at·ten·tion。其中 at 是「加强」的意思，tion 是名词后缀，这俩都没啥好说的。最关键就是中间这个 ten。ten 这个词根是表达「拉拽」的意思。</p>
+<p>比如说，ten·d 倾向，意思其实就是「被人拉拽过去了」，所以具备了某种倾向。</p>
+<p>ex·ten·d 延长，就是搭配 ex 这个表示「向外」的词根，被拉长了嘛。</p>
+<p>ten·sion，拉拽的名词形式，被拽住了的状态，张力嘛。</p>
+<p>所以说，attention 我的理解其实是说一个词被另一个词「拉拽」，导致它变形了。虽然自己还是自己，核心没变，本质没变，但是外形变成了别的模样。</p>
+<p>希望这番解释能帮助大家理解所谓「注意力机制」，如果谁更有好的中文翻译也请告诉我。</p>
+<p>在那之前呢，我们还继续使用「关注」这个词，我们知道意思就好。</p>
+<p>回到正题。所以这种机制避免了「苹果」关注「甜」的时候，「甜」就必须很关注「甜」。因为 <span class="arithmatex">\(Q\)</span> 和 <span class="arithmatex">\(K\)</span> 已经被分成了不同的表示。</p>
+<figure>
+<div class="arithmatex">\[
+\mathbf{Q}_{\text{苹果}} \cdot \mathbf{K}_{\text{甜}} \neq \mathbf{Q}_{\text{甜}} \cdot \mathbf{K}_{\text{苹果}}
+\]</div>
+<figcaption>
+<p>式 6-5 为什么 Q 和 K 要分开计算</p>
+</figcaption>
+</figure>
+<p>找出一个词是「苹果」的 Soul Mate，就是一个索引查找操作。平常我们都是同态查找，用串找子串，在树里找 node ，在空间里找向量嘛。</p>
+<p>为什么 Transformer 里要把 <span class="arithmatex">\(Q\)</span> 和 <span class="arithmatex">\(K\)</span> 费这么大力特地给变个态，这就是原因。</p>
+<p>忍不住又想岔出去一句 —— 好像谈恋爱也是变态查找啊，谁给设计的啊？难怪这世间这么多求不得、爱别离。</p>
+<h3 id="653-k-v">6.5.3 K 和 V<a class="headerlink" href="#653-k-v" title="Permanent link">¶</a></h3>
+<p>那么，<span class="arithmatex">\(K\)</span> 和 <span class="arithmatex">\(V\)</span> 为什么也要不同呢？</p>
+<p>我们看看 Transformer 创造的这个「缩放点积注意力」长什么样子。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch6-dotproduct-attention.png" data-desc-position="bottom"><img alt="ch6-dotproduct-attention.png" src="../jpgs/ch6-dotproduct-attention.png"></a></p>
+<figcaption>
+<p>图 6-6 QKV 和缩放点积注意力</p>
+</figcaption>
+</figure>
+<p>可以看到。Q 和 K 计算完注意力之后，用 softmax 得出一个每个词对当前词的「影响力」大小。然后 <span class="arithmatex">\(V\)</span> 用来干什么了呢？</p>
+<p>一个乘法 —— <span class="arithmatex">\(V\)</span> 按照这个影响力的比例加到这个词的新表示中了。</p>
+<p>所以，<span class="arithmatex">\(Q\)</span> 和 <span class="arithmatex">\(K\)</span> 的任务是得出「掺多少」，而 <span class="arithmatex">\(V\)</span> 的负责保存每个词的实际含义。</p>
+<p>如果注意力是对词的调酒，那么 <span class="arithmatex">\(Q\)</span> 和 <span class="arithmatex">\(K\)</span> 的任务是得出 50ml，<span class="arithmatex">\(V\)</span> 则负责保存朗姆酒的味道。它们是不同的任务。</p>
+<p>所以，虽然  <span class="arithmatex">\(K\)</span> 和 <span class="arithmatex">\(V\)</span> 来自同一个词，也最好是用两个不同的权重矩阵 <span class="arithmatex">\(W_q\)</span> 和 <span class="arithmatex">\(W_k\)</span> 。让神经网络有学习的空间，去让一个词变形成不同的样子以达成不同的任务。</p>
+<h3 id="654">6.5.4 缩放点积注意力<a class="headerlink" href="#654" title="Permanent link">¶</a></h3>
+<h3 id="655">6.5.5 因果注意力<a class="headerlink" href="#655" title="Permanent link">¶</a></h3>
+<h3 id="656">6.5.6 多头注意力<a class="headerlink" href="#656" title="Permanent link">¶</a></h3>
+<h3 id="657">6.5.7 位置编码<a class="headerlink" href="#657" title="Permanent link">¶</a></h3>
+<p>一大堆注意力，我们都渐进明细过来了。最后一个问题，注意力的并行把 RNN 天然的对文字的「顺序」的感知力给整没了。</p>
+<p>我们要把这个能力给注意力机制给加回去 —— 两个词隔得远和近毕竟还是不同的吧。</p>
+<p>注意力找回这个感知力的方式，被通称为「位置编码」。</p>
+<p>其实这问题需要在进入注意力之前就得解决，一旦注意力开始算起来，位置就编码不明白了。「位置编码」是在 Embedding 之后，注意力计算之前的中间位置。</p>
+<p>位置编码有很多种方案。如同我们之前所发现的，因为 <span class="arithmatex">\(K\)</span> 和 <span class="arithmatex">\(V\)</span> 分离，有的编码方案是不往 <span class="arithmatex">\(V\)</span> 里编码位置信息的。也有的方案回归 RNN 的方式用循环的方式去让网络感受到位置信息，而不显式的增加位置编码。</p>
+<p>如果我们自己设计位置编码我们会怎么做呢？</p>
+<p>其实最简单的方式是给每个 Embedding 加几个比特来标记它的索引位置。但是这么做有 3 个问题。</p>
+<ol>
+<li>
+<p>分配多少比特呢？ 256 上下文需要 8 比特，64K 上下文需要 16 比特，1M 上下需要 20 比特 —— 太小就不够，太大会浪费；</p>
+</li>
+<li>
+<p>和之前一样，如果贸然给神经网络正整数的编号，它可能会产生线形关系的错觉。当然，文字距离确实是线形关系。但我们更想网络学会的是相对距离 —— 以每个字自己为 0 点；</p>
+</li>
+<li>
+<p>加入新的比特会改变 Embedding 的形状。 Embedding 可是在网络的最前面哦～ —— 不同上下文长度的支持值得用完全不同形状的网络去支持吗？ </p>
+</li>
+</ol>
+<p>不是说这样的位置编码不可行，毕竟 <a href="https://github.com/openai/gpt-2/blob/0574c5708b094bfa0b0f6dfe3fd284d9a045acd9/src/model.py#L152">GPT2 就是这么做的</a> 。</p>
+<p><del>岔开说一句咸甜豆腐脑的爆论。从这段代码中我们也能瞥见前代框架王者 tf 和 PyTorch 的不同之处。我被它大大地羞辱过…… 它的设计是用静态网络来提高性能，想法没错。然而程序员们怎么束缚得住呢？只要你第一天推出私有方法，第二天就会被迫支持反射。于是，无奈地支持了 <code>tf.shape(past)</code> 这种东西。如果这种东西存在，静态的意义就已经不大了，徒增烦恼。我认为 Rust 的设计也是和 tf 是异曲同工的。 其实，不止 tf 和 Rust，每个时代都有这种用工具束缚工人的设计思想的产物，认为设计者高使用者一等的设计哲学产出的语言和框架。每个这种思想的产物无一例外，都让我学得很痛苦。当然， AI 编程正在改天换地，它可能会喜欢 Rust。我是不是在说程序员比 AI 编程更高一等……</del></p>
+<p>回到正题。提出问题的主要目的可不是吵架啊，是用可能存在的问题来让我们察觉到 Transformer 位置编码的妙处。不然人家医于未病，我们还以为人家是庸医了。</p>
+<p>Transformer 创造了一种编码方式叫「正余弦位置编码」。它是往 <span class="arithmatex">\(Q\)</span>、 <span class="arithmatex">\(K\)</span> 和 <span class="arithmatex">\(V\)</span> 里都添加位置信息的，它没有增加的比特位，而且理论上它的上下文长度可以无限外推。</p>
+<p>它是怎么做到的呢？</p>
+<figure>
+<div class="arithmatex">\[
+\mathbf{PE}(pos) = 
+\begin{pmatrix}
+p_0 \\ p_1 \\ p_2 \\ \vdots \\ p_{d-1}
+\end{pmatrix}
+\in \mathbb{R}^d,
+\quad \text{where } p_j = 
+\begin{cases}
+\sin\!\left( \dfrac{pos}{10000^{2i/d}} \right) &amp; \text{if } j = 2i \\[1.2em]
+\cos\!\left( \dfrac{pos}{10000^{2i/d}} \right) &amp; \text{if } j = 2i+1
+\end{cases} \\
+\\
+\begin{aligned}
+&amp; \text{pos：Token 的位置} \\
+&amp; \text{  d：Embedding 的维度} \\
+&amp; \text{  j：当前维度}  \\
+&amp; \text{  i：当前维度除以 2}  \\
+\end{aligned}
+\]</div>
+<figcaption>
+<p>式 6-6 正余弦位置编码</p>
+</figcaption>
+</figure>
+<p>不知道这帮神人当初是怎么想出这么一个编码方式，做不到一步步推导，我们就直接看答案吧……</p>
+<p>首先，要把一个类似 1、2、3、4 这样的位置编号，变成一个和我们 Embedding 维度相同的向量。这样，编码出来的位置信息，才能和我们的 Embedding 加到一起去。这就是这个式子左半部分做的事。</p>
+<p>然后，具体某个索引位置如何编码呢？神奇的右半部分来了。我们把它展开看得更清楚一些。</p>
+<figure>
+<div class="arithmatex">\[
+\mathbf{PE}(pos) = 
+\begin{bmatrix}
+\sin\!\left( \dfrac{pos}{10000^{0/d}} \right) \\[0.8em]
+\cos\!\left( \dfrac{pos}{10000^{0/d}} \right) \\[0.8em]
+\sin\!\left( \dfrac{pos}{10000^{2/d}} \right) \\[0.8em]
+\cos\!\left( \dfrac{pos}{10000^{2/d}} \right) \\[0.8em]
+\vdots \\[0.8em]
+\sin\!\left( \dfrac{pos}{10000^{(d-2)/d}} \right) \\[0.8em]
+\cos\!\left( \dfrac{pos}{10000^{(d-2)/d}} \right)
+\end{bmatrix}
+\in \mathbb{R}^{d}
+\]</div>
+<figcaption>
+<p>式 6-7 正余弦位置编码展开版</p>
+</figcaption>
+</figure>
+<p>能看到，奇数位置它算了一个 <span class="arithmatex">\(\sin()\)</span>，偶数位置它算了一个 <span class="arithmatex">\(\cos()\)</span>。何意为呢？？</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch6-sin-cos.svg" data-desc-position="bottom"><img alt="ch6-sin-cos.svg" src="../svgs/ch6-sin-cos.svg" width="400"></a></p>
+<figcaption>
+<p>图 6-7 sin 和 cos</p>
+</figcaption>
+</figure>
+<p>既然 Google Brain 的天才大脑们用到了三角函数，那我们也回忆一下 sin 和 cos 都是啥。</p>
+<figure>
+<div class="arithmatex">\[
+直角三角形 ABC 中，\angle C = 90^\circ，设锐角 \angle A = \theta，\\
+AB 为斜边，AC 为 \theta 的邻边，BC 为 \theta 的对边。\\
+则有： \\
+\\
+\cos \theta = \frac{AC}{AB} = \frac{\text{邻边}}{\text{斜边}}, \\
+\sin \theta = \frac{BC}{AB} = \frac{\text{对边}}{\text{斜边}}. \\
+\\
+\]</div>
+<figcaption>
+<p>式 6-8 直角三角形中的 sin 和 cos</p>
+</figcaption>
+</figure>
+<p>哦。sin 就是对边除斜边， cos 就是邻边除斜边。</p>
+<p>我们再看下面这幅图。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../svgs/ch6-angle-addition-sine.svg" data-desc-position="bottom"><img alt="ch6-angle-addition-sine.svg" src="../svgs/ch6-angle-addition-sine.svg"></a></p>
+<figcaption>
+<p>图 6-8 三角和差公式</p>
+</figcaption>
+</figure>
+<p>盯这幅图 5 分钟，我们会得出来一个结论。</p>
+<figure>
+<div class="arithmatex">\[
+\sin(pos + k) = \sin(pos)\cos(k) + \cos(pos)\sin(k)
+\]</div>
+<figcaption>
+<p>式 6-9 正弦和差公式</p>
+</figcaption>
+</figure>
+<p>同理的，我们还能得到余弦和差公式。</p>
+<figure>
+<div class="arithmatex">\[
+\cos(pos + k) = \cos(pos)\cos(k) − \sin(pos)\sin(k)
+\]</div>
+<figcaption>
+<p>式 6-10 余弦和差公式</p>
+</figcaption>
+</figure>
+<p>我们发现 —— 这两个和差公式帮助我们把 k 从 pos + k 种给解耦出来了。</p>
+<p>我们把它写成矩阵相乘的形式会更明显。</p>
+<figure>
+<div class="arithmatex">\[
+\begin{aligned}
+\begin{pmatrix}
+\sin(pos + k) \\
+\cos(pos + k)
+\end{pmatrix}
+&amp;=
+\begin{pmatrix}
+\cos k &amp; \sin k \\
+-\sin k &amp; \cos k
+\end{pmatrix}
+\begin{pmatrix}
+\sin pos \\
+\cos pos
+\end{pmatrix} \\
+&amp;=
+\begin{pmatrix}
+\cos k \cdot \sin pos + \sin k \cdot \cos pos \\
+-\sin k \cdot \sin pos + \cos k \cdot \cos pos
+\end{pmatrix} \\
+&amp;=
+\begin{pmatrix}
+\sin pos \cos k + \cos pos \sin k \\
+\cos pos \cos k - \sin pos \sin k
+\end{pmatrix}
+\end{aligned}
+\]</div>
+<figcaption>
+<p>式 6-11 矩阵形式的和差公式</p>
+</figcaption>
+</figure>
+<p>看。左边的矩阵仅与 k 相关，右边的矩阵仅与 pos 相关。</p>
+<p>意思是，只要我们知道了某个两个位置的两对 sin 和 cos 值，理论上我们就能反推出它们的差 k 来。</p>
+<p>当然，我们不会去推。也没有代码去推。我们把这层关系编码到 Emebedding 里，神经网络会自己学会这层关系！</p>
+<p>位置编码是 Transformer 的第二层，这么复杂的数学关系。而且注意哦，我们给它的都是计算过后的浮点数，是有误差的，如果真的计算其实是不相等的哦。它真能穿过这层层迷雾学会这个位置关系吗？</p>
+<p>看上去，答案似乎是肯定的……</p>
+<p>所以啊，这也惊醒我们，处理数据的时候一定要小心再小心。千万别给神经网络搞什么深度预习、深度复习之类的小把戏，它不会跟咱们嘻嘻哈哈。把它整错了，那 BUG 可不好排。</p>
+<p>还记得我们之前的个问题吗？相对于每个 Token 的索引，我们希望网络学会以每个 Token 自己为 0 点计算其它 Token 的距离。</p>
+<p>那不就是 k。这个正余弦位置编码不就搞定这件事了。</p>
+<p>我们还希望位置编码的比特数不受上下文长度限制。那正余弦位置编码更是轻松拿下。反正 sin 和 cos 都是转圈圈，你给它多大多小的数，反正它都能返回一个固定长度的返回值。</p>
+<p>等等。新问题 —— 转圈圈？那么会不会转回原点呢？好像并不能实现无限长的上下文啊。或者说，会出错。</p>
+<figure>
+<div class="arithmatex">\[
+\sin(0) = \sin(\pi) = \sin(2\pi) = 0
+\]</div>
+<figcaption>
+<p>式 6-12 正弦函数的周期性</p>
+</figcaption>
+</figure>
+<p>确实有这个问题。</p>
+<p>这就需要我们往回翻一翻，看看正余弦位置编码的完整模样。</p>
+<figure>
+<div class="arithmatex">\[
+\mathbf{PE}(pos) = 
+\begin{bmatrix}
+\sin\!\left( \dfrac{pos}{10000^{0/d}} \right) \\[0.8em]
+\cos\!\left( \dfrac{pos}{10000^{0/d}} \right) \\[0.8em]
+\sin\!\left( \dfrac{pos}{10000^{2/d}} \right) \\[0.8em]
+\cos\!\left( \dfrac{pos}{10000^{2/d}} \right) \\[0.8em]
+\vdots \\[0.8em]
+\sin\!\left( \dfrac{pos}{10000^{(d-2)/d}} \right) \\[0.8em]
+\cos\!\left( \dfrac{pos}{10000^{(d-2)/d}} \right)
+\end{bmatrix}
+\in \mathbb{R}^{d}
+\]</div>
+<figcaption>
+<p>式 6-13 正余弦位置编码展开版2</p>
+</figcaption>
+</figure>
+<p>看。它不止是一对 sin 和 cos，它有好多对。</p>
+<p>这些对的区别在哪儿呢？在于下面的除数不同。这就意味着当 pos 按照一个固定的步长增长时，它们会让 sin 和 cos 的输出以不同的速率增长。</p>
+<p>确实是在转圈圈，但是每个维度都在以不同的速度转圈圈。</p>
+<p>就好比，如果我们的钟表只有一个时针，也许它只能表示 12 个值。可还是这个表，给它加一个不同速度的分针呢？再加一个秒针呢？</p>
+<p>它的表示范围就大大增大了。</p>
+<p>网上流传很广的 Transformer 位置编码的热力图说的就是这件事。</p>
+<figure>
+<p><a class="glightbox" data-type="image" data-width="100%" data-height="auto" href="../jpgs/ch6-positional-encoding-periods.png" data-desc-position="bottom"><img alt="ch6-positional-encoding-periods.png" src="../jpgs/ch6-positional-encoding-periods.png"></a></p>
+<figcaption>
+<p>图 6-9 用错位周期表达更多值</p>
+</figcaption>
+</figure>
+<p>这张图有很多种画法，但意思是相近的。图里的每一行是一个位置编码的结果。可以看到，它们虽然在相同的维度中确实表现出了三角函数的周期性，但是通过调整这些周期的错位，Google Brain 的天才用有限的值表达了近乎无限的范围。</p>
+<p>这个道理也可以用二进制来类比 —— 哪怕每一位只有两个状态，只要位数够多，也能表达无限的值。</p>
+<p>回顾一下正余弦位置编码的原始表达，确保我们理解它的每个部分。标量进向量出，目的是可以和 Embedding 融合。三角函数，是为了让网络习得相对位置。不同的维度上用不同的除数，目的是充分利用维度来用有限值表达无限范围。</p>
+<p>再看看我们最开始提的三个问题。不要改变 Embedding 形状，每个词学会以自己为原点，不用考虑到底分配多少比特。是不是都被 Transformer 的奇思妙想给解决了？</p>
+<p>那么，这就是 Transformer 中的位置编码了。</p>
+<p>好了。虚空扯淡已经够多了。让我们 get our hands dirty 吧。</p>
+<h2 id="66-transformer">6.6 复刻 Transformer<a class="headerlink" href="#66-transformer" title="Permanent link">¶</a></h2>
 <p>本来我想只给 RNN 升级注意力机制，训练出一个网络来体现注意力机制的强力。折腾了很久，那样的网络非常非常难收敛，好不容意收敛了又过拟合了。</p>
 <p>这说明，虽然注意力机制是绝对的主角，论文中的其他配角亦不可或缺。</p>
 <p>或者说，Ashish Vaswani 等人的厉害之处不仅是「全盘采用注意力机制」这个灵感火花，更厉害在他们端出了一个可以引爆这个灵感火花的技术组合。</p>
 <p>论文中的其它零件和注意力机制是相得益彰的关系。</p>
-<h3 id="621">6.2.1 数据准备<a class="headerlink" href="#621" title="Permanent link">¶</a></h3>
-<h4 id="6211-wmt">6.2.1.1 WMT 数据集<a class="headerlink" href="#6211-wmt" title="Permanent link">¶</a></h4>
+<h3 id="661">6.6.1 数据准备<a class="headerlink" href="#661" title="Permanent link">¶</a></h3>
+<h4 id="6611-wmt">6.6.1.1 WMT 数据集<a class="headerlink" href="#6611-wmt" title="Permanent link">¶</a></h4>
 <p>我们还是从数据集开始。</p>
 <p>WMT 是 Workshop on Statistical Machine Translation 统计机器翻译研讨会的缩写，也有翻译成世界翻译大会的，它是最主要的机器翻译的学术会议。 Transformer 用的就是 WMT 2014 的数据集，成为了当时最好的翻译模型。</p>
 <p>不过，Transformer 用的是英-德和英-法翻译的数据集。我们肯定得用一个中文的数据集。我们就用 WMT 2021 的中-英翻译数据集，目标是训练一个把英语翻译成中文的模型。这个数据集在 <a href="https://www.modelscope.cn/datasets/iic/WMT-Chinese-to-English-Machine-Translation-Training-Corpus">Modelscope.cn</a> https://www.modelscope.cn/datasets/iic/WMT-Chinese-to-English-Machine-Translation-Training-Corpus 上能下载到。</p>
@@ -1351,7 +1736,7 @@ E_{\text{手机}} = \begin{bmatrix}
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">config_val_pairs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">150_000</span>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">all_pairs</span> <span class="o">=</span> <span class="n">load_and_sample_data</span><span class="p">(</span><span class="n">config_data_path</span><span class="p">,</span> <span class="p">(</span><span class="n">config_train_pairs</span> <span class="o">+</span> <span class="n">config_val_pairs</span><span class="p">))</span>
 </code></pre></div>
-<h4 id="6212-bpe-tokenizer">6.2.1.2 BPE Tokenizer<a class="headerlink" href="#6212-bpe-tokenizer" title="Permanent link">¶</a></h4>
+<h4 id="6612-bpe-tokenizer">6.6.1.2 BPE Tokenizer<a class="headerlink" href="#6612-bpe-tokenizer" title="Permanent link">¶</a></h4>
 <p>今天的一号男配是 BPE 分词器，即 Byte Pair Encoding 字节对编码分词器。它负责改进我们把句子拆成词的方式。</p>
 <p>昨天，我们学习《活着》用的分词方式是「单字分词」，即把「今天天气真好」分成 <code>['今', '天', '天', '气', '真', '好']</code>。</p>
 <p>显然的，分成 <code>['今天', '天气', '真', '好']</code> 是一个更优的解。既能省显存和算力，而且提前汇聚了词意，省得网络去学习了。这种分词的方法其实用了很多年，叫「词典分词」。</p>
@@ -1560,7 +1945,7 @@ E_{\text{手机}} = \begin{bmatrix}
 <a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>  Tokenized 4,350,000 / 4,350,000 (100%)
 <a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>Pre-tokenize Validation data via BPE - done
 </code></pre></div>
-<h4 id="6223-dataloader">6.2.2.3 组装 Dataloader<a class="headerlink" href="#6223-dataloader" title="Permanent link">¶</a></h4>
+<h4 id="6623-dataloader">6.6.2.3 组装 Dataloader<a class="headerlink" href="#6623-dataloader" title="Permanent link">¶</a></h4>
 <p>BPE 已经帮我们把训练集和验证集里的文字都转成 Token ID 了。接下来，我们把这两个数据集分别装到 2 个 <code>torch.utils.data.Dataloader</code> 里备用即可。当然，和昨天一样，我们还是先把我们的 list 封装成 <code>torch.utils.data.Dataset</code>，然后再传递给 <code>torch.utils.data.Dataloader</code>。</p>
 <div class="language-python highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
@@ -1700,7 +2085,7 @@ E_{\text{手机}} = \begin{bmatrix}
 <a id="__codelineno-11-136" name="__codelineno-11-136" href="#__codelineno-11-136"></a>      <span class="n">persistent_workers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <a id="__codelineno-11-137" name="__codelineno-11-137" href="#__codelineno-11-137"></a><span class="p">)</span>
 </code></pre></div>
-<h3 id="622-transformer">6.2.2 组装 Transformer 网络<a class="headerlink" href="#622-transformer" title="Permanent link">¶</a></h3>
+<h3 id="662-transformer">6.6.2 组装 Transformer 网络<a class="headerlink" href="#662-transformer" title="Permanent link">¶</a></h3>
 
 
 
