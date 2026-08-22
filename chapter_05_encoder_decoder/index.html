@@ -52,6 +52,10 @@
       
     
     
+      <link rel="stylesheet" href="../css/print-site.css">
+    
+      <link rel="stylesheet" href="../css/print-site-material.css">
+    
       <link rel="stylesheet" href="../csss/katex.min.css">
     
       <link rel="stylesheet" href="../csss/extra.css">
@@ -840,10 +844,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5423-torchnnembedding" class="md-nav__link">
+  <a href="#5423-teacher-forcing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.4.2.3 嵌入层 torch.nn.Embedding
+        5.4.2.3 教师强制 Teacher Forcing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5424-torchnnembedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4.2.4 嵌入层 torch.nn.Embedding
       
     </span>
   </a>
@@ -1037,7 +1052,7 @@
   <span class="md-ellipsis">
     
   
-    第 7 天 - Decoder-Only：GPT
+    第 7 天 - 规模法则：GPT
   
 
     
@@ -1200,6 +1215,33 @@
     
   
     第 13 天 - 是大人了：安全对齐
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    单页 PDF 打印
   
 
     
@@ -1596,10 +1638,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5423-torchnnembedding" class="md-nav__link">
+  <a href="#5423-teacher-forcing" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5.4.2.3 嵌入层 torch.nn.Embedding
+        5.4.2.3 教师强制 Teacher Forcing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5424-torchnnembedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4.2.4 嵌入层 torch.nn.Embedding
       
     </span>
   </a>
@@ -3366,6 +3419,7 @@ on Sequence Modeling》</a>。这篇论文在音乐和语音领域对比 GRU 和
 <a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a>        <span class="k">return</span> <span class="n">logits</span>
 </code></pre></div>
 <p>可以看到编码器 RNN <code>encoder_rnn</code> 的输出 <code>h_n</code> 成为了解码器 RNN <code>decoder_rnn</code> 的输入。这个 <code>h_n</code> 就是压缩了全文信息的隐变量，也可以叫「上下文变量」。</p>
+<h4 id="5423-teacher-forcing">5.4.2.3 教师强制 Teacher Forcing<a class="headerlink" href="#5423-teacher-forcing" title="Permanent link">¶</a></h4>
 <p><code>decoder_rnn</code> 还有另一个输入是 <code>dec_emb</code>，它是移位后的输入字符串的「嵌入向量」。我们稍后来理解「嵌入向量」。我们先举例说明为什么 <code>decoder_rnn</code> 拿了上下文变量，为什么它还需要另一个输入。</p>
 <p>比如说我们的输入是「今天天气真好」。那么，编码器的输入无疑是「今天天气真好」，并算出上下文变量。然后解码器的输入是上下文变量和「(空)今天天气真」，期望它推理出「好」。</p>
 <figure>
@@ -3422,7 +3476,7 @@ on Sequence Modeling》</a>。这篇论文在音乐和语音领域对比 GRU 和
 <p>图 5-17 Ronald J. Williams</p>
 </figcaption>
 </figure>
-<h4 id="5423-torchnnembedding">5.4.2.3 嵌入层 torch.nn.Embedding<a class="headerlink" href="#5423-torchnnembedding" title="Permanent link">¶</a></h4>
+<h4 id="5424-torchnnembedding">5.4.2.4 嵌入层 torch.nn.Embedding<a class="headerlink" href="#5424-torchnnembedding" title="Permanent link">¶</a></h4>
 <p>我们 Encoder-Decoder 版本和 RNN 版本的另一个不同是我们没有采用 One-hot 方式对中文字编码，而是使用了所谓「嵌入层」 torch.nn.Embedding。</p>
 <p>Embedding 也是一种对文字的编码，等到我们明白它是怎么做的就会知道它为什么叫「嵌入」这个名字。</p>
 <p>重置一下我们的记忆 —— 当初，为什么我们要引入 One-hot 来着？</p>
@@ -3856,7 +3910,7 @@ on Sequence Modeling》</a>。这篇论文在音乐和语音领域对比 GRU 和
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright © 2027 <a href="mailto:missingyousomuch@163.com">chengang</a><br>The website content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+      Copyright © 2026 <a href="mailto:missingyousomuch@163.com">chengang</a><br>The website content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
     </div>
   
   
@@ -3884,6 +3938,8 @@ on Sequence Modeling》</a>。这篇论文在音乐和语音领域对比 GRU 和
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../js/print-site.js"></script>
       
         <script src="../javascripts/katex.js"></script>
       

@@ -1,0 +1,403 @@
+<svg viewBox="0 0 620 1273" xmlns="http://www.w3.org/2000/svg" font-family="Consolas, Monaco, monospace">
+  <style>
+    .node-keep { fill: #d3f9d8; stroke: #2f9e44; stroke-width: 1.5; }
+    .node-prune { fill: #ffc9c9; stroke: #c92a2a; stroke-width: 1; stroke-dasharray: 4; }
+    .node-leaf-prune { fill: #f8f9fa; stroke: #dee2e6; stroke-width: 0.8; }
+    .label { font-size: 9px; font-weight: bold; fill: #333; }
+    .prob { font-size: 8px; fill: #495057; }
+    .line { fill: none; stroke: #adb5bd; stroke-width: 1; }
+    .line-prune { fill: none; stroke:#e9ecef; stroke-width: 0.8; stroke-dasharray: 3; }
+    
+    .formula-text { font-size: 9px; fill: #495057; }
+    .formula-max { font-size: 10px; fill: #c92a2a; font-weight: bold; }
+  </style>
+
+  <!-- ==================== Step 0: Start ==================== -->
+  <g transform="translate(43.6, 636)">
+    <circle r="14.5" cy="0" fill="#4dabf7" stroke="#1971c2" stroke-width="2"/>
+    <text text-anchor="middle" y="3.5" fill="white" font-weight="bold" font-size="10">Root</text>
+  </g>
+
+  <!-- ==================== Step 1: t=1 ==================== -->
+  <g transform="translate(130.9, 255)">
+    <rect x="-29" y="-18" width="58" height="36" rx="4" class="node-keep"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">A</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.50</text>
+  </g>
+  <g transform="translate(130.9, 636)">
+    <rect x="-29" y="-18" width="58" height="36" rx="4" class="node-keep"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">B</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.30</text>
+  </g>
+  <g transform="translate(130.9, 1018)">
+    <rect x="-29" y="-18" width="58" height="36" rx="4" class="node-keep"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">C</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.20</text>
+  </g>
+
+  <!-- Lines Root -> Step 1 -->
+  <path d="M58,636 L101,255" class="line" />
+  <path d="M58,636 L101,636" class="line" />
+  <path d="M58,636 L101,1018" class="line" />
+
+  <!-- ==================== Step 2: t=2 ==================== -->
+  
+  <!-- Branch A -->
+  <g transform="translate(254.5, 95)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-keep"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">A,X</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.05</text>
+  </g>
+  <g transform="translate(254.5, 225)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-keep"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">A,Y</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.05</text>
+  </g>
+  <g transform="translate(254.5, 356)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-prune"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">A,Z</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.04</text>
+  </g>
+
+  <!-- Branch B -->
+  <g transform="translate(254.5, 531)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-keep"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">B,X</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.27</text>
+  </g>
+  <g transform="translate(254.5, 662)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-prune"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">B,Y</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(254.5, 793)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-prune"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">B,Z</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.02</text>
+  </g>
+
+  <!-- Branch C -->
+  <g transform="translate(254.5, 924)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-prune"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">C,X</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.03</text>
+  </g>
+  <g transform="translate(254.5, 1055)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-prune"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">C,Y</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.02</text>
+  </g>
+  <g transform="translate(254.5, 1185)">
+    <rect x="-36.5" y="-18" width="73" height="36" rx="4" class="node-prune"/>
+    <text x="0" y="-3" text-anchor="middle" class="label">C,Z</text>
+    <text x="0" y="10" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+
+  <!-- Lines Step 1 -> Step 2 -->
+  <path d="M159.9,255 L218,95" class="line" />
+  <path d="M159.9,255 L218,225" class="line" />
+  <path d="M159.9,255 L218,356" class="line-prune" />
+  
+  <path d="M159.9,636 L218,531" class="line" />
+  <path d="M159.9,636 L218,662" class="line-prune" />
+  <path d="M159.9,636 L218,793" class="line-prune" />
+  
+  <path d="M159.9,1018 L218,924" class="line-prune" />
+  <path d="M159.9,1018 L218,1055" class="line-prune" />
+  <path d="M159.9,1018 L218,1185" class="line-prune" />
+
+  <!-- ==================== Step 3: t=3 ==================== -->
+  
+  <!-- Branch AX -->
+  <g transform="translate(392.7, 51)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-keep"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,X,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.030</text>
+  </g>
+  <g transform="translate(392.7, 95)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,X,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(392.7, 138)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,X,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+
+  <!-- Branch AY -->
+  <g transform="translate(392.7, 182)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-keep"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,Y,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.030</text>
+  </g>
+  <g transform="translate(392.7, 225)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,Y,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(392.7, 269)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,Y,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  
+  <!-- Branch AZ -->
+  <g transform="translate(392.7, 312)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,Z,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.02</text>
+  </g>
+  <g transform="translate(392.7, 356)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,Z,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(392.7, 400)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">A,Z,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+
+  <!-- Branch BX -->
+  <g transform="translate(392.7, 487)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-keep"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,X,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.243</text>
+  </g>
+  <g transform="translate(392.7, 531)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,X,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.02</text>
+  </g>
+  <g transform="translate(392.7, 575)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,X,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+
+  <!-- Branch BY -->
+  <g transform="translate(392.7, 618)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,Y,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(392.7, 662)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,Y,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+  <g transform="translate(392.7, 706)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,Y,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+
+  <!-- Branch BZ -->
+  <g transform="translate(392.7, 749)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,Z,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(392.7, 793)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,Z,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+  <g transform="translate(392.7, 837)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">B,Z,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+
+  <!-- Branch CX -->
+  <g transform="translate(392.7, 880)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,X,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.02</text>
+  </g>
+  <g transform="translate(392.7, 924)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,X,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(392.7, 968)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,X,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+
+  <!-- Branch CY -->
+  <g transform="translate(392.7, 1011)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,Y,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(392.7, 1055)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,Y,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+  <g transform="translate(392.7, 1099)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,Y,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+  
+  <!-- Branch CZ -->
+  <g transform="translate(392.7, 1142)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,Z,u</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.01</text>
+  </g>
+  <g transform="translate(392.7, 1186)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,Z,v</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+  <g transform="translate(392.7, 1230)">
+    <rect x="-43.5" y="-14.5" width="87" height="29" rx="3" class="node-leaf-prune"/>
+    <text x="0" y="-2" text-anchor="middle" class="label">C,Z,w</text>
+    <text x="0" y="9" text-anchor="middle" class="prob">P=0.00</text>
+  </g>
+
+  <!-- Lines Step 2 -> Step 3 -->
+  <!-- AX Group -->
+  <path d="M291,95 L349,51" class="line" />
+  <path d="M291,95 L349,95" class="line-prune" />
+  <path d="M291,95 L349,138" class="line-prune" />
+
+  <!-- AY Group -->
+  <path d="M291,225 L349,182" class="line" />
+  <path d="M291,225 L349,225" class="line-prune" />
+  <path d="M291,225 L349,269" class="line-prune" />
+
+  <!-- AZ Group -->
+  <path d="M291,356 L349,312" class="line-prune" />
+  <path d="M291,356 L349,356" class="line-prune" />
+  <path d="M291,356 L349,400" class="line-prune" />
+
+  <!-- BX Group -->
+  <path d="M291,531 L349,487" class="line" />
+  <path d="M291,531 L349,531" class="line-prune" />
+  <path d="M291,531 L349,575" class="line-prune" />
+
+  <!-- BY Group -->
+  <path d="M291,662 L349,618" class="line-prune" />
+  <path d="M291,662 L349,662" class="line-prune" />
+  <path d="M291,662 L349,706" class="line-prune" />
+
+  <!-- BZ Group -->
+  <path d="M291,793 L349,749" class="line-prune" />
+  <path d="M291,793 L349,793" class="line-prune" />
+  <path d="M291,793 L349,837" class="line-prune" />
+
+  <!-- CX Group -->
+  <path d="M291,924 L349,880" class="line-prune" />
+  <path d="M291,924 L349,924" class="line-prune" />
+  <path d="M291,924 L349,968" class="line-prune" />
+
+  <!-- CY Group -->
+  <path d="M291,1055 L349,1011" class="line-prune" />
+  <path d="M291,1055 L349,1055" class="line-prune" />
+  <path d="M291,1055 L349,1099" class="line-prune" />
+
+  <!-- CZ Group -->
+  <path d="M291,1185 L349,1142" class="line-prune" />
+  <path d="M291,1185 L349,1186" class="line-prune" />
+  <path d="M291,1185 L349,1230" class="line-prune" />
+
+  <!-- ==================== Formulas & Lines to Formulas ==================== -->
+  
+  <!-- AX Group -->
+  <path d="M436,51 L450,51" class="line-prune" />
+  <text x="455" y="54" class="formula-text">0.50 × 0.10 × 0.60 = 0.030</text>
+  
+  <path d="M436,95 L450,95" class="line-prune" />
+  <text x="455" y="98" class="formula-text">0.50 × 0.10 × 0.20 = 0.010</text>
+  
+  <path d="M436,138 L450,138" class="line-prune" />
+  <text x="455" y="141" class="formula-text">0.50 × 0.10 × 0.20 = 0.010</text>
+
+  <!-- AY Group -->
+  <path d="M436,182 L450,182" class="line-prune" />
+  <text x="455" y="185" class="formula-text">0.50 × 0.10 × 0.60 = 0.030</text>
+  
+  <path d="M436,225 L450,225" class="line-prune" />
+  <text x="455" y="228" class="formula-text">0.50 × 0.10 × 0.20 = 0.010</text>
+  
+  <path d="M436,269 L450,269" class="line-prune" />
+  <text x="455" y="272" class="formula-text">0.50 × 0.10 × 0.20 = 0.010</text>
+
+  <!-- AZ Group -->
+  <path d="M436,312 L450,312" class="line-prune" />
+  <text x="455" y="315" class="formula-text">0.50 × 0.08 × 0.50 = 0.020</text>
+  
+  <path d="M436,356 L450,356" class="line-prune" />
+  <text x="455" y="359" class="formula-text">0.50 × 0.08 × 0.25 = 0.010</text>
+  
+  <path d="M436,400 L450,400" class="line-prune" />
+  <text x="455" y="403" class="formula-text">0.50 × 0.08 × 0.25 = 0.010</text>
+
+  <!-- BX Group -->
+  <path d="M436,487 L450,487" class="line" />
+  <text x="455" y="490" class="formula-max">0.30 × 0.90 × 0.90 = 0.243</text>
+  
+  <path d="M436,531 L450,531" class="line-prune" />
+  <text x="455" y="534" class="formula-text">0.30 × 0.90 × 0.05 = 0.014</text>
+  
+  <path d="M436,575 L450,575" class="line-prune" />
+  <text x="455" y="578" class="formula-text">0.30 × 0.90 × 0.05 = 0.014</text>
+
+  <!-- BY Group -->
+  <path d="M436,618 L450,618" class="line-prune" />
+  <text x="455" y="621" class="formula-text">0.30 × 0.04 × 0.80 = 0.010</text>
+  
+  <path d="M436,662 L450,662" class="line-prune" />
+  <text x="455" y="665" class="formula-text">0.30 × 0.04 × 0.10 = 0.001</text>
+  
+  <path d="M436,706 L450,706" class="line-prune" />
+  <text x="455" y="709" class="formula-text">0.30 × 0.04 × 0.10 = 0.001</text>
+
+  <!-- BZ Group -->
+  <path d="M436,749 L450,749" class="line-prune" />
+  <text x="455" y="752" class="formula-text">0.30 × 0.06 × 0.50 = 0.009</text>
+  
+  <path d="M436,793 L450,793" class="line-prune" />
+  <text x="455" y="796" class="formula-text">0.30 × 0.06 × 0.25 = 0.005</text>
+  
+  <path d="M436,837 L450,837" class="line-prune" />
+  <text x="455" y="840" class="formula-text">0.30 × 0.06 × 0.25 = 0.005</text>
+
+  <!-- CX Group -->
+  <path d="M436,880 L450,880" class="line-prune" />
+  <text x="455" y="883" class="formula-text">0.20 × 0.15 × 0.60 = 0.018</text>
+  
+  <path d="M436,924 L450,924" class="line-prune" />
+  <text x="455" y="927" class="formula-text">0.20 × 0.15 × 0.20 = 0.006</text>
+  
+  <path d="M436,968 L450,968" class="line-prune" />
+  <text x="455" y="971" class="formula-text">0.20 × 0.15 × 0.20 = 0.006</text>
+
+  <!-- CY Group -->
+  <path d="M436,1011 L450,1011" class="line-prune" />
+  <text x="455" y="1014" class="formula-text">0.20 × 0.10 × 0.50 = 0.010</text>
+  
+  <path d="M436,1055 L450,1055" class="line-prune" />
+  <text x="455" y="1058" class="formula-text">0.20 × 0.10 × 0.25 = 0.005</text>
+  
+  <path d="M436,1099 L450,1099" class="line-prune" />
+  <text x="455" y="1102" class="formula-text">0.20 × 0.10 × 0.25 = 0.005</text>
+
+  <!-- CZ Group -->
+  <path d="M436,1142 L450,1142" class="line-prune" />
+  <text x="455" y="1145" class="formula-text">0.20 × 0.05 × 0.80 = 0.008</text>
+  
+  <path d="M436,1186 L450,1186" class="line-prune" />
+  <text x="455" y="1189" class="formula-text">0.20 × 0.05 × 0.10 = 0.001</text>
+  
+  <path d="M436,1230 L450,1230" class="line-prune" />
+  <text x="455" y="1233" class="formula-text">0.20 × 0.05 × 0.10 = 0.001</text>
+
+</svg>
+

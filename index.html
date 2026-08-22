@@ -48,6 +48,10 @@
       
     
     
+      <link rel="stylesheet" href="css/print-site.css">
+    
+      <link rel="stylesheet" href="css/print-site-material.css">
+    
       <link rel="stylesheet" href="csss/katex.min.css">
     
       <link rel="stylesheet" href="csss/extra.css">
@@ -477,7 +481,7 @@
   <span class="md-ellipsis">
     
   
-    第 7 天 - Decoder-Only：GPT
+    第 7 天 - 规模法则：GPT
   
 
     
@@ -652,6 +656,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="print_page/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    单页 PDF 打印
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -779,6 +810,7 @@
   .shm-hero-inner > :nth-child(1) { animation-delay: 0.05s; }
   .shm-hero-inner > :nth-child(2) { animation-delay: 0.2s; }
   .shm-hero-inner > :nth-child(3) { animation-delay: 0.35s; }
+  .shm-hero-inner > :nth-child(4) { animation-delay: 0.5s; }
 
   /* 标题：衬线大字 + 抽象烧麦吉祥物（currentColor 着色，随主题自适应） */
   .md-typeset h1.shm-hero-title {
@@ -809,6 +841,11 @@
     font-size: 0.9rem;
     letter-spacing: 0.16em;
     color: var(--md-default-fg-color--light);
+    /* 汉字间禁止断行：全句唯一的合法折点只剩「 · 」两侧的空格，
+       窄屏贪心折行自然落在最后一个分隔符之后，得到
+       「细到发疯 · 硬核孕育 ·」加「硅基生命养成日记」两行，
+       不会把最后一句拦腰截断；宽屏放得下时仍是一行 */
+    word-break: keep-all;
   }
 
   /* CTA 按钮 */
@@ -864,6 +901,30 @@
   .shm-github {
     width: 1.1em;
     height: 1.1em;
+  }
+
+  /* 次级下载入口：正常字重小字链接，比主按钮低一级；
+     悬停变 teal 并浮起浅 teal 圆角底，不加粗、无下划线 */
+  .shm-hero-downloads {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+  }
+  .md-typeset a.shm-dl {
+    padding: 0.32rem 0.78rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--md-default-fg-color--light);
+    text-decoration: none;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+  .md-typeset a.shm-dl:hover {
+    color: var(--md-accent-fg-color);
+    background-color: var(--md-accent-fg-color--transparent);
   }
 
   /* ===== 孕育时间线 ===== */
@@ -1199,7 +1260,8 @@
     .shm-entry-tech,
     .shm-entry--birth::after,
     .shm-entry--preface::after,
-    .shm-btn {
+    .shm-btn,
+    .shm-dl {
       animation: none !important;
       transition: none !important;
     }
@@ -1234,8 +1296,8 @@
     }
     .shm-entry-title { font-size: 0.95rem; }
     /* 沟槽收窄到 1.6rem 后，芯片与火花的对接位置重新计算。
-       margin-left:auto 是窄屏兜底：内容最满的条目（第 7、13 天）
-       换行后芯片会单独落一行、失去破折号的推力而左对齐错位，
+       margin-left:auto 是窄屏兜底：内容较满的条目（如第 13 天）
+       换行后芯片可能单独落一行、失去破折号的推力而左对齐错位，
        自动左边距保证芯片无论落在哪一行都停靠到行右缘接上轨迹；
        桌面端不用此招，以免夺走 sep/dash 的弹性、破坏概念居中桥梁 */
     .shm-entry-tech {
@@ -1270,6 +1332,14 @@
           <path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
         </svg>
         <span>GitHub</span>
+      </a>
+    </div>
+    <div class="shm-hero-downloads">
+      <a href="/print_page/" class="shm-dl">
+        <span>PDF 打印</span>
+      </a>
+      <a href="https://github.com/chengang/llm123/tree/main/notebooks" class="shm-dl" target="_blank">
+        <span>Notebooks 下载</span>
       </a>
     </div>
   </div>
@@ -1315,14 +1385,14 @@
   </a>
   <a href="chapter_06_transformer/" class="shm-entry">
     <div class="shm-entry-node"></div>
-    <div class="shm-entry-body"><span class="shm-entry-badge">第 6 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">语义是流淌的</span><span class="shm-entry-sep">：</span>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 6 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">语义相互拉扯</span><span class="shm-entry-sep">：</span>
       <span class="shm-entry-text"><span class="shm-entry-sub">注意力</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">Attention is ALL You Need</span></span>
     </div>
   </a>
   <a href="chapter_07_gpt/" class="shm-entry">
     <div class="shm-entry-node"></div>
-    <div class="shm-entry-body"><span class="shm-entry-badge">第 7 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">从翻译到写作</span><span class="shm-entry-sep">：</span>
-      <span class="shm-entry-text"><span class="shm-entry-sub">Decoder-Only</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">GPT</span></span>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 7 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">量变引起质变</span><span class="shm-entry-sep">：</span>
+      <span class="shm-entry-text"><span class="shm-entry-sub">规模法则</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">GPT</span></span>
     </div>
   </a>
   <a href="chapter_08_llm/" class="shm-entry shm-entry--birth">
@@ -1430,7 +1500,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright © 2027 <a href="mailto:missingyousomuch@163.com">chengang</a><br>The website content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
+      Copyright © 2026 <a href="mailto:missingyousomuch@163.com">chengang</a><br>The website content is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>
     </div>
   
   
@@ -1458,6 +1528,8 @@
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="js/print-site.js"></script>
       
         <script src="javascripts/katex.js"></script>
       
