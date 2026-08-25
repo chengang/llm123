@@ -6514,6 +6514,9 @@ the input sequence centered around the respective output position. </p>
 <p><strong>nn.Transformer 实现</strong> 今天我们用了 PyTorch 2.0 发布的 SPDA 算子来实现了我们的 Transformer。在 SPDA 之上 PyTorch 还封装了 <a href="https://docs.pytorch.org/docs/2.13/generated/torch.nn.MultiheadAttention.html">nn.MultiheadAttention</a> 和 <a href="https://docs.pytorch.org/docs/2.13/generated/torch.nn.Transformer.html">nn.Transformer</a> 这两个更高级的 API 供我们使用。我们可以尝试用这两个更高级的 API 再去搭建一次我们的网络。需要注意的是，因为这两个 API 都出生在 SPDA 之前，所以里面留了不少兼容逻辑，玩的时候千万别因为它是高层 API 而轻视它。</p>
 </li>
 <li>
+<p><strong>性能优化</strong> 我们 2 个版本的 GPU 使用率都没到 50%。浪费 GPU 直接等于浪费钱，更是浪费模型上市的时间成本。现在高速显存 HBM 很贵，相关股票疯涨就是这个原因。我们的程序主要可以考虑从 2 个方向去优化。一个是从内存进入显存的过程，这是 CPU 、磁盘 IO 和内存负责的部分，优化指标是 GPU 使用率。手段的话，可以考虑把数据集整个放到 /dev/shm 或者做个 mmap 内存映射。再一个是从显存进入片上缓存的过程，也就是 Flash Attetion 优化的部分，优化指标是 MFU。手段的话，可以考虑使用更加融合的算子，或是使用更高速的显存，比如从 GDDR 换到 HBM。</p>
+</li>
+<li>
 <p><strong>KV Cache</strong> 都见识过 KV Cache 吃显存的厉害了。跑一个长上下文的大模型时，有时它吃掉的显存比大模型本体吃掉的还多。即使它这么废，也从没听过说有人关闭 KV Cache 去节省显存的。可见这个优化无可或缺的程度。KV Cache 和 Flash Attention 一样是一个在比较长的上下文才能发挥威力的优化，所以今天我们这个翻译场景并没有实现它。</p>
 </li>
 </ul>
