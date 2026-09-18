@@ -2,4 +2,14 @@
 name = "ch7-gpt"
 version = "0.1.0"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "dotenv>=0.9.9",
+    "httpx>=0.28.1",
+    "modelscope>=1.40.0",
+    "sentencepiece>=0.2.2",
+    "torch>=2.14.0",
+]
+
+[[tool.uv.index]]
+url = "https://mirrors.cloud.tencent.com/pypi/simple"
+default = true
