@@ -40,12 +40,6 @@
     
     
       
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+SC:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
-        <style>:root{--md-text-font:"Noto Sans SC";--md-code-font:"JetBrains Mono"}</style>
-      
     
     
       <link rel="stylesheet" href="css/print-site.css">
@@ -474,6 +468,33 @@
   
   
     <li class="md-nav__item">
+      <a href="chapter_07_gpt/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 7 天 - 规模法则：GPT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="print_page/" class="md-nav__link">
         
   
@@ -540,8 +561,8 @@
 
 
 <style>
-  /* 首页专用样式：展示衬线体（与站点既有 Google Fonts 依赖一致），系统无衬线回退 */
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&display=swap');
+  /* 首页专用样式：展示衬线体（与站点既有 Google Fonts 依赖一致，本地自托管，见 docs/csss/extra.css），系统无衬线回退 */
+  /* @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&display=swap'); */
 
   :root {
     --shm-font-display: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "SimSun", "STSong", serif;
@@ -1031,6 +1052,52 @@
     color: var(--md-default-fg-color--light);
   }
 
+  /* ===== 纪界附注：工程篇纪要 =====
+     紧随「今生：工程篇」分隔线之下，是工程篇的开工宣言。
+     非链接、无节点、不接右侧神经轨迹——它属于叙事说明，
+     而非某一天的发育事件；以卡片底 + accent 描边区别于时间线条目，
+     复用日期戳与芯片的等宽字声，保持设计语言一致 */
+  .shm-era-note {
+    position: relative;
+    margin: 0.4rem 0 1.4rem 0.4rem;
+    padding: 0.55rem 1rem 0.6rem;
+    border-radius: 0.35rem;
+    /* 淡底：比条目卡片的 code-bg 更弱一档，仅足以区分「批注」与「正文」 */
+    background-color: color-mix(in srgb, var(--md-code-bg-color) 32%, transparent);
+    border: none;
+  }
+  .shm-era-note-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: shm-note;
+  }
+  .shm-era-note-list li {
+    position: relative;
+    counter-increment: shm-note;
+    padding-left: 1.9rem;
+    margin: 0.22rem 0;
+    font-size: 0.74rem;
+    line-height: 1.5;
+    color: var(--md-default-fg-color--light);
+    text-wrap: pretty;
+  }
+  /* 等宽序号 01–05：像边批那样悬在条目左缘 */
+  .shm-era-note-list li::before {
+    content: counter(shm-note, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.05rem;
+    font-family: var(--md-code-font-family, "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace);
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--md-default-fg-color--light);
+  }
+  .shm-era-note-list li + li {
+    margin-top: 0.35rem;
+  }
+
   /* 滚动浮现（shm-hidden 由脚本添加，无脚本时内容常显） */
   .shm-entry.shm-hidden {
     opacity: 0;
@@ -1124,6 +1191,17 @@
   /* ===== slate 深色微调 ===== */
   [data-md-color-scheme="slate"] .shm-hero-bg { opacity: 0.45; }
   [data-md-color-scheme="slate"] .shm-entry-node { border-width: 2px; }
+  /* 批注底色在深色下提一档填充，避免薄透明叠在深背景上几乎不可见；
+     文字沿用 default-fg 保证对比度 */
+  [data-md-color-scheme="slate"] .shm-era-note {
+    background-color: color-mix(in srgb, var(--md-code-bg-color) 55%, transparent);
+  }
+  [data-md-color-scheme="slate"] .shm-era-note-list li {
+    color: var(--md-default-fg-color);
+  }
+  [data-md-color-scheme="slate"] .shm-era-note-list li::before {
+    color: var(--md-default-fg-color--light);
+  }
 </style>
 
 <div class="shm-page">
@@ -1163,7 +1241,17 @@
       <span class="shm-entry-badge">前言</span>
     </div>
   </a>
-  <div class="shm-era"><span class="shm-era-label">前世</span></div>
+  <div class="shm-era"><span class="shm-era-label">前世：理论篇</span></div>
+  <aside class="shm-era-note">
+    <ol class="shm-era-note-list">
+      <li>溯源脉络：从单神经元一步步演进到 Transformer，讲清推动每次跃迁的关键技术突破；</li>
+      <li>致敬星光：沿路介绍神经网络发展史中的闪耀前辈，致敬他们为神经网络贡献的奇思妙技；</li>
+      <li>原理优先：通俗解释，慎用术语，从神经网络和数学双料初学者的角度看问题、学原理；</li>
+      <li>手动实现：每个网络都从零写起，不依赖高层封装，确保理解所有技术细节；</li>
+      <li>技术栈：纯 PyTorch + Jupyter Notebook，无复杂环境依赖，单机即可跑通实验；</li>
+      <li>方便复习：文字、公式、代码、输出同页交织，合理组织小标题，方便复习复盘；</li>
+    </ol>
+  </aside>
   <a href="chapter_01_talk_about_math/" class="shm-entry">
     <div class="shm-entry-node"></div>
     <div class="shm-entry-body"><span class="shm-entry-badge">第 1 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">从演算到胡猜</span><span class="shm-entry-sep">：</span>
@@ -1200,18 +1288,29 @@
       <span class="shm-entry-text"><span class="shm-entry-sub">注意力</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">Attention is ALL You Need</span></span>
     </div>
   </a>
-  <!-- <a href="chapter_07_gpt/" class="shm-entry">
+  <div class="shm-era"><span class="shm-era-label">今生：工程篇</span></div>
+  <aside class="shm-era-note">
+    <ol class="shm-era-note-list">
+      <li>训练周期：网络训练用时至少一周，GPU 实验费用显著更高；</li>
+      <li>性能取向：以高性能为目标调用 PyTorch 接口；每个网络只实现一遍，不再编写手动实现版；</li>
+      <li>技术栈：不再局限于纯 PyTorch，恰时引入 DeepSpeed 等外部框架；</li>
+      <li>工程导向：引入 Astral uv 作项目与环境管理工具，不再以 Jupyter Notebook 为代码容器；</li>
+      <li>算力演进：随网络规模逐渐扩大，从单机单卡逐步过渡到多机多卡训练；</li>
+      <li>历史主角：资本从个人英雄们手中接过火炬，我们也转以集体为单位介绍技术演进；</li>
+    </ol>
+  </aside>
+  <a href="chapter_07_gpt/" class="shm-entry">
     <div class="shm-entry-node"></div>
-    <div class="shm-entry-body"><span class="shm-entry-badge">第 7 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">量变引起质变</span><span class="shm-entry-sep">：</span>
+    <div class="shm-entry-body"><span class="shm-entry-badge">第 7 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">量变引发质变</span><span class="shm-entry-sep">：</span>
       <span class="shm-entry-text"><span class="shm-entry-sub">规模法则</span><span class="shm-entry-dash"> —— </span><span class="shm-entry-tech">GPT</span></span>
     </div>
   </a>
+  <!-- 
   <a href="chapter_08_llm/" class="shm-entry shm-entry--birth">
     <div class="shm-entry-node"></div>
     <div class="shm-entry-body"><span class="shm-entry-badge">第 8 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">出生了，我的小烧麦！</span>
     </div>
   </a>
-  <div class="shm-era"><span class="shm-era-label">今生</span></div>
   <a href="chapter_09_instruction_tuning/" class="shm-entry">
     <div class="shm-entry-node"></div>
     <div class="shm-entry-body"><span class="shm-entry-badge">第 9 天</span><span class="shm-entry-dot">・</span><span class="shm-entry-title">会叫爸爸啦！</span><span class="shm-entry-sep">：</span>

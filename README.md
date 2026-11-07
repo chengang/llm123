@@ -1,22 +1,23 @@
-# 🧙 PyTorch 魔法练习生（速成版）
+# 神经网络的进化：小烧麦诞生记
 
+[![开始阅读](https://img.shields.io/badge/📖_开始阅读-立即启程-4e9b9d?style=for-the-badge)](https://llm123.yikuyiku.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-chengang%2Fllm123-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/chengang/llm123)
 
-[![开始阅读](https://img.shields.io/badge/📖_开始阅读-立即启程-4e9b9d?style=for-the-badge)](http://llm123.yikuyiku.com/)
+![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0)
 
-![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?&logo=pytorch&logoColor=white)
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+一份细到发疯的大模型实践日记     
 
-## 细到发疯的大模型实践日记
+## 在线阅读
 
-本项目希望从以下 3 个视角，打造一份新手友好的 PyTorch 与语言大模型的实践笔记
+**[llm123.yikuyiku.com](https://llm123.yikuyiku.com/)**
 
-1. **历史视角** 用代码体会每一步关键技术演进，由单个神经元一步步实现到大语言模型；
+支持 [单页 PDF 打印](https://llm123.yikuyiku.com/print_page/)
 
-2. **新手视角** 不依赖术语，不省略「此处易证」。先理解卡点再厘清原理，力求站在初学者角度捋平所有技术细节；
+## 代码
 
-3. **工程视角** 每个函数手动实现一遍，再用 PyTorch 高级接口实现一遍。理解原理的同时，掌握实操能力；
+示例代码位于 [`notebooks/`](https://github.com/chengang/llm123/tree/main/notebooks) 目录
 
-  
-## 代码下载
+## 致谢
 
-示例代码与可运行 notebook，在 `notebooks/` 目录下
+致敬每一个为神经网络演进做出贡献的前辈

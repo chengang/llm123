@@ -1,0 +1,75 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="470" viewBox="-10 -10 1460 490" font-family="'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif">
+
+  <rect width="1440" height="470" fill="#ffffff"/>
+
+  <text x="720" y="36" text-anchor="middle" font-size="22" font-weight="700" fill="#1a1a1a">
+    PYTORCH_CUDA_ALLOC_CONF = expandable_segments:True
+  </text>
+  <text x="720" y="60" text-anchor="middle" font-size="13" fill="#999999">
+    同色块 = 同一块显存（上下对应）　｜　白色 = 空闲
+  </text>
+
+  <!-- ==================== 上：默认 ==================== -->
+  <text x="20" y="104" font-size="16" font-weight="700" fill="#1a1a1a">
+    默认：空闲被挤散，东一块西一块
+  </text>
+
+  <!-- 一整条 bar -->
+  <rect x="20" y="120" width="1400" height="70" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- 已分配块（零散分布，与下面对应同色） -->
+  <g>
+    <rect x="60" y="121" width="120" height="68" fill="#4E79A7"/>
+    <rect x="220" y="121" width="20" height="68" fill="#F28E2B"/>
+    <rect x="286" y="121" width="90" height="68" fill="#59A14F"/>
+    <rect x="470" y="121" width="60" height="68" fill="#E15759"/>
+    <rect x="620" y="121" width="70" height="68" fill="#B07AA1"/>
+    <rect x="738" y="121" width="40" height="68" fill="#4E79A7"/>
+    <rect x="894" y="121" width="100" height="68" fill="#F28E2B"/>
+    <rect x="1086" y="121" width="8" height="68" fill="#59A14F"/>
+    <rect x="1140" y="121" width="110" height="68" fill="#E15759"/>
+    <rect x="1290" y="121" width="30" height="68" fill="#B07AA1"/>
+  </g>
+
+  <!-- OOM 提示 -->
+  <text x="20" y="222" font-size="13" font-weight="700" fill="#c0392b">
+    ✗ 申请大块连续显存 → CUDA OOM：空闲总量够，但东一块西一块，没有一段连续空间
+  </text>
+
+  <!-- 分隔线 -->
+  <line x1="20" y1="244" x2="1420" y2="244" stroke="#dddddd" stroke-width="1.5"/>
+
+  <!-- ==================== 下：可扩展段 ==================== -->
+  <text x="20" y="284" font-size="16" font-weight="700" fill="#1a1a1a">
+    开启 expandable_segments:True：同样的块，紧凑相连，空闲集中在尾部
+  </text>
+
+  <!-- 一整条 bar -->
+  <rect x="20" y="300" width="1400" height="70" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
+
+  <!-- 已分配块（紧凑排布，与上面颜色一一对应） -->
+  <g>
+    <rect x="21" y="301" width="120" height="68" fill="#4E79A7"/>
+    <rect x="141" y="301" width="20" height="68" fill="#F28E2B"/>
+    <rect x="161" y="301" width="90" height="68" fill="#59A14F"/>
+    <rect x="251" y="301" width="60" height="68" fill="#E15759"/>
+    <rect x="311" y="301" width="70" height="68" fill="#B07AA1"/>
+    <rect x="381" y="301" width="40" height="68" fill="#4E79A7"/>
+    <rect x="421" y="301" width="100" height="68" fill="#F28E2B"/>
+    <rect x="521" y="301" width="8" height="68" fill="#59A14F"/>
+    <rect x="529" y="301" width="110" height="68" fill="#E15759"/>
+    <rect x="639" y="301" width="30" height="68" fill="#B07AA1"/>
+  </g>
+
+  <!-- 大块请求成功 -->
+  <line x1="672" y1="335" x2="840" y2="335" stroke="#1a1a1a" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text x="850" y="341" font-size="13" font-weight="700" fill="#1a1a1a">
+    ✓ 申请同样的大块 → 成功：空闲连续集中在段尾，就地扩展即可
+  </text>
+
+  <!-- ===== 底部说明 ===== -->
+  <text x="20" y="430" font-size="13" fill="#666666">
+    同样的块（颜色一一对应）：默认空闲散落 → 大请求 OOM；开启后空闲集中在尾部 → 大请求成功
+  </text>
+</svg>

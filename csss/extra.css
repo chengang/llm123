@@ -1,1 +1,71 @@
+/* ===== 本地自托管字体 =====
+   所有字体文件位于 ./fonts/，不再依赖 fonts.googleapis.com / fonts.gstatic.com。
+   来源：@fontsource/noto-sans-sc、noto-serif-sc、jetbrains-mono（SIL OFL 1.1）。
 
+   简体中文采用 fontsource 的 chinese-simplified 合并切片（单文件全量、无
+   unicode-range，已含 Latin 字形），一个字重一个 @font-face，覆盖最全且无
+   unicode-range 冲突。 */
+
+/* ---- Noto Sans SC：正文 ---- */
+@font-face {
+  font-family: "Noto Sans SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("fonts/noto-sans-sc-chinese-simplified-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Sans SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("fonts/noto-sans-sc-chinese-simplified-700-normal.woff2") format("woff2");
+}
+
+/* ---- Noto Serif SC：首页标题 / 时间线衬线展示字 ---- */
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("fonts/noto-serif-sc-chinese-simplified-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("fonts/noto-serif-sc-chinese-simplified-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Noto Serif SC";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 900;
+  src: url("fonts/noto-serif-sc-chinese-simplified-900-normal.woff2") format("woff2");
+}
+
+/* ---- JetBrains Mono：代码 ---- */
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2");
+}
+
+/* ---- 绑定到 Material 主题字体变量 ----
+   mkdocs.yml 已设 font: false，主题不再注入 Google Fonts <link>，
+   这里手动把本地字体族挂到主题的文本 / 代码字体变量上。
+   末尾保留系统字体回退，避免字体未加载完成时空白。 */
+:root {
+  --md-text-font: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC", sans-serif;
+  --md-code-font: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}

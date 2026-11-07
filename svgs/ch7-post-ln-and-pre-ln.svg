@@ -1,0 +1,99 @@
+<svg width="760" height="600" viewBox="0 0 760 600"
+     xmlns="http://www.w3.org/2000/svg"
+     font-family="'Songti SC','Noto Serif SC','STSong',serif">
+
+  <!-- 纸面底色 -->
+  <rect width="760" height="600" fill="#fbfaf6"/>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="8.5" refY="5"
+            markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#8a887e"/>
+    </marker>
+  </defs>
+
+  <!-- ==================== 总标题 ==================== -->
+  <text x="380" y="46" text-anchor="middle"
+        font-size="21" fill="#4a4a42" letter-spacing="6">残差归一化的两种布局</text>
+  <line x1="330" y1="60" x2="430" y2="60" stroke="#c9c6ba" stroke-width="1"/>
+
+  <!-- ==================== 上：Post-LN ==================== -->
+  <text x="380" y="106" text-anchor="middle" font-size="16" fill="#8c6f6c" letter-spacing="3">
+    Post-LN（原 Transformer，2017）
+  </text>
+
+  <!-- 主通路 -->
+  <text x="58" y="160" font-size="15" fill="#6a685e" font-style="italic">x</text>
+  <line x1="72" y1="155" x2="140" y2="155" stroke="#8a887e" stroke-width="1.4" marker-end="url(#arw)"/>
+
+  <rect x="146" y="131" width="136" height="48" rx="3"
+        fill="#f3f1ea" stroke="#a5a294" stroke-width="1.2"/>
+  <text x="214" y="161" text-anchor="middle" font-size="15" fill="#5a584e">Sublayer</text>
+
+  <line x1="282" y1="155" x2="388" y2="155" stroke="#8a887e" stroke-width="1.4" marker-end="url(#arw)"/>
+
+  <circle cx="405" cy="155" r="14" fill="#fbfaf6" stroke="#8a887e" stroke-width="1.4"/>
+  <text x="405" y="161" text-anchor="middle" font-size="17" fill="#5a584e">+</text>
+
+  <line x1="419" y1="155" x2="472" y2="155" stroke="#8a887e" stroke-width="1.4" marker-end="url(#arw)"/>
+
+  <rect x="478" y="131" width="58" height="48" rx="3"
+        fill="#f4e9e7" stroke="#c49a95" stroke-width="1.2"/>
+  <text x="507" y="161" text-anchor="middle" font-size="15" fill="#8c5f59">LN</text>
+
+  <line x1="536" y1="155" x2="596" y2="155" stroke="#8a887e" stroke-width="1.4" marker-end="url(#arw)"/>
+  <text x="608" y="160" font-size="14" fill="#6a685e" font-style="italic">out</text>
+
+  <!-- 残差直通 -->
+  <polyline points="110,155 110,238 405,238 405,172"
+            fill="none" stroke="#a5a294" stroke-width="1.2" stroke-dasharray="4 3"
+            marker-end="url(#arw)"/>
+  <text x="256" y="230" text-anchor="middle" font-size="13" fill="#9a8f8c">
+    残差相加后仍须过 LN —— 恒等项的梯度亦被截留
+  </text>
+
+  <!-- 分隔 -->
+  <line x1="120" y1="284" x2="640" y2="284" stroke="#ddd9cc" stroke-width="1"/>
+  <path d="M 380 278 l 6 6 l -6 6 l -6 -6 z" fill="#c9c6ba"/>
+
+  <!-- ==================== 下：Pre-LN ==================== -->
+  <text x="380" y="330" text-anchor="middle" font-size="16" fill="#6e8276" letter-spacing="3">
+    Pre-LN（GPT-2 起的标配）
+  </text>
+
+  <!-- 主通路 -->
+  <text x="58" y="384" font-size="15" fill="#6a685e" font-style="italic">x</text>
+  <line x1="72" y1="379" x2="120" y2="379" stroke="#8a887e" stroke-width="1.4" marker-end="url(#arw)"/>
+
+  <rect x="126" y="355" width="58" height="48" rx="3"
+        fill="#ecf2ec" stroke="#9db4a4" stroke-width="1.2"/>
+  <text x="155" y="385" text-anchor="middle" font-size="15" fill="#5c7362">LN</text>
+
+  <line x1="184" y1="379" x2="238" y2="379" stroke="#8a887e" stroke-width="1.4" marker-end="url(#arw)"/>
+
+  <rect x="244" y="355" width="136" height="48" rx="3"
+        fill="#f3f1ea" stroke="#a5a294" stroke-width="1.2"/>
+  <text x="312" y="385" text-anchor="middle" font-size="15" fill="#5a584e">Sublayer</text>
+
+  <line x1="380" y1="379" x2="388" y2="379" stroke="#8a887e" stroke-width="1.4" marker-end="url(#arw)"/>
+
+  <circle cx="405" cy="379" r="14" fill="#fbfaf6" stroke="#8a887e" stroke-width="1.4"/>
+  <text x="405" y="385" text-anchor="middle" font-size="17" fill="#5a584e">+</text>
+
+  <line x1="419" y1="379" x2="560" y2="379" stroke="#8a887e" stroke-width="1.4" marker-end="url(#arw)"/>
+  <text x="572" y="384" font-size="14" fill="#6a685e" font-style="italic">out</text>
+
+  <!-- 残差直通（干净恒等） -->
+  <polyline points="100,379 100,462 405,462 405,396"
+            fill="none" stroke="#8fa893" stroke-width="1.6"
+            marker-end="url(#arw)"/>
+  <text x="252" y="454" text-anchor="middle" font-size="13" fill="#6e8276">
+    相加在 LN 之外 —— 恒等路径干净，梯度直达底层
+  </text>
+
+  <!-- ==================== 底注 ==================== -->
+  <text x="380" y="540" text-anchor="middle" font-size="13" fill="#9a968a" letter-spacing="2">
+    二者的分野仅在一处：LN 位于残差相加之后（截流），抑或之前（让路）
+  </text>
+  <line x1="330" y1="556" x2="430" y2="556" stroke="#ddd9cc" stroke-width="1"/>
+</svg>
